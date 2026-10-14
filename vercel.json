@@ -2,5 +2,6 @@
   "framework": "nextjs",
   "buildCommand": "npm run build",
   "installCommand": "npm ci",
-  "regions": ["fra1"]
+  "regions": ["fra1"],
+  "crons": [{ "path": "/api/crm/jobs", "schedule": "0 6 * * *" }]
 }

@@ -1,5 +1,7 @@
 # Webstudio Expert
 
+**Neu: CRM unter `/crm`.** Einrichtung, Supabase-Migrationen, Telefonie, Postfach, Sicherheit und die aktuellen Grenzen stehen in [CRM-README.md](CRM-README.md). Das neue CRM-Briefing autorisiert Supabase ausdrücklich und ergänzt die unten beschriebene bisherige reine Website-Architektur. Bei aktivierter Supabase-Integration werden Website-Anfragen dauerhaft im CRM gespeichert; Aussagen zum fehlenden Datenspeicher beziehen sich auf den früheren Website-Modus.
+
 Agenturwebsite von **Enrico Gross**, Karinstraße 5, 44388 Dortmund. Produktionsdomain: **webstudio-expert.de**. Kontakt: **kontakt@webstudio-expert.de**, **+49 155 67504871**. Kontaktwege: E-Mail, Anruf, SMS. Kein WhatsApp.
 
 Next.js App Router, React, TypeScript Strict, Tailwind CSS und Motion. 98 Leistungsseiten, sechs Kategorien, fünf Demo-Projekte, Unternehmensseiten, Wissensbereich, Preise, Betreuung, Kontakt, Projektanfrage, eigene Termin-Anfrage, Impressum, Datenschutz, Cookie-Einstellungen, Barrierefreiheitsinformationen und 404. Karriere und Partnerprogramm wurden vollständig entfernt. Es wurden auf Wunsch keine automatisierten Tests oder Playtests ausgeführt; der Produktionsbuild prüft die Kompilierung.

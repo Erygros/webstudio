@@ -1,6 +1,7 @@
 import type { ContentPage } from "./pages";
 import { business, site } from "@/config/site";
-import { formReady } from "@/server/form-security";
+import { mailReady } from "@/server/form-security";
+import { crmServiceConfigured } from "@/crm/server/db";
 
 const address = `${business.owner}\n${site.name}\n${business.street}\n${business.postcode} ${business.city}\n${business.country}`;
 const mailProvider = process.env.MAIL_PROVIDER_NAME || "";
@@ -77,23 +78,43 @@ export const legalPages: Record<string, ContentPage> = {
         title: "3. Empfänger und internationale Verarbeitung",
         text: "Technische Hostingdaten werden durch Vercel und dessen für den Betrieb eingesetzte Unterauftragsverarbeiter verarbeitet. Je nach Infrastruktur kann dies außerhalb der EU beziehungsweise des EWR, insbesondere in den USA, erfolgen. Für Auftragsverarbeitung gelten die Anforderungen aus Art. 28 DSGVO. Übermittlungen in Drittländer benötigen die Voraussetzungen der Art. 44 ff. DSGVO, etwa einen anwendbaren Angemessenheitsbeschluss oder geeignete Garantien wie EU-Standardvertragsklauseln. Die Vercel-Vertragsunterlagen beschreiben die angebotenen Schutzmechanismen. Eine unabhängige Zertifizierung dieser Website oder die ausschließlich deutsche Speicherung wird nicht behauptet. Anfragende Personen erhalten keine Informationen über andere Anfragen.",
       },
+      ...(crmServiceConfigured()
+        ? [
+            {
+              title: "CRM, Anmeldung und private Dokumente",
+              text: "Zur Organisation von Anfragen, Kontakten, Projekten und Buchhaltungsunterlagen setzen wir Supabase für PostgreSQL-Datenbank, Authentifizierung, privaten Dateispeicher und Echtzeit-Aktualisierung ein. Die Vertragsunterlagen benennen Supabase Pte. Ltd als Anbieter. Es gibt keine öffentliche CRM-Registrierung. Anmeldung ist nur für freigeschaltete Personen möglich; technisch notwendige Sitzungscookies schützen diesen Bereich. Projektregion, Unterauftragsverarbeiter und internationale Übermittlungen richten sich nach der tatsächlichen Supabase-Konfiguration und den geltenden Vertragsunterlagen; eine ausschließlich deutsche Verarbeitung wird nicht behauptet. Kontakt-/Projektbearbeitung erfolgt nach Art. 6 Abs. 1 Buchst. b DSGVO, Betriebs- und Zugriffsschutz nach Art. 6 Abs. 1 Buchst. f DSGVO und gesetzliche Buchhaltungsaufbewahrung nach Art. 6 Abs. 1 Buchst. c DSGVO. Eine vorhandene Geschäftsbeziehung wird nicht mit einer Werbeeinwilligung gleichgesetzt. Werden später VoIP oder ein KI-Anbieter aktiviert, werden deren Datenflüsse vor Einsatz zusätzlich benannt. Gesprächsaufzeichnung bleibt deaktiviert.",
+              links: [
+                {
+                  title: "Supabase Auftragsverarbeitungsbedingungen",
+                  href: "https://supabase.com/legal/dpa",
+                },
+                {
+                  title: "Supabase Datenschutz",
+                  href: "https://supabase.com/privacy",
+                },
+              ],
+            },
+          ]
+        : []),
       {
         title: "4. E-Mail, Telefon und SMS",
         text: "Wenn du uns per E-Mail, Anruf oder SMS kontaktierst, verarbeiten wir die von dir angegebenen Kontaktdaten und den Inhalt der Anfrage zur Bearbeitung und Rückmeldung. Angaben zu einem konkreten Projekt oder einer Terminvereinbarung werden zur Durchführung vorvertraglicher Maßnahmen nach Art. 6 Abs. 1 Buchst. b DSGVO verarbeitet. Sonstige Anfragen bearbeiten wir auf Grundlage unseres berechtigten Interesses an ihrer Beantwortung nach Art. 6 Abs. 1 Buchst. f DSGVO. Angaben wie Telefonnummer oder Unternehmen sind außerhalb einer Rückrufanfrage freiwillig. Telefonate werden von dieser Website nicht aufgezeichnet. WhatsApp ist nicht eingebunden. Bitte übermittle keine Passwörter, Gesundheitsdaten oder andere besonders sensible Informationen, wenn diese für deine Anfrage nicht erforderlich sind.",
       },
       {
         title: "5. Projekt-, Kontakt- und Terminformulare",
-        text: formReady()
-          ? `Die Formulare übertragen Namen, E-Mail-Adresse, freiwillige Telefon- und Unternehmensangaben, Projektinformationen beziehungsweise den gewünschten Termin an die interne Empfängeradresse. Der Versand erfolgt über ${mailProvider || "den konfigurierten E-Mail-Server"}${process.env.MAIL_PROVIDER_ADDRESS ? ` (${process.env.MAIL_PROVIDER_ADDRESS})` : ""}. Eine gesonderte Bestätigung geht an die angegebene E-Mail-Adresse. Terminwünsche werden persönlich geprüft; die Auswahl bedeutet noch keine verbindliche Reservierung. Rechtsgrundlagen sind Art. 6 Abs. 1 Buchst. b DSGVO für vorvertragliche Anfragen und Art. 6 Abs. 1 Buchst. f DSGVO für sonstige Kommunikation. Die Kenntnisnahme des Datenschutzhinweises ist keine Einwilligung in Werbung.`
-          : "Der automatische Formularversand ist derzeit deaktiviert, weil der E-Mail-Server noch nicht eingerichtet ist. Es werden keine ausgefüllten Formularinhalte als vermeintlich erfolgreiche Anfrage gespeichert oder versendet. Du kannst uns über die angegebenen direkten Kontaktwege erreichen. Nach Aktivierung werden Kontaktdaten, Projektangaben und Terminwünsche verschlüsselt an den konfigurierten Mailserver übertragen. Der tatsächliche E-Mail-Dienstleister wird vor Aktivierung in dieser Erklärung benannt. Eine Auswahl im Terminkalender ist kein bestätigter Termin.",
+        text: crmServiceConfigured()
+          ? "Bei aktiviertem CRM werden Kontakt-, Projekt- und Terminangaben dauerhaft in unserer zugriffsgeschützten Supabase-Datenbank gespeichert. Anhänge werden privat zugeordnet, eine Kontaktaufgabe und interne Benachrichtigung erstellt. Verantwortlich ist Enrico Gross. Rechtsgrundlagen sind Art. 6 Abs. 1 Buchst. b DSGVO für vorvertragliche Anfragen und Art. 6 Abs. 1 Buchst. f DSGVO für sonstige Kommunikation. E-Mail-Bestätigungen werden nur bei tatsächlich eingerichtetem SMTP-Versand versendet. Terminwünsche bleiben bis zur persönlichen Bestätigung unverbindlich."
+          : mailReady()
+            ? `Die Formulare übertragen Namen, E-Mail-Adresse, freiwillige Telefon- und Unternehmensangaben, Projektinformationen beziehungsweise den gewünschten Termin an die interne Empfängeradresse. Der Versand erfolgt über ${mailProvider || "den konfigurierten E-Mail-Server"}${process.env.MAIL_PROVIDER_ADDRESS ? ` (${process.env.MAIL_PROVIDER_ADDRESS})` : ""}. Eine gesonderte Bestätigung geht an die angegebene E-Mail-Adresse. Terminwünsche werden persönlich geprüft; die Auswahl bedeutet noch keine verbindliche Reservierung. Rechtsgrundlagen sind Art. 6 Abs. 1 Buchst. b DSGVO für vorvertragliche Anfragen und Art. 6 Abs. 1 Buchst. f DSGVO für sonstige Kommunikation. Die Kenntnisnahme des Datenschutzhinweises ist keine Einwilligung in Werbung.`
+            : "Der automatische Formularversand ist derzeit deaktiviert, weil der E-Mail-Server noch nicht eingerichtet ist. Es werden keine ausgefüllten Formularinhalte als vermeintlich erfolgreiche Anfrage gespeichert oder versendet. Du kannst uns über die angegebenen direkten Kontaktwege erreichen. Nach Aktivierung werden Kontaktdaten, Projektangaben und Terminwünsche verschlüsselt an den konfigurierten Mailserver übertragen. Der tatsächliche E-Mail-Dienstleister wird vor Aktivierung in dieser Erklärung benannt. Eine Auswahl im Terminkalender ist kein bestätigter Termin.",
       },
       {
         title: "6. Freiwillige Dateianhänge",
-        text: "Bei aktivierter Projektanfrage können bis zu drei Dateien angehängt werden: je maximal 2 MB und insgesamt maximal 3 MB. Zulässig sind PDF, PNG, JPEG und UTF-8-Text. Dateityp, Größe und bekannte problematische Inhalte werden technisch geprüft. Anhänge werden im Arbeitsspeicher verarbeitet und als Anlagen an die interne E-Mail versendet. Es gibt keine öffentliche Uploadablage. Die Dateien dienen ausschließlich der Bearbeitung deiner Anfrage. Nach Versand können sie im geschäftlichen E-Mail-Postfach gespeichert sein. Bitte beschränke die Unterlagen auf die erforderlichen Informationen.",
+        text: "Bei aktivierter Projektanfrage können bis zu drei Dateien angehängt werden: je maximal 2 MB und insgesamt maximal 3 MB. Zulässig sind PDF, PNG, JPEG und UTF-8-Text. Dateityp, Größe und bekannte problematische Inhalte werden technisch geprüft. Anhänge werden im Arbeitsspeicher geprüft. Bei aktiviertem CRM werden sie zusätzlich in einem privaten Supabase-Speicher zugeordnet; bei aktiviertem SMTP können sie als Anlagen an die interne E-Mail versendet werden. Es gibt keine öffentliche Uploadablage. Die Dateien dienen ausschließlich der Bearbeitung deiner Anfrage. Nach Versand können sie im geschäftlichen E-Mail-Postfach gespeichert sein. Bitte beschränke die Unterlagen auf die erforderlichen Informationen.",
       },
       {
         title: "7. Schutz vor missbräuchlichen Eingaben",
-        text: "Formulare verwenden eine Herkunftsprüfung, serverseitige Eingabeprüfung, einen kurzlebigen signierten Formularnachweis, ein für Menschen nicht auszufüllendes Prüffeld und lokale Anfragebegrenzungen. Dafür können kurzlebige, mit HMAC pseudonymisierte Schlüssel auf Basis von IP-Adresse oder E-Mail-Adresse im Arbeitsspeicher der laufenden Serverinstanz gehalten werden. Sie laufen nach spätestens zwei Stunden ab oder gehen beim Ende der Instanz verloren. Pseudonymisierung ist keine Anonymisierung. Es werden keine Anfragen an externe CAPTCHA- oder Anti-Spam-Anbieter gesendet. Rechtsgrundlage ist Art. 6 Abs. 1 Buchst. f DSGVO; unser berechtigtes Interesse ist die Verhinderung von Spam und missbräuchlichem Versand.",
+        text: "Formulare verwenden eine Herkunftsprüfung, serverseitige Eingabeprüfung, einen kurzlebigen signierten Formularnachweis, ein für Menschen nicht auszufüllendes Prüffeld und lokale Anfragebegrenzungen. Dafür können kurzlebige, mit HMAC pseudonymisierte Schlüssel auf Basis von IP-Adresse oder E-Mail-Adresse im Arbeitsspeicher der laufenden Serverinstanz gehalten werden. Ohne Datenbank laufen sie nach spätestens zwei Stunden ab oder gehen beim Ende der Instanz verloren. Bei aktiviertem CRM werden gemeinsame pseudonymisierte Zähler und Wiederverwendungssperren in Supabase gespeichert. Formularnachweise sind höchstens zwei Stunden gültig; abgelaufene Kontrollinformationen werden bei weiteren Anfragen oder durch den regelmäßig konfigurierten Hintergrundjob bereinigt. Pseudonymisierung ist keine Anonymisierung. Es werden keine Anfragen an externe CAPTCHA- oder Anti-Spam-Anbieter gesendet. Rechtsgrundlage ist Art. 6 Abs. 1 Buchst. f DSGVO; unser berechtigtes Interesse ist die Verhinderung von Spam und missbräuchlichem Versand.",
       },
       {
         title: "8. Lokale Darstellung und Cookies",
@@ -107,7 +128,7 @@ export const legalPages: Record<string, ContentPage> = {
       },
       {
         title: "9. Speicherdauer",
-        text: "Anfragen ohne anschließenden Auftrag werden nach Abschluss der Bearbeitung grundsätzlich innerhalb von sechs Monaten aus unseren aktiv verwalteten Anfragebeständen gelöscht, sofern keine weiteren Rückfragen, Rechtsansprüche oder Aufbewahrungspflichten entgegenstehen. Terminwünsche werden entsprechend behandelt. Entsteht ein Vertragsverhältnis, werden relevante Unterlagen für Vertragsdurchführung und gesetzliche Aufbewahrung aufbewahrt. Die Frist richtet sich nach der jeweiligen Unterlagenart und der geltenden handels- oder steuerrechtlichen Pflicht. Nicht benötigte Anlagen werden früher gelöscht. Die Website besitzt keinen dauerhaften Anfrage- oder Termindatenspeicher; die Löschung im geschäftlichen Postfach wird organisatorisch umgesetzt. Technische Hostprotokolle unterliegen den Betriebsregeln des Hostinganbieters.",
+        text: "Anfragen ohne anschließenden Auftrag werden nach Abschluss der Bearbeitung grundsätzlich innerhalb von sechs Monaten aus unseren aktiv verwalteten Anfragebeständen gelöscht, sofern keine weiteren Rückfragen, Rechtsansprüche oder Aufbewahrungspflichten entgegenstehen. Terminwünsche werden entsprechend behandelt. Entsteht ein Vertragsverhältnis, werden relevante Unterlagen für Vertragsdurchführung und gesetzliche Aufbewahrung aufbewahrt. Die Frist richtet sich nach der jeweiligen Unterlagenart und der geltenden handels- oder steuerrechtlichen Pflicht. Nicht benötigte Anlagen werden früher gelöscht. Wenn das CRM aktiviert ist, werden Anfragen, Terminwünsche und private Dokumente dauerhaft bis zur erforderlichen Löschung gespeichert. Nicht aufbewahrungspflichtige Daten können durch den zuständigen Administrator entfernt werden; eine Archivierung ist keine Löschung. Die Löschung im geschäftlichen Postfach und die Berücksichtigung von Backups werden organisatorisch umgesetzt. Technische Hostprotokolle unterliegen den Betriebsregeln des Hostinganbieters.",
       },
       {
         title: "10. Deine Rechte",

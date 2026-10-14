@@ -1,0 +1,1 @@
+create policy accounting_emails_write on public.crm_emails for all to authenticated using(public.crm_role()='buchhaltung' and purpose='operational') with check(public.crm_role()='buchhaltung' and purpose='operational');

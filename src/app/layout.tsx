@@ -3,6 +3,7 @@ import { site } from "@/config/site";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { ExitBanner } from "@/components/exit-banner";
+import { PublicChrome } from "@/components/public-chrome";
 import { JsonLd } from "@/components/ui";
 import { categories } from "@/data/services";
 import { packages, priceLabel } from "@/config/pricing";
@@ -33,18 +34,25 @@ export default function RootLayout({
         <a className="skip-link" href="#main">
           Zum Inhalt
         </a>
-        <Navigation
-          categories={categories.map((c) => ({
-            slug: c.slug,
-            name: c.name,
-            count: c.services.length,
-          }))}
-        />
-        <main id="main" tabIndex={-1}>
+        <PublicChrome
+          header={
+            <Navigation
+              categories={categories.map((c) => ({
+                slug: c.slug,
+                name: c.name,
+                count: c.services.length,
+              }))}
+            />
+          }
+          footer={
+            <>
+              <Footer />
+              <ExitBanner />
+            </>
+          }
+        >
           {children}
-        </main>
-        <Footer />
-        <ExitBanner />
+        </PublicChrome>
         <JsonLd
           value={{
             "@context": "https://schema.org",

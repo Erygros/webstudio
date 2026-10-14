@@ -6,10 +6,13 @@ import {
   allowed,
   consumeToken,
   formReady,
+  mailReady,
   verifyToken,
 } from "@/server/form-security";
 import { readForm, validateAttachments } from "@/server/uploads";
 import { categories, services } from "@/data/services";
+import { crmServiceConfigured } from "@/crm/server/db";
+import { captureWebsiteInquiry } from "@/crm/server/website";
 export const runtime = "nodejs";
 export const maxDuration = 60;
 const fail = (message: string, status = 400) =>
@@ -93,6 +96,31 @@ export async function POST(request: Request) {
       503,
     );
   }
+  let captured = false;
+  let attachmentsComplete = true;
+  if (crmServiceConfigured()) {
+    try {
+      const result = await captureWebsiteInquiry(d, attachments);
+      captured = true;
+      attachmentsComplete = result.attachmentsComplete;
+    } catch (e) {
+      return fail(
+        e instanceof Error ? e.message : "CRM-Speicherung fehlgeschlagen.",
+        503,
+      );
+    }
+  }
+  if (!mailReady() && captured)
+    return NextResponse.json(
+      {
+        success: true,
+        confirmation: false,
+        message: attachmentsComplete
+          ? "Deine Anfrage wurde im CRM gespeichert. Der E-Mail-Versand ist noch nicht eingerichtet. Wir melden uns über deine Kontaktdaten."
+          : "Deine Anfrage wurde im CRM gespeichert, aber nicht alle Anhänge konnten übernommen werden. Bitte sende fehlende Unterlagen direkt per E-Mail. Keine automatische Bestätigungs-E-Mail.",
+      },
+      { headers: { "Cache-Control": "no-store" } },
+    );
   const port = Number(process.env.SMTP_PORT || "587");
   if (![465, 587].includes(port))
     return fail("Der E-Mail-Versand ist nicht korrekt konfiguriert.", 503);
@@ -152,6 +180,13 @@ export async function POST(request: Request) {
     if (!info.accepted?.length) throw new Error("NOT_ACCEPTED");
   } catch {
     transport.close();
+    if (captured)
+      return NextResponse.json({
+        success: true,
+        confirmation: false,
+        message:
+          "Deine Anfrage wurde im CRM gespeichert. Die E-Mail-Benachrichtigung konnte nicht gesendet werden. Bitte nicht erneut absenden.",
+      });
     return fail(
       "Der E-Mail-Dienst konnte die Anfrage nicht bestätigen. Bitte später erneut versuchen oder direkt Kontakt aufnehmen.",
       502,

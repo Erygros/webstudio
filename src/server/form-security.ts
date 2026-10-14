@@ -1,5 +1,6 @@
 import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
-export function formReady() {
+import { crmServiceConfigured, serviceDb } from "@/crm/server/db";
+export function mailReady() {
   return !!(
     process.env.SMTP_HOST &&
     process.env.SMTP_USER &&
@@ -11,6 +12,16 @@ export function formReady() {
     process.env.FORM_SECRET &&
     process.env.FORM_SECRET.length >= 32 &&
     [465, 587].includes(Number(process.env.SMTP_PORT || "587"))
+  );
+}
+export function formReady() {
+  return (
+    mailReady() ||
+    !!(
+      crmServiceConfigured() &&
+      process.env.FORM_SECRET &&
+      process.env.FORM_SECRET.length >= 32
+    )
   );
 }
 const hmac = (value: string) =>
@@ -52,6 +63,15 @@ function cleanup() {
 }
 // Vercel-Limits gelten pro Funktionsinstanz; verteilter Schutz braucht gemeinsamen Speicher.
 export async function allowed(key: string, limit: number, seconds: number) {
+  if (crmServiceConfigured()) {
+    const { data, error } = await serviceDb().rpc("crm_rate_limit", {
+      key_in: hmac(key),
+      limit_in: limit,
+      seconds_in: seconds,
+    });
+    if (error) throw new Error("Missbrauchsschutz noch nicht eingerichtet.");
+    return data === true;
+  }
   cleanup();
   const hashed = `rate:${hmac(key)}`;
   const current = entries.get(hashed);
@@ -64,6 +84,12 @@ export async function allowed(key: string, limit: number, seconds: number) {
   return true;
 }
 export async function consumeToken(token: string) {
+  if (crmServiceConfigured()) {
+    const { error } = await serviceDb()
+      .from("crm_webhook_events")
+      .insert({ provider: "form", event_key: hmac(token) });
+    return !error;
+  }
   cleanup();
   const key = `nonce:${hmac(token)}`;
   if (entries.has(key) || entries.size >= 5000) return false;
