@@ -40,6 +40,7 @@ export const leadStatuses = [
   "Interessiert",
   "Kunde gewonnen",
   "Später kontaktieren",
+  "E-Mail versendet",
 ];
 const company: Field = {
   key: "company_id",
@@ -595,6 +596,7 @@ export const resources: Record<string, Resource> = {
 };
 export const navModules = [
   ["", "Dashboard"],
+  ["arbeit", "Arbeit"],
   ["leads", "Leads"],
   ["telefonie", "Telefonie"],
   ["emails", "E-Mails"],

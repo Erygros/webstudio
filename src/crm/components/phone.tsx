@@ -4,9 +4,18 @@ import type { Device, Call } from "@twilio/voice-sdk";
 import { crmFetch } from "./api";
 import { Modal } from "./modal";
 const DialerContext = createContext<{
-  open: (number?: string, companyId?: string) => void;
+  open: (
+    number?: string,
+    companyId?: string,
+    purpose?: "marketing" | "operational",
+  ) => void;
 }>({ open: () => {} });
-type PhoneState = { visible: boolean; number: string; company?: string };
+type PhoneState = {
+  visible: boolean;
+  number: string;
+  company?: string;
+  purpose?: "marketing" | "operational";
+};
 const Context = createContext<{
   state: PhoneState;
   setState: React.Dispatch<React.SetStateAction<PhoneState>>;
@@ -19,8 +28,8 @@ export function DialerProvider({ children }: { children: React.ReactNode }) {
   return (
     <DialerContext.Provider
       value={{
-        open: (number = "", company) =>
-          setState({ visible: true, number, company }),
+        open: (number = "", company, purpose) =>
+          setState({ visible: true, number, company, purpose }),
       }}
     >
       <Context.Provider value={{ state, setState }}>
@@ -44,6 +53,9 @@ export function Dialer() {
   const [devices, setDevices] = useState<{ id: string; label: string }[]>([]);
   const [speakers, setSpeakers] = useState<{ id: string; label: string }[]>([]);
   const [purpose, setPurpose] = useState("operational");
+  useEffect(() => {
+    if (state.purpose) setPurpose(state.purpose);
+  }, [state.purpose]);
   const [finish, setFinish] = useState<string | null>(null);
   const [outcome, setOutcome] = useState("Interessiert");
   const [notes, setNotes] = useState("");
@@ -191,6 +203,7 @@ export function Dialer() {
       setFinish(null);
       setNotes("");
       setCallback("");
+      window.dispatchEvent(new Event("crm-change"));
     } catch (e) {
       setError((e as Error).message);
     }

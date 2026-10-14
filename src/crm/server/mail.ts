@@ -127,6 +127,8 @@ export async function sendDraft(
         from_address: config.from,
         message_id: info.messageId,
         sent_at: new Date().toISOString(),
+        subject: replace(email.subject),
+        body: replace(email.body) + "\n\n" + (business?.data?.signature || ""),
         error: "",
       })
       .eq("id", id);

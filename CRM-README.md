@@ -11,6 +11,20 @@ Geschützter Arbeitsbereich unter `/crm`, integriert in die vorhandene Website. 
 5. `CRM_ADMIN_EMAIL` und ein eigenes `CRM_BOOTSTRAP_PASSWORD` (mindestens 12 Zeichen) setzen. `node --env-file=.env.local scripts/crm-admin.mjs` legt das echte Administratorkonto an. Es überschreibt keine vorhandenen Konten. Anschließend das Bootstrap-Passwort aus der Umgebung entfernen.
 6. `npm ci`, `npm run dev` beziehungsweise `npm run build`. Anmeldung über `/crm/login`. Es werden ausdrücklich keine automatisierten Tests, Playtests oder automatisierten Testanrufe ausgeführt. Die Kompilierung ist keine Funktionsabnahme einer live konfigurierten Datenbank.
 
+## Erweiterung „Arbeit“ auf einem bestehenden Projekt
+
+Wenn die ursprünglichen Migrationen 001–013 bereits angewendet wurden, **nur `supabase/migrations/202610140014_work.sql` einmal ausführen**. Das gesamte Installationsskript darf nicht nochmals auf einer vorhandenen Datenbank ausgeführt werden. Danach den neuen Stand auf Vercel bereitstellen. Es werden keine zusätzlichen Zugangsdaten benötigt.
+
+`/crm/arbeit` bietet einen geführten Vorgang mit Fortschritt, automatisch priorisierter Arbeitsliste, gespeicherten Formularentwürfen, Pause/Fortsetzen, Vorlagen und Anhängen, dem bestehenden Browser-Dialer, Kontaktverlauf und Tageszahlen. Ein Login-Cookie löst die Frage „Möchtest du jetzt arbeiten?“ einmal je Anmeldung aus. Die Freischaltung bleibt auf Administration/Vertrieb begrenzt.
+
+Ein eigener Datensatz in `crm_work_sessions` speichert den Bearbeitungsstand. Je Benutzer und Unternehmen ist ein aktiver/pausierter Vorgang erlaubt. Fällige Wiedervorlagen werden vor offenen/neuen Leads angeboten; künftige Termine, gesperrte, archivierte, gewonnene und ausdrücklich abgeschlossene Leads sind ausgeschlossen. Überspringen stellt einen Lead für 24 Stunden zurück. Nach 100 % startet standardmäßig der nächste Vorgang; dieser Übergang lässt sich abschalten.
+
+Wiedervorlage, Aufgabe und Kalender werden in einer Transaktion verknüpft; wiederholtes Speichern aktualisiert dieselben Einträge. Verschieben bearbeitet die bestehende Wiedervorlage. Der bestehende Gesprächsabschluss erstellt während eines Wizard-Vorgangs keine zusätzliche Wiedervorlage. Abgeschlossene Vorgänge bleiben gespeichert und erzeugen Einträge in der Lead-Historie. Der JSON-Export umfasst die Vorgänge.
+
+Der Akquise-Wizard erstellt ausschließlich als Werbung gekennzeichnete E-Mail-Entwürfe. Er nutzt den bestehenden SMTP-Versand mit atomarer Versandübernahme und dokumentierter Kontakterlaubnis. Anrufe werden über den bestehenden Dialer gestartet. Fehlende Integrationen blockieren die jeweilige Aktion; Entwürfe/Pausieren bleiben nutzbar. Ein SMTP-Versand gilt als vom Server angenommen, nicht als garantierte Zustellung. Unklare Versandzustände werden nicht erneut gesendet. Fortschritt wird aus gespeichertem Versand beziehungsweise abgeschlossenem Gesprächsprotokoll übernommen.
+
+Änderungen werden nach kurzer Eingabepause gespeichert; Pause und Aktionen warten auf die Speicherung. Beim Verlassen mit ungespeicherten Änderungen warnt der Browser. Die Tagesgrenzen und Wiedervorlagen verwenden Europe/Berlin. Realtime sowie regelmäßige Aktualisierung erneuern die Arbeitsliste und Tageszahlen. Tatsächlich durchgeführte Provider-Anrufe werden getrennt von manuellen Protokollen gezählt. Migration 014 wurde mangels direktem Projektzugang nicht auf der produktiven Datenbank ausgeführt; die abschließenden Funktionstests übernimmt der Auftraggeber.
+
 ## Module
 
 Dashboard aus Datenbankwerten; Leads/Kunden mit gemeinsamen Unternehmensdaten, mehreren Ansprechpartnern, Statusverlauf, Notizen, Suche, Sortierung, Filtern, Archivierung und Duplikatprüfung. Follow-ups besitzen einen eigenen Status. Aufgaben, Projekte, Checklisten, Meilensteine, manuelle Zeiterfassung, Budget-/Zeitkostenvergleich, Tag-/Woche-/Monatskalender mit Wiederholungen, private Dokumente, globale Suche, Notifications, Statistiken, CSV/XLSX-Import mit Spaltenmapping/Vorschau, CSV/JSON-Export, PDF-Berichte, Einstellungen und optionaler Leseassistent.

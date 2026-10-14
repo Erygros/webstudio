@@ -6,6 +6,7 @@ import { createClient } from "@supabase/supabase-js";
 import { navModules } from "@/crm/resources";
 import { crmFetch } from "./api";
 import { DialerProvider, Dialer } from "./phone";
+import { WorkPrompt } from "./work-prompt";
 export function CRMFrame({
   children,
   profile,
@@ -99,6 +100,7 @@ export function CRMFrame({
   }
   return (
     <DialerProvider>
+      {["administrator", "vertrieb"].includes(profile.role) && <WorkPrompt />}
       <div
         className={`crm-shell ${collapsed ? "crm-collapsed" : ""} ${mobileOpen ? "crm-mobile-open" : ""}`}
       >

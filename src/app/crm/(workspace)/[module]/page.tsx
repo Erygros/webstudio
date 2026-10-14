@@ -5,6 +5,8 @@ import { Settings } from "@/crm/components/settings";
 import { Statistics } from "@/crm/components/statistics";
 import { Calendar } from "@/crm/components/calendar";
 import { MailTools } from "@/crm/components/mail-tools";
+import { Work } from "@/crm/components/work";
+import { session } from "@/crm/server/db";
 export default async function Page({
   params,
   searchParams,
@@ -14,6 +16,12 @@ export default async function Page({
 }) {
   const { module: key } = await params;
   const q = await searchParams;
+  if (key === "arbeit") {
+    const current = await session();
+    if (!["administrator", "vertrieb"].includes(current!.profile.role))
+      return <p>Arbeit ist für Administration und Vertrieb verfügbar.</p>;
+    return <Work />;
+  }
   if (key === "einstellungen") return <Settings />;
   if (key === "statistiken") return <Statistics />;
   if (key === "kalender") return <Calendar />;

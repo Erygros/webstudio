@@ -22,6 +22,7 @@ export async function GET(request: Request) {
         "crm_number_counters",
         "crm_events",
         "crm_workflow_runs",
+        "crm_work_sessions",
       ])) {
         const rows: unknown[] = [];
         let offset = 0;

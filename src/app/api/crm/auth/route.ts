@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { crmDb, session, apiError } from "@/crm/server/db";
 import { allowed } from "@/server/form-security";
+import { cookies } from "next/headers";
 export async function POST(request: Request) {
   try {
     const origin = request.headers.get("origin");
@@ -37,8 +38,16 @@ export async function POST(request: Request) {
         await db.auth.signOut();
         throw new Error("Das Konto ist nicht als CRM-Benutzer freigeschaltet.");
       }
+      (await cookies()).set("crm-work-prompt", "1", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 3600,
+      });
     }
     if (body.action === "logout") {
+      (await cookies()).delete("crm-work-prompt");
       const { error } = await db.auth.signOut();
       if (error) throw error;
     }
