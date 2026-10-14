@@ -61,7 +61,7 @@ export const legalPages: Record<string, ContentPage> = {
       },
       {
         title: "2. Besuch der Website und Hosting",
-        text: "Die Website ist für den Betrieb bei Vercel Inc., USA, eingerichtet. Bei der Auslieferung werden technisch notwendige Verbindungsdaten verarbeitet, insbesondere IP-Adresse, Zeitpunkt, angeforderte Adresse, Browser-/Geräteinformationen und gegebenenfalls technische Fehlermeldungen. Dies dient der Bereitstellung, Stabilität und Sicherheit der Website. Rechtsgrundlage ist Art. 6 Abs. 1 Buchst. f DSGVO; unser berechtigtes Interesse ist ein sicherer und funktionsfähiger Internetauftritt. Auf Anwendungsebene werden keine dauerhaften Besucherprofile oder Besuchsprotokolle gespeichert. Die technische Protokollierung des Hostinganbieters richtet sich nach dessen eingesetzten Betriebs- und Sicherheitsfunktionen. Informationen werden nicht allein zur Erstellung personenbezogener Werbeprofile erhoben.",
+        text: "Die Website ist für den Betrieb bei Vercel Inc., 440 N Barranca Avenue #4133, Covina, CA 91723, USA, eingerichtet. Bei der Auslieferung werden technisch notwendige Verbindungsdaten verarbeitet, insbesondere IP-Adresse, Zeitpunkt, angeforderte Adresse, Browser-/Geräteinformationen und gegebenenfalls technische Fehlermeldungen. Dies dient der Bereitstellung, Stabilität und Sicherheit der Website. Rechtsgrundlage ist Art. 6 Abs. 1 Buchst. f DSGVO; unser berechtigtes Interesse ist ein sicherer und funktionsfähiger Internetauftritt. Auf Anwendungsebene werden keine dauerhaften Besucherprofile oder Besuchsprotokolle gespeichert. Die technische Protokollierung des Hostinganbieters richtet sich nach dessen eingesetzten Betriebs- und Sicherheitsfunktionen. Informationen werden nicht allein zur Erstellung personenbezogener Werbeprofile erhoben.",
         links: [
           {
             title: "Vercel Datenschutzinformationen",
@@ -146,7 +146,7 @@ export const legalPages: Record<string, ContentPage> = {
       },
       {
         title: "Bekannte Grenzen und Stand",
-        text: "Es liegt keine vollständige unabhängige Prüfung anhand der WCAG oder EN 301 549 vor. Eine vollständige Konformität wird daher nicht behauptet. Automatisierte Tests und Playtests wurden auf Wunsch des Auftraggebers nicht durchgeführt. Diese Information ist keine gesetzlich geprüfte Konformitätserklärung. Stand: 14. Oktober 2026.",
+        text: "Es liegt keine vollständige unabhängige Prüfung anhand der WCAG oder EN 301 549 vor. Eine vollständige Konformität wird daher nicht behauptet. Diese Information ist keine gesetzlich geprüfte Konformitätserklärung. Stand: 14. Oktober 2026.",
       },
       {
         title: "Eine Hürde melden",

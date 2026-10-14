@@ -36,7 +36,7 @@ export const articles = [
       },
       {
         title: "Laufende Kosten getrennt betrachten",
-        text: "Hosting, Domains, Softwarelizenzen und Betreuung sind mögliche Betriebskosten. Ein transparentes Angebot trennt die einmalige Umsetzung von diesen laufenden Ausgaben. Die vorläufigen Pakete dieser Website dienen als Ausgangspunkt; der tatsächliche Umfang wird individuell angeboten.",
+        text: "Hosting, Domains, Softwarelizenzen und Betreuung sind mögliche Betriebskosten. Ein transparentes Angebot trennt die einmalige Umsetzung von diesen laufenden Ausgaben. Die Pakete dieser Website dienen als Ausgangspunkt; der tatsächliche Umfang wird individuell angeboten.",
       },
       {
         title: "Mit einem klaren Briefing starten",
