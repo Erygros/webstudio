@@ -45,6 +45,14 @@ export async function GET(request: Request) {
         }
         data[table] = rows;
       }
+      const audit = data.crm_audit_logs as { action: string }[] | undefined;
+      if (audit?.some((entry) => entry.action === "osm.import"))
+        data.$metadata = {
+          osmAttribution: "© OpenStreetMap contributors",
+          osmCopyright: "https://www.openstreetmap.org/copyright",
+          osmLicense: "ODbL 1.0",
+          osmLicenseUrl: "https://opendatacommons.org/licenses/odbl/1-0/",
+        };
       return Response.json(data, {
         headers: {
           "Content-Disposition": 'attachment; filename="crm-export.json"',
@@ -70,8 +78,21 @@ export async function GET(request: Request) {
         ...resource.columns,
       ]),
     ];
+    let attribution = "";
+    if (resource.table === "crm_companies") {
+      const { data: osmImports, error: sourceError } = await serviceDb()
+        .from("crm_audit_logs")
+        .select("id")
+        .eq("action", "osm.import")
+        .limit(1);
+      if (sourceError) throw sourceError;
+      if (osmImports?.length)
+        attribution =
+          "# OpenStreetMap attribution: OSM-Anteile / © OpenStreetMap contributors / https://www.openstreetmap.org/copyright\r\n# ODbL: https://opendatacommons.org/licenses/odbl/1-0/\r\n";
+    }
     const csv =
       "\ufeff" +
+      attribution +
       columns.map(csvCell).join(";") +
       "\r\n" +
       data

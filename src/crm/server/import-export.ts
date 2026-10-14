@@ -1,4 +1,7 @@
 export function parseCsv(text: string) {
+  text = text
+    .replace(/^\uFEFF/, "")
+    .replace(/^# OpenStreetMap attribution:[^\n]*\n# ODbL:[^\n]*\n/, "");
   const rows: string[][] = [];
   let row: string[] = [];
   let cell = "";
