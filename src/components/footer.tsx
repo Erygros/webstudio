@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { site } from "@/config/site";
+import { business, site } from "@/config/site";
 import { Brand } from "@/components/brand";
 export function Footer() {
   return (
@@ -12,11 +12,16 @@ export function Footer() {
         >
           <Brand />
         </Link>
-        <p>
-          Individuelle Weblösungen.
-          <br />
-          Vom ersten Auftritt bis zur eigenen Plattform.
-        </p>
+        <address className="footer-address">
+          <strong>
+            {site.name} · {business.owner}
+          </strong>
+          <span>
+            {business.street}, {business.postcode} {business.city}
+          </span>
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+          <a href={`tel:${site.phone.replace(/[^+\d]/g, "")}`}>{site.phone}</a>
+        </address>
         <div>
           <Link href="/wissen">Wissen</Link>
           <Link href="/faq">Fragen & Antworten</Link>
@@ -25,6 +30,8 @@ export function Footer() {
         </div>
         <div>
           <Link href="/unternehmen">Unternehmen</Link>
+          <Link href="/ueber-uns">Über Enrico Gross</Link>
+          <Link href="/region/dortmund">Webdesign in Dortmund</Link>
           <Link href="/white-label">White Label</Link>
         </div>
       </div>

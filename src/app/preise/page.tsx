@@ -1,9 +1,17 @@
-import { Breadcrumbs, PageIntro, SectionHead, Cta } from "@/components/ui";
+import Link from "next/link";
+import {
+  Breadcrumbs,
+  PageIntro,
+  SectionHead,
+  Cta,
+  Faq,
+  JsonLd,
+} from "@/components/ui";
 import { Pricing } from "@/components/pricing";
 import { additionalPrices, packages, priceLabel } from "@/config/pricing";
-import { seo } from "@/lib/seo";
+import { canonicalUrl, organizationId, seo } from "@/lib/seo";
 export const metadata = seo(
-  `Preise – Websites ${priceLabel(packages[0].price)}`,
+  `Website-Kosten & Preise ${priceLabel(packages[0].price)}`,
   `${packages.map((p) => `${p.name} ${priceLabel(p.price)}`).join(", ")}. Onlineshops ${priceLabel(additionalPrices[0][1])}. Betreuung optional.`,
   "/preise",
 );
@@ -13,11 +21,42 @@ export default function Prices() {
       <Breadcrumbs items={[{ name: "Preise", href: "/preise" }]} />
       <PageIntro
         label="Preise und Umfang"
-        title="Ein passender Rahmen für dein Projekt."
-        description="Die Pakete geben Orientierung. Du erhältst ein individuelles Angebot mit klar beschriebenen Leistungen und nachvollziehbaren Kosten."
+        title="Was kostet eine Website?"
+        description={`Eine einfache Landingpage startet ${priceLabel(packages[0].price)}, eine mehrseitige Unternehmenswebsite ${priceLabel(packages[1].price)}, ein Onlineshop ${priceLabel(additionalPrices[0][1])}. Der verbindliche Preis richtet sich nach dem vereinbarten Umfang.`}
       />
       <section className="section">
         <Pricing />
+      </section>
+      <section className="section content-split">
+        <div>
+          <h2>Einmalige und laufende Kosten.</h2>
+          <Link
+            className="text-link"
+            href="/wissen/was-eine-website-kostet"
+            style={{ marginTop: 24 }}
+          >
+            So entsteht ein Website-Angebot ↗
+          </Link>
+        </div>
+        <Faq
+          items={[
+            {
+              question: `Was enthält der Einstiegspreis ${priceLabel(packages[0].price)}?`,
+              answer: `Das Starter-Paket ${priceLabel(packages[0].price)} umfasst eine einfache Landingpage, responsive Umsetzung, eine Kontaktmöglichkeit, Basis-SEO und die einmalige Übergabe. Zusätzliche Seiten, ein CMS oder besondere Funktionen gehören nur bei gesonderter Vereinbarung zum Angebot.`,
+            },
+            {
+              question: "Welche Kosten können nach dem Start anfallen?",
+              answer:
+                "Domain, Hosting und gegebenenfalls Softwarelizenzen verursachen eigene Anbietergebühren. Technische Betreuung ist optional. Das Angebot trennt Umsetzung, vereinbarte Zusatzleistungen und laufende Kosten.",
+            },
+            {
+              question:
+                "Wird auf die genannten Preise Umsatzsteuer aufgeschlagen?",
+              answer:
+                "Nein. Die angegebenen Beträge sind Endpreise; der Nettobetrag entspricht dem Endbetrag. Webstudio Expert berechnet gemäß § 19 UStG keine Umsatzsteuer.",
+            },
+          ]}
+        />
       </section>
       <section className="section content-split solutions">
         <h2>Weitere Lösungen.</h2>
@@ -62,6 +101,36 @@ export default function Prices() {
         />
         <Pricing care />
       </section>
+      <JsonLd
+        value={{
+          "@context": "https://schema.org",
+          "@type": "OfferCatalog",
+          "@id": `${canonicalUrl("/preise")}#angebote`,
+          name: "Webprojekt-Pakete",
+          itemListElement: packages.map((p) => ({
+            "@type": "Offer",
+            name: p.name,
+            url: canonicalUrl("/preise"),
+            seller: { "@id": organizationId },
+            ...(p.price === null
+              ? {}
+              : {
+                  priceSpecification: {
+                    "@type": "PriceSpecification",
+                    minPrice: p.price,
+                    priceCurrency: "EUR",
+                    valueAddedTaxIncluded: true,
+                  },
+                }),
+            itemOffered: {
+              "@type": "Service",
+              name: `${p.name} – ${p.summary}`,
+              description: p.features.join(", "),
+              provider: { "@id": organizationId },
+            },
+          })),
+        }}
+      />
       <Cta />
     </>
   );

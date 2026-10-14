@@ -1,6 +1,7 @@
-import { PageIntro, Breadcrumbs, Cta } from "@/components/ui";
+import { PageIntro, Breadcrumbs, Cta, JsonLd } from "@/components/ui";
+import { projects } from "@/data/projects";
 import { Portfolio } from "@/components/portfolio";
-import { seo } from "@/lib/seo";
+import { collectionSchema, seo } from "@/lib/seo";
 export const metadata = seo(
   "Projekte und Gestaltungskonzepte",
   "Klar gekennzeichnete Demonstrationsprojekte für Websites, Shops, SaaS, Webanwendungen und Automatisierungen.",
@@ -18,6 +19,16 @@ export default function Projects() {
       <section className="section">
         <Portfolio />
       </section>
+      <JsonLd
+        value={collectionSchema(
+          "/projekte",
+          "Demonstrationskonzepte von Webstudio Expert",
+          projects.map((p) => ({
+            name: `${p.name} – Demonstrationskonzept`,
+            path: `/projekte/${p.slug}`,
+          })),
+        )}
+      />
       <Cta />
     </>
   );

@@ -83,6 +83,17 @@ export function Faq({
 }) {
   return (
     <div className="faq-list">
+      <JsonLd
+        value={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: items.map((item) => ({
+            "@type": "Question",
+            name: item.question,
+            acceptedAnswer: { "@type": "Answer", text: item.answer },
+          })),
+        }}
+      />
       {items.map((item) => (
         <details key={item.question}>
           <summary>

@@ -26,6 +26,21 @@ const config: NextConfig = {
         ],
       },
       {
+        // Die endgültige Domain darf indexiert werden, Vercel-Aliase nicht.
+        // Keine Weiterleitung: CRM und Vorschauen bleiben dort erreichbar.
+        source: "/:path*",
+        has: [{ type: "host", value: ".*\\.vercel\\.app" }],
+        headers: [{ key: "X-Robots-Tag", value: "noindex, follow" }],
+      },
+      ...(process.env.VERCEL_ENV === "preview"
+        ? [
+            {
+              source: "/:path*",
+              headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+            },
+          ]
+        : []),
+      {
         source: "/crm/:path*",
         headers: [
           { key: "Cache-Control", value: "private, no-store" },
@@ -33,7 +48,7 @@ const config: NextConfig = {
         ],
       },
       {
-        source: "/api/crm/:path*",
+        source: "/api/:path*",
         headers: [
           { key: "Cache-Control", value: "private, no-store" },
           { key: "X-Robots-Tag", value: "noindex, nofollow" },

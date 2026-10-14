@@ -18,7 +18,7 @@ export async function generateMetadata({
   const p = pages[page];
   if (!p) notFound();
   return {
-    ...seo(p.title.replace(/\.$/, ""), p.description, `/${page}`),
+    ...seo(p.seoTitle || p.title.replace(/\.$/, ""), p.description, `/${page}`),
     ...(p.legal ? { robots: { index: false, follow: true } } : {}),
   };
 }

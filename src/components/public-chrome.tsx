@@ -4,10 +4,12 @@ export function PublicChrome({
   children,
   header,
   footer,
+  structuredData,
 }: {
   children: React.ReactNode;
   header: React.ReactNode;
   footer: React.ReactNode;
+  structuredData: React.ReactNode;
 }) {
   const path = usePathname();
   return path.startsWith("/crm") ? (
@@ -19,6 +21,7 @@ export function PublicChrome({
         {children}
       </main>
       {footer}
+      {structuredData}
     </>
   );
 }

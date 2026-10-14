@@ -1,5 +1,7 @@
 # Webstudio Expert
 
+**SEO/GEO/AEO:** Die aktuelle Umsetzung, Zielseiten und Einrichtung von Domain, Search Console, Bing und IndexNow stehen in [SEO-README.md](SEO-README.md). Die öffentliche SEO-Domain ist von der aktuell genutzten CRM-Adresse getrennt konfiguriert.
+
 **Neu: CRM unter `/crm`.** Einrichtung, Supabase-Migrationen, Telefonie, Postfach, Sicherheit und die aktuellen Grenzen stehen in [CRM-README.md](CRM-README.md). Das neue CRM-Briefing autorisiert Supabase ausdrücklich und ergänzt die unten beschriebene bisherige reine Website-Architektur. Bei aktivierter Supabase-Integration werden Website-Anfragen dauerhaft im CRM gespeichert; Aussagen zum fehlenden Datenspeicher beziehen sich auf den früheren Website-Modus.
 
 Agenturwebsite von **Enrico Gross**, Karinstraße 5, 44388 Dortmund. Produktionsdomain: **webstudio-expert.de**. Kontakt: **kontakt@webstudio-expert.de**, **+49 155 67504871**. Kontaktwege: E-Mail, Anruf, SMS. Kein WhatsApp.
@@ -70,7 +72,7 @@ Recherchierte Ausgangspunkte (14.10.2026): [§ 5 DDG](https://www.gesetze-im-int
 
 Keine Analyse- oder Werbedienste, externe Schriftarten oder eingebetteten Fremdkalender. Manuelle Theme-Wahl im lokalen Browser-Speicher. Exit-Hinweis ohne zusätzlichen Sitzungsspeicher-Eintrag; maximal einmal während des aktuellen SPA-Seitenbesuchs, nach Neuladen wieder möglich. Keine Anzeige auf Formularen oder Fehlerseiten.
 
-Individuelle Metadaten, Canonicals, Social Cards, Breadcrumbs, JSON-LD, Sitemap und robots.txt. Englische Sprache und Regionalrouten vorbereitet; keine Teilübersetzungen oder massenhaften Stadtseiten veröffentlicht. Rechtliche Informationsseiten sind aktuell auf noindex gesetzt. Sicherheitsheader inklusive CSP; Inline-Skripte/-Styles bleiben für Next.js-Hydration und Theme-Wahl erlaubt. Untrusted HTML niemals direkt rendern.
+Individuelle Metadaten, Canonicals, Social Cards, Breadcrumbs, JSON-LD, Sitemap und robots.txt. Ausführliche Standortseite für Dortmund, acht vertiefte Leistungsseiten und fünf Ratgeber. Englische Sprache vorbereitet; keine Teilübersetzungen oder massenhaften Stadtseiten veröffentlicht. Rechtliche Informationsseiten, reine Anfrageformulare und Vercel-Aliase sind auf noindex gesetzt. Sicherheitsheader inklusive CSP; Inline-Skripte/-Styles bleiben für Next.js-Hydration und Theme-Wahl erlaubt. Untrusted HTML niemals direkt rendern.
 
 ## Noch ausstehend
 

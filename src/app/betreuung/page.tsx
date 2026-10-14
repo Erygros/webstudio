@@ -4,7 +4,7 @@ import { Pricing } from "@/components/pricing";
 import { seo } from "@/lib/seo";
 import { carePackages, priceLabel } from "@/config/pricing";
 export const metadata = seo(
-  "Betreuung und Wartungsverträge",
+  `Website-Wartung & Betreuung ${priceLabel(carePackages[0].price)} / Monat`,
   `Optionale Betreuung ${priceLabel(carePackages[0].price)} pro Monat: technische Pflege, klar begrenzte Inhaltsarbeiten und vereinbarter Support. Hosting separat nach Bedarf.`,
   "/betreuung",
 );
@@ -14,7 +14,7 @@ export default function Care() {
       <Breadcrumbs items={[{ name: "Betreuung", href: "/betreuung" }]} />
       <PageIntro
         label="Betrieb und Pflege"
-        title="Nach der Übergabe geht es weiter."
+        title="Website-Wartung und Betreuung."
         description="Eine Website braucht nicht jeden Monat ein neues Projekt. Für wiederkehrende Aufgaben vereinbaren wir einen passenden Betreuungsumfang."
       />
       <section className="section">

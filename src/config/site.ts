@@ -1,8 +1,12 @@
 export const site = {
   name: process.env.NEXT_PUBLIC_BRAND_NAME || "Webstudio Expert",
-  url: (
-    process.env.NEXT_PUBLIC_SITE_URL || "https://webstudio-expert.de"
-  ).replace(/\/$/, ""),
+  // Canonicals bleiben auf der öffentlichen Domain, auch wenn das CRM über
+  // eine Vercel-Adresse erreichbar ist. Laufzeit-/CSRF-Konfiguration separat.
+  url: new URL(process.env.NEXT_PUBLIC_SEO_URL || "https://webstudio-expert.de")
+    .origin,
+  runtimeUrl: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://webstudio-expert.de",
+  ).origin,
   locale: "de-DE",
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "kontakt@webstudio-expert.de",
   phone: process.env.NEXT_PUBLIC_PHONE || "+49 155 67504871",
@@ -24,5 +28,3 @@ export const locales = {
   available: ["de"],
   planned: ["en"],
 } as const;
-export const regionalPages: { slug: string; title: string; content: string }[] =
-  [];

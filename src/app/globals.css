@@ -1002,6 +1002,68 @@ img {
 .article-body a {
   text-decoration: underline;
 }
+.article-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.article-toc {
+  margin: 28px 0;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+}
+.article-toc ol,
+.article-body ul {
+  padding-left: 22px;
+  list-style: disc;
+}
+.article-toc li,
+.article-body li {
+  margin: 10px 0;
+}
+.article-body section[id] {
+  scroll-margin-top: 110px;
+}
+.comparison-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 28px 0;
+}
+.comparison-table {
+  width: 100%;
+  min-width: 540px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.comparison-table caption {
+  text-align: left;
+  font-weight: 600;
+  padding-bottom: 16px;
+}
+.comparison-table th,
+.comparison-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 16px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+.footer-address,
+.business-address {
+  font-style: normal;
+  line-height: 1.8;
+}
+.footer-address {
+  display: grid;
+  gap: 5px;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.business-address {
+  margin-bottom: 24px;
+}
 .inquiry-layout {
   display: grid;
   grid-template-columns: 0.7fr 1.3fr;

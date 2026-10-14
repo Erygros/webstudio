@@ -30,7 +30,7 @@ export async function POST(request: Request) {
   const localOrigin =
     process.env.NODE_ENV === "development" &&
     origin === new URL(request.url).origin;
-  if (!localOrigin && origin !== new URL(site.url).origin)
+  if (!localOrigin && origin !== site.runtimeUrl && origin !== site.url)
     return fail(
       "Die Herkunft der Anfrage konnte nicht bestätigt werden. Bitte die Website neu öffnen.",
       403,

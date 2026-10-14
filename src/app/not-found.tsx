@@ -1,4 +1,8 @@
 import { Button } from "@/components/ui";
+export const metadata = {
+  title: "Seite nicht gefunden",
+  robots: { index: false, follow: true },
+};
 export default function NotFound() {
   return (
     <section className="not-found not-found-page">

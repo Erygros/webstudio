@@ -1,14 +1,16 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { categories, serviceHref } from "@/data/services";
+import { categorySeo } from "@/data/service-guides";
 import {
   PageIntro,
   Cta,
   Breadcrumbs,
   Button,
   SectionHead,
+  JsonLd,
 } from "@/components/ui";
-import { seo } from "@/lib/seo";
+import { collectionSchema, seo } from "@/lib/seo";
 export function generateStaticParams() {
   return categories.map((c) => ({ category: c.slug }));
 }
@@ -21,7 +23,11 @@ export async function generateMetadata({
   const { category } = await params;
   const c = categories.find((c) => c.slug === category);
   if (!c) notFound();
-  return seo(c.name, c.description, `/leistungen/${c.slug}`);
+  return seo(
+    categorySeo[c.slug] || c.name,
+    c.description,
+    `/leistungen/${c.slug}`,
+  );
 }
 export default async function Category({
   params,
@@ -73,6 +79,13 @@ export default async function Category({
           ))}
         </div>
       </section>
+      <JsonLd
+        value={collectionSchema(
+          `/leistungen/${c.slug}`,
+          c.name,
+          c.services.map((s) => ({ name: s.name, path: serviceHref(s) })),
+        )}
+      />
       <Cta />
     </>
   );

@@ -5,6 +5,7 @@ export const metadata = seo(
   "Cookie-Einstellungen und Darstellung",
   "Diese Website verwendet derzeit keine Analyse- oder Werbe-Cookies. Verwalte die lokal gespeicherte Darstellung.",
   "/cookie-einstellungen",
+  { noIndex: true },
 );
 export default function Cookies() {
   return (

@@ -10,6 +10,7 @@ export const metadata = seo(
   "Projekt unverbindlich anfragen",
   "Beschreibe dein Webprojekt in sechs Schritten: Leistung, Funktionen, Budget, Zeitrahmen, Beschreibung und Kontaktdaten.",
   "/projektanfrage",
+  { noIndex: true },
 );
 export default async function Inquiry({
   searchParams,

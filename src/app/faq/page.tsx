@@ -12,7 +12,7 @@ export default function FaqPage() {
       <Breadcrumbs items={[{ name: "FAQ", href: "/faq" }]} />
       <PageIntro
         label="Fragen und Antworten"
-        title="Vor dem ersten Schritt."
+        title="Fragen zu deinem Webprojekt."
         description="Die wichtigsten Rahmenbedingungen im Überblick. Einzelheiten werden im konkreten Angebot festgehalten."
       />
       <section className="section content-split">

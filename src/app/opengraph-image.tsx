@@ -26,11 +26,11 @@ export default function OgImage() {
           letterSpacing: "-3px",
         }}
       >
-        <span>Digitale Lösungen.</span>
-        <span style={{ color: "#777" }}>Individuell entwickelt.</span>
+        <span>Webdesign & Entwicklung.</span>
+        <span style={{ color: "#777" }}>Aus Dortmund.</span>
       </div>
       <div style={{ display: "flex", fontSize: 20 }}>
-        Websites / Onlineshops / Software
+        Websites / Onlineshops / Software · webstudio-expert.de
       </div>
     </div>,
     size,

@@ -1,12 +1,12 @@
-import { site } from "@/config/site";
-import { PageIntro, Breadcrumbs, Button } from "@/components/ui";
+import { business, site } from "@/config/site";
+import { PageIntro, Breadcrumbs, Button, JsonLd } from "@/components/ui";
 import { InquiryForm } from "@/components/inquiry-form";
 import { formReady } from "@/server/form-security";
-import { seo } from "@/lib/seo";
+import { canonicalUrl, organizationId, seo, websiteId } from "@/lib/seo";
 export const dynamic = "force-dynamic";
 export const metadata = seo(
-  "Kontakt und Rückruf",
-  "Kontakt aufnehmen, ein Webprojekt anfragen oder einen Rückruf vereinbaren. Direkte Kontaktwege werden zentral konfiguriert.",
+  `Kontakt – ${business.owner} in ${business.city}`,
+  `${site.name} in ${business.city} erreichen: ${site.email}, ${site.phone}. Webprojekt besprechen, Rückruf oder Termin anfragen.`,
   "/kontakt",
 );
 export default async function Contact({
@@ -99,6 +99,24 @@ export default async function Contact({
           </div>
         </div>
       </section>
+      <section className="section content-split">
+        <h2>Webstudio Expert in Dortmund.</h2>
+        <div className="prose">
+          <address className="business-address">
+            {site.name} · {business.owner}
+            <br />
+            {business.street}
+            <br />
+            {business.postcode} {business.city}
+            <br />
+            {business.country}
+          </address>
+          <p>
+            Die Projektabstimmung erfolgt nach Vereinbarung per Telefon und
+            E-Mail. Bitte stimme Gesprächstermine vorab ab.
+          </p>
+        </div>
+      </section>
       <section className="section content-split solutions" id="nachricht">
         <div>
           <h2>
@@ -116,6 +134,18 @@ export default async function Contact({
           mode={q.rueckruf === "ja" ? "callback" : "contact"}
         />
       </section>
+      <JsonLd
+        value={{
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          "@id": `${canonicalUrl("/kontakt")}#page`,
+          url: canonicalUrl("/kontakt"),
+          name: "Kontakt zu Webstudio Expert in Dortmund",
+          inLanguage: "de-DE",
+          about: { "@id": organizationId },
+          isPartOf: { "@id": websiteId },
+        }}
+      />
     </>
   );
 }

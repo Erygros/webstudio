@@ -7,7 +7,7 @@ import {
   serviceFaqs,
 } from "@/data/services";
 import { priceLabel, priceNote } from "@/config/pricing";
-import { site } from "@/config/site";
+import { serviceGuides } from "@/data/service-guides";
 import {
   Breadcrumbs,
   PageIntro,
@@ -16,7 +16,7 @@ import {
   Faq,
   JsonLd,
 } from "@/components/ui";
-import { seo } from "@/lib/seo";
+import { canonicalUrl, organizationId, seo } from "@/lib/seo";
 export const dynamicParams = false;
 export function generateStaticParams() {
   return services.map((s) => ({ category: s.category, service: s.slug }));
@@ -34,7 +34,11 @@ export async function generateMetadata({
   params: Promise<{ category: string; service: string }>;
 }) {
   const { s } = await resolve(params);
-  return seo(`${s.name} individuell umsetzen`, s.intro, serviceHref(s));
+  return seo(
+    serviceGuides[s.slug]?.title || `${s.name} individuell umsetzen`,
+    s.intro,
+    serviceHref(s),
+  );
 }
 export default async function Service({
   params,
@@ -43,6 +47,7 @@ export default async function Service({
 }) {
   const { c, s } = await resolve(params);
   const faq = serviceFaqs(s);
+  const guide = serviceGuides[s.slug];
   return (
     <>
       <Breadcrumbs
@@ -54,7 +59,7 @@ export default async function Service({
       />
       <PageIntro
         label={c.name}
-        title={`${s.name}. Passend zu deinem Vorhaben.`}
+        title={guide?.title || `${s.name}. Passend zu deinem Vorhaben.`}
         description={s.intro}
       >
         <Button href={`/projektanfrage?leistung=${s.slug}`}>
@@ -63,6 +68,36 @@ export default async function Service({
             : "Projekt anfragen"}
         </Button>
       </PageIntro>
+      {guide && (
+        <section className="section content-split solutions">
+          <div>
+            <span className="eyebrow">Entscheidungshilfe</span>
+            <h2>{guide.title}.</h2>
+          </div>
+          <div className="prose">
+            <p>{guide.answer}</p>
+            {guide.decisions.map((decision) => (
+              <div key={decision.title}>
+                <h3>{decision.title}</h3>
+                <p>{decision.text}</p>
+              </div>
+            ))}
+            <h3>Das hilft bei der Vorbereitung</h3>
+            <ul>
+              {guide.preparation.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+            <div className="buttons" style={{ marginTop: 24 }}>
+              {guide.links.map((link) => (
+                <Link className="text-link" key={link.href} href={link.href}>
+                  {link.title} ↗
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
       <section className="section content-split">
         <div>
           <span className="eyebrow">Leistungsumfang</span>
@@ -163,11 +198,37 @@ export default async function Service({
         value={{
           "@context": "https://schema.org",
           "@type": "Service",
+          "@id": `${canonicalUrl(serviceHref(s))}#service`,
           name: s.name,
           description: s.intro,
-          url: `${site.url}${serviceHref(s)}`,
+          url: canonicalUrl(serviceHref(s)),
+          provider: { "@id": organizationId },
           serviceType: c.name,
           areaServed: ["DE", "AT", "CH"],
+          ...(s.price === null
+            ? {}
+            : {
+                offers: {
+                  "@type": "Offer",
+                  url: canonicalUrl(serviceHref(s)),
+                  seller: { "@id": organizationId },
+                  priceSpecification: {
+                    "@type": "PriceSpecification",
+                    minPrice: s.price,
+                    priceCurrency: "EUR",
+                    valueAddedTaxIncluded: true,
+                    ...(s.name === "Monatliche Betreuungspakete"
+                      ? {
+                          description:
+                            "Monatlicher Einstiegspreis im beschriebenen Basisumfang",
+                        }
+                      : {
+                          description:
+                            "Einstiegspreis im beschriebenen Basisumfang",
+                        }),
+                  },
+                },
+              }),
         }}
       />
     </>

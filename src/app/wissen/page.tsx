@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { articles } from "@/data/articles";
-import { PageIntro, Breadcrumbs, Cta } from "@/components/ui";
-import { seo } from "@/lib/seo";
+import { PageIntro, Breadcrumbs, Cta, JsonLd } from "@/components/ui";
+import { collectionSchema, seo } from "@/lib/seo";
 export const metadata = seo(
   "Wissen für dein Webprojekt",
-  "Kurze Grundlagen zu Websites, Webanwendungen, Kosten und Übergabe. Verständliche Informationen zur Planung deines nächsten Projekts.",
+  "Ratgeber zu Website-Kosten, Briefing, CMS, Webanwendungen und Übergabe. Vergleiche und Checklisten zur Vorbereitung deines Webprojekts.",
   "/wissen",
 );
 export default function Knowledge() {
@@ -14,7 +14,7 @@ export default function Knowledge() {
       <PageIntro
         label="Wissensbereich"
         title="Besser vorbereitet starten."
-        description="Kurze Einordnungen zu Entscheidungen, die bei Webprojekten häufig anstehen."
+        description="Antworten, Vergleiche und Checklisten für dein Webprojekt. Veröffentlicht von Webstudio Expert; den Inhaltsstand findest du im jeweiligen Ratgeber."
       />
       <section className="section article-grid">
         {articles.map((a) => (
@@ -28,6 +28,13 @@ export default function Knowledge() {
           </article>
         ))}
       </section>
+      <JsonLd
+        value={collectionSchema(
+          "/wissen",
+          "Ratgeber für dein Webprojekt",
+          articles.map((a) => ({ name: a.title, path: `/wissen/${a.slug}` })),
+        )}
+      />
       <Cta />
     </>
   );

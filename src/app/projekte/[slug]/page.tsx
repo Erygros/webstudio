@@ -8,9 +8,10 @@ import {
   Button,
   Cta,
   SectionHead,
+  JsonLd,
 } from "@/components/ui";
 import { ProjectCard } from "@/components/project-card";
-import { seo } from "@/lib/seo";
+import { canonicalUrl, organizationId, seo } from "@/lib/seo";
 export const dynamicParams = false;
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -27,6 +28,14 @@ export async function generateMetadata({
     `${p.name} – Demonstrationsprojekt`,
     p.description,
     `/projekte/${slug}`,
+    {
+      image: {
+        path: p.image,
+        width: p.imageWidth,
+        height: p.imageHeight,
+        alt: `Demonstrationskonzept ${p.name}`,
+      },
+    },
   );
 }
 export default async function Project({
@@ -101,6 +110,20 @@ export default async function Project({
           Zur Projektübersicht ↗
         </Link>
       </section>
+      <JsonLd
+        value={{
+          "@context": "https://schema.org",
+          "@type": "CreativeWork",
+          "@id": `${canonicalUrl(`/projekte/${slug}`)}#konzept`,
+          name: p.name,
+          description: `${p.description} Eigenständiges Demonstrationskonzept, keine Kundenreferenz.`,
+          genre: "Demonstrationskonzept",
+          url: canonicalUrl(`/projekte/${slug}`),
+          image: canonicalUrl(p.image),
+          creator: { "@id": organizationId },
+          inLanguage: "de-DE",
+        }}
+      />
       <Cta />
     </>
   );

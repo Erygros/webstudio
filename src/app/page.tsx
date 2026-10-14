@@ -2,34 +2,38 @@ import Image from "next/image";
 import Link from "next/link";
 import { categories } from "@/data/services";
 import { projects } from "@/data/projects";
-import { site } from "@/config/site";
+import { business, site } from "@/config/site";
 import { priceLabel, packages } from "@/config/pricing";
-import { Button, Cta, SectionHead } from "@/components/ui";
+import { Button, Cta, Faq, SectionHead } from "@/components/ui";
+import { articles } from "@/data/articles";
 import { Pricing } from "@/components/pricing";
 import { Process } from "@/components/process";
 import { ProjectCard } from "@/components/project-card";
 import { Reveal } from "@/components/reveal";
 import { seo } from "@/lib/seo";
 export const metadata = seo(
-  "Individuelle Websites, Shops und Software",
-  `Individuelle Weblösungen für dein Vorhaben: Websites ${priceLabel(packages[0].price)}, Onlineshops und Software. Klarer Umfang, transparente Angebote und optionale Betreuung.`,
+  "Webdesign & Webentwicklung Dortmund",
+  `Webdesign aus Dortmund von Enrico Gross: Landingpages ${priceLabel(packages[0].price)}, Unternehmenswebsites, Onlineshops und individuelle Software. Persönlich anfragen.`,
   "/",
 );
 export default function Home() {
   return (
     <>
       <section className="hero">
-        <span className="eyebrow">{site.name} / Individuelle Weblösungen</span>
+        <span className="eyebrow">
+          {site.name} / Webdesign und Webentwicklung
+        </span>
         <div className="hero-top">
           <h1>
-            Digitale Lösungen.
+            Webdesign.
             <br />
-            <span>Individuell entwickelt.</span>
+            <span>Aus Dortmund.</span>
           </h1>
           <div className="hero-copy">
             <p>
-              Websites, Onlineshops und Softwarelösungen – entwickelt für deine
-              Anforderungen.
+              Enrico Gross entwickelt Websites, Onlineshops und individuelle
+              Software für Selbstständige, Unternehmen und Vereine. Aus
+              Dortmund, für den deutschsprachigen Raum.
             </p>
             <div className="buttons">
               <Button href="/projektanfrage">Projekt anfragen</Button>
@@ -73,6 +77,36 @@ export default function Home() {
           <span>Von der ersten Website bis zur eigenen Plattform.</span>
           <strong>Websites {priceLabel(packages[0].price)}</strong>
           <span>Für Deutschland, Österreich und die Schweiz.</span>
+        </div>
+      </section>
+      <section className="section content-split solutions">
+        <div>
+          <span className="eyebrow">Dein Ansprechpartner</span>
+          <h2>Was entwickelt Webstudio Expert?</h2>
+        </div>
+        <div className="prose">
+          <p>
+            {site.name} ist das Einzelunternehmen von {business.owner} in{" "}
+            {business.city}. Du kannst eine einfache Landingpage, eine
+            mehrseitige Firmenwebsite, einen Shop oder eine eigene Webanwendung
+            beauftragen. Gestaltung, Funktionen und Übergabe werden vor dem
+            Start im Angebot beschrieben.
+          </p>
+          <p>
+            Der Starter-Einstieg für eine einfache Landingpage beginnt bei{" "}
+            {priceLabel(packages[0].price).replace("ab ", "")}, die
+            Unternehmenswebsite im Business-Paket bei{" "}
+            {priceLabel(packages[1].price).replace("ab ", "")}. Hosting,
+            Lizenzen und Betreuung werden bei Bedarf separat vereinbart.
+          </p>
+          <div className="buttons" style={{ marginTop: 24 }}>
+            <Link className="text-link" href="/region/dortmund">
+              Website in Dortmund erstellen lassen ↗
+            </Link>
+            <Link className="text-link" href="/ueber-uns">
+              Enrico Gross und die Arbeitsweise ↗
+            </Link>
+          </div>
         </div>
       </section>
       <section className="section">
@@ -189,6 +223,50 @@ export default function Home() {
           <Button secondary href="/betreuung">
             Betreuung entdecken
           </Button>
+        </div>
+      </section>
+      <section className="section content-split">
+        <div>
+          <span className="eyebrow">Vor der Anfrage</span>
+          <h2>Webdesign: die wichtigsten Fragen.</h2>
+          <Link className="text-link" href="/faq" style={{ marginTop: 24 }}>
+            Alle Fragen zur Zusammenarbeit ↗
+          </Link>
+        </div>
+        <Faq
+          items={[
+            {
+              question: "Was kostet eine Website bei Webstudio Expert?",
+              answer: `Eine einfache Landingpage startet ${priceLabel(packages[0].price)}, eine mehrseitige Unternehmenswebsite im Business-Paket ${priceLabel(packages[1].price)}. Das individuelle Angebot berücksichtigt Inhalte, Gestaltung und Funktionen. Hosting und Betreuung sind optional; es wird keine Umsatzsteuer berechnet.`,
+            },
+            {
+              question: "Ist die Zusammenarbeit nur in Dortmund möglich?",
+              answer:
+                "Der Unternehmenssitz ist Dortmund. Die Abstimmung kann per Telefon und E-Mail erfolgen, sodass Projekte in Deutschland, Österreich und der Schweiz möglich sind. Du erreichst Enrico Gross direkt, ohne eine eigene Anreise vorauszusetzen.",
+            },
+            {
+              question: "Kann ich Inhalte nach der Übergabe selbst ändern?",
+              answer:
+                "Wenn regelmäßige Änderungen geplant sind, vereinbaren wir ein passendes CMS und eine Einweisung. Bei einer Website ohne CMS erfolgen Änderungen am Code. Welche Zugänge und Nutzungsrechte übergeben werden, steht im Angebot.",
+            },
+          ]}
+        />
+      </section>
+      <section className="section">
+        <SectionHead
+          label="Entscheidungshilfe"
+          title="Dein Webprojekt vorbereiten."
+        />
+        <div className="article-grid">
+          {articles.slice(0, 3).map((a) => (
+            <article className="article-card" key={a.slug}>
+              <h3>{a.title}</h3>
+              <p>{a.intro}</p>
+              <Link className="text-link" href={`/wissen/${a.slug}`}>
+                Ratgeber lesen ↗
+              </Link>
+            </article>
+          ))}
         </div>
       </section>
       <Cta />

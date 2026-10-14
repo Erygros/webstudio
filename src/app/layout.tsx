@@ -5,20 +5,41 @@ import { Footer } from "@/components/footer";
 import { ExitBanner } from "@/components/exit-banner";
 import { PublicChrome } from "@/components/public-chrome";
 import { JsonLd } from "@/components/ui";
+import { businessSchema } from "@/lib/business-schema";
+import { publicIndexing } from "@/lib/seo";
 import { categories } from "@/data/services";
 import { packages, priceLabel } from "@/config/pricing";
 import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} – Individuelle Weblösungen`,
+    default: `${site.name} – Webdesign & Webentwicklung Dortmund`,
     template: `%s · ${site.name}`,
   },
-  description: `Websites, Onlineshops und individuelle Software. Professionelle Weblösungen ${priceLabel(packages[0].price)} für Projekte jeder Größe.`,
-  robots:
-    process.env.NEXT_PUBLIC_SITE_URL && !site.url.includes("localhost")
-      ? { index: true, follow: true }
-      : { index: false, follow: false },
+  description: `Webdesign und Webentwicklung aus Dortmund: Websites ${priceLabel(packages[0].price)}, Onlineshops und individuelle Software von Enrico Gross.`,
+  applicationName: site.name,
+  category: "Webdesign und Webentwicklung",
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
+    other: process.env.BING_SITE_VERIFICATION
+      ? { "msvalidate.01": process.env.BING_SITE_VERIFICATION }
+      : {},
+  },
+  robots: {
+    index: publicIndexing,
+    follow: publicIndexing,
+    ...(publicIndexing
+      ? {
+          googleBot: {
+            index: true,
+            follow: true,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+            "max-video-preview": -1,
+          },
+        }
+      : {}),
+  },
 };
 const themeScript =
   "try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}";
@@ -35,6 +56,7 @@ export default function RootLayout({
           Zum Inhalt
         </a>
         <PublicChrome
+          structuredData={<JsonLd value={businessSchema} />}
           header={
             <Navigation
               categories={categories.map((c) => ({
@@ -53,15 +75,6 @@ export default function RootLayout({
         >
           {children}
         </PublicChrome>
-        <JsonLd
-          value={{
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            name: site.name,
-            url: site.url,
-            inLanguage: "de-DE",
-          }}
-        />
       </body>
     </html>
   );

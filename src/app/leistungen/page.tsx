@@ -1,10 +1,16 @@
 import Link from "next/link";
-import { categories, serviceHref } from "@/data/services";
-import { PageIntro, SectionHead, Cta, Breadcrumbs } from "@/components/ui";
-import { seo } from "@/lib/seo";
+import { categories, services, serviceHref } from "@/data/services";
+import {
+  PageIntro,
+  SectionHead,
+  Cta,
+  Breadcrumbs,
+  JsonLd,
+} from "@/components/ui";
+import { collectionSchema, seo } from "@/lib/seo";
 export const metadata = seo(
-  "Alle Webdienstleistungen",
-  "98 Leistungen in sechs Bereichen: Websites, E-Commerce, individuelle Software, KI, Optimierung und technische Betreuung.",
+  "Webdesign, Onlineshops & Software: Leistungen",
+  `${services.length} Leistungen in ${categories.length} Bereichen: Websites, E-Commerce, individuelle Software, KI, Optimierung und technische Betreuung.`,
   "/leistungen",
 );
 export default function Services() {
@@ -43,6 +49,16 @@ export default function Services() {
           </div>
         </section>
       ))}
+      <JsonLd
+        value={collectionSchema(
+          "/leistungen",
+          "Leistungen von Webstudio Expert",
+          categories.map((c) => ({
+            name: c.name,
+            path: `/leistungen/${c.slug}`,
+          })),
+        )}
+      />
       <Cta />
     </>
   );

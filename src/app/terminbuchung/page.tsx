@@ -7,6 +7,7 @@ export const metadata = seo(
   "Gespräch und Termin anfragen",
   "Wähle Datum und Uhrzeit für ein Gespräch mit Enrico Gross. Eigene Termin-Anfrage ohne externen Kalender; persönliche Bestätigung erforderlich.",
   "/terminbuchung",
+  { noIndex: true },
 );
 export default function Booking() {
   const format = new Intl.DateTimeFormat("sv-SE", {

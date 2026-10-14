@@ -8,12 +8,14 @@ export type ContentPage = {
   title: string;
   label: string;
   description: string;
+  seoTitle?: string;
   sections: ContentSection[];
   legal?: boolean;
   cta?: boolean;
 };
 export const contentPages: Record<string, ContentPage> = {
   unternehmen: {
+    seoTitle: "Webstudio Expert – Webentwicklung von Enrico Gross",
     title: "Ein Studio für unterschiedliche Vorhaben.",
     label: "Unternehmen",
     description:
@@ -46,6 +48,7 @@ export const contentPages: Record<string, ContentPage> = {
     ],
   },
   "ueber-uns": {
+    seoTitle: "Enrico Gross – Webstudio Expert in Dortmund",
     title: "Klar in der Gestaltung. Genau in der Umsetzung.",
     label: "Über uns",
     description:
@@ -71,6 +74,7 @@ export const contentPages: Record<string, ContentPage> = {
     ],
   },
   technologien: {
+    seoTitle: "Technologien für Websites, Shops & Webanwendungen",
     title: "Technik folgt dem Projekt.",
     label: "Technologien",
     description:
@@ -101,6 +105,7 @@ export const contentPages: Record<string, ContentPage> = {
     ],
   },
   entwicklungsprozess: {
+    seoTitle: "Website erstellen lassen: Ablauf & Übergabe",
     title: "Vom Vorhaben zur Übergabe.",
     label: "Entwicklungsprozess",
     description:
@@ -131,6 +136,7 @@ export const contentPages: Record<string, ContentPage> = {
     ],
   },
   "white-label": {
+    seoTitle: "White-Label-Webentwicklung für Agenturen",
     title: "Entwicklung im Hintergrund.",
     label: "White-Label-Zusammenarbeit",
     description:
