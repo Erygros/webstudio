@@ -17,6 +17,10 @@ Die öffentlichen Formulare sind auf direkten CRM-Empfang umgestellt. Kontakt-, 
 
 Einzelne lesende HTTP-Abrufe, keine Formularabgaben: `https://webstudio-expert.de/` war erreichbar und leitete auf `https://www.webstudio-expert.de/` weiter; dort HTTP 200. `/kontakt` lieferte ebenfalls HTTP 200, enthielt aber noch den bisherigen Einrichtungshinweis. `/api/form-token` meldete `enabled: false`. Der bisherige Canonical zeigte auf die weiterleitende Variante ohne `www`. Diese Beobachtung beschreibt das vorherige Deployment, nicht automatisch den Stand nach dem Push.
 
+## Bestätigter Live-Stand nach Veröffentlichung
+
+Nach dem Push von `66b7c20` wurde die neue Version öffentlich ausgeliefert. Erneute einzelne lesende Abrufe am 15.10.2026 ergaben: `/kontakt` HTTP 200, Canonical `https://www.webstudio-expert.de/kontakt`, kein alter Einrichtungshinweis und kein Hinweis auf ein momentan unerreichbares Formular. `/api/form-token` lieferte HTTP 200 und `enabled: true`. Damit ist die öffentliche Formularfreischaltung live bestätigt. Es wurde keine Formularabgabe vorgenommen; der tatsächliche Datenbankeintrag bleibt für die abschließende Abnahme zu kontrollieren. TypeScript und Produktionsbuild waren erfolgreich.
+
 ## Produktionsfreigabe
 
 1. Das neue GitHub-Deployment in Vercel erfolgreich veröffentlichen.
