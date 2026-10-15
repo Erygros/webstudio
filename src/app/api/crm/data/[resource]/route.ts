@@ -26,6 +26,12 @@ export async function GET(
       .order(order, { ascending: url.searchParams.get("asc") === "true" })
       .range(offset, offset + 49);
     if (key === "kunden") query = query.eq("is_customer", true);
+    if (key === "dokumente" && url.searchParams.has("inquiry")) {
+      const inquiry = url.searchParams.get("inquiry") || "";
+      if (!/^[a-f0-9]{64}$/.test(inquiry))
+        throw new Error("Ungültige Anfragezuordnung.");
+      query = query.like("path", `website/${inquiry}/%`);
+    }
     if (
       key === "emails" &&
       ["inbox", "sent", "draft", "archive", "unknown"].includes(

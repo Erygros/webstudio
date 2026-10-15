@@ -4,6 +4,7 @@ import { session } from "@/crm/server/db";
 import { Detail } from "@/crm/components/detail";
 import type { Row } from "@/crm/resources";
 import { uuid } from "@/crm/server/validation";
+import { WebsiteInquiryDetails } from "@/crm/components/website-inquiries";
 export default async function Page({
   params,
 }: {
@@ -19,5 +20,9 @@ export default async function Page({
     .eq("id", id)
     .maybeSingle();
   if (error || !data) notFound();
-  return <Detail resource={key} initial={data as Row} />;
+  return key === "anfragen" ? (
+    <WebsiteInquiryDetails row={data as Row} />
+  ) : (
+    <Detail resource={key} initial={data as Row} />
+  );
 }

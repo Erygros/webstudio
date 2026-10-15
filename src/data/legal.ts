@@ -54,7 +54,7 @@ export const legalPages: Record<string, ContentPage> = {
     label: "Datenschutz",
     legal: true,
     description:
-      "Informationen über personenbezogene Daten beim Besuch dieser Website, bei Kontaktaufnahme und bei Termin- oder Projektanfragen. Stand: 14. Oktober 2026.",
+      "Informationen über personenbezogene Daten beim Besuch dieser Website, bei Kontaktaufnahme und bei Termin- oder Projektanfragen. Stand: 15. Oktober 2026.",
     sections: [
       {
         title: "1. Verantwortlicher",
@@ -102,11 +102,11 @@ export const legalPages: Record<string, ContentPage> = {
       },
       {
         title: "5. Projekt-, Kontakt- und Terminformulare",
-        text: crmServiceConfigured()
-          ? "Bei aktiviertem CRM werden Kontakt-, Projekt- und Terminangaben dauerhaft in unserer zugriffsgeschützten Supabase-Datenbank gespeichert. Anhänge werden privat zugeordnet, eine Kontaktaufgabe und interne Benachrichtigung erstellt. Verantwortlich ist Enrico Gross. Rechtsgrundlagen sind Art. 6 Abs. 1 Buchst. b DSGVO für vorvertragliche Anfragen und Art. 6 Abs. 1 Buchst. f DSGVO für sonstige Kommunikation. E-Mail-Bestätigungen werden nur bei tatsächlich eingerichtetem SMTP-Versand versendet. Terminwünsche bleiben bis zur persönlichen Bestätigung unverbindlich."
-          : mailReady()
-            ? `Die Formulare übertragen Namen, E-Mail-Adresse, freiwillige Telefon- und Unternehmensangaben, Projektinformationen beziehungsweise den gewünschten Termin an die interne Empfängeradresse. Der Versand erfolgt über ${mailProvider || "den konfigurierten E-Mail-Server"}${process.env.MAIL_PROVIDER_ADDRESS ? ` (${process.env.MAIL_PROVIDER_ADDRESS})` : ""}. Eine gesonderte Bestätigung geht an die angegebene E-Mail-Adresse. Terminwünsche werden persönlich geprüft; die Auswahl bedeutet noch keine verbindliche Reservierung. Rechtsgrundlagen sind Art. 6 Abs. 1 Buchst. b DSGVO für vorvertragliche Anfragen und Art. 6 Abs. 1 Buchst. f DSGVO für sonstige Kommunikation. Die Kenntnisnahme des Datenschutzhinweises ist keine Einwilligung in Werbung.`
-            : "Der automatische Formularversand ist derzeit deaktiviert, weil der E-Mail-Server noch nicht eingerichtet ist. Es werden keine ausgefüllten Formularinhalte als vermeintlich erfolgreiche Anfrage gespeichert oder versendet. Du kannst uns über die angegebenen direkten Kontaktwege erreichen. Nach Aktivierung werden Kontaktdaten, Projektangaben und Terminwünsche verschlüsselt an den konfigurierten Mailserver übertragen. Der tatsächliche E-Mail-Dienstleister wird vor Aktivierung in dieser Erklärung benannt. Eine Auswahl im Terminkalender ist kein bestätigter Termin.",
+        text:
+          "Wenn du ein Formular absendest, werden Name, E-Mail-Adresse, freiwillige Telefon- und Unternehmensangaben sowie die Nachricht und gegebenenfalls Projektangaben oder Terminwünsche an unseren Server übertragen und im zugriffsgeschützten CRM gespeichert. Dort werden die Anfrage einem Kontakt zugeordnet sowie eine Bearbeitungsaufgabe und eine interne Benachrichtigung angelegt. Anhänge werden in einem privaten Dateispeicher gespeichert. Eine Erfolgsmeldung erscheint erst, wenn die Anfrage gespeichert wurde. Rechtsgrundlagen sind Art. 6 Abs. 1 Buchst. b DSGVO für vorvertragliche Anfragen und Art. 6 Abs. 1 Buchst. f DSGVO für sonstige Kommunikation. Die Bestätigung des Datenschutzhinweises ist keine Werbeeinwilligung. Eine automatische E-Mail ist keine Voraussetzung für die Bearbeitung. Terminwünsche bleiben bis zur persönlichen Bestätigung unverbindlich." +
+          (mailReady()
+            ? ` Zusätzlich können Benachrichtigungen und Empfangsbestätigungen über ${mailProvider} (${process.env.MAIL_PROVIDER_ADDRESS}) versendet werden.`
+            : ""),
       },
       {
         title: "6. Freiwillige Dateianhänge",
@@ -150,7 +150,7 @@ export const legalPages: Record<string, ContentPage> = {
       },
       {
         title: "13. Sicherheit und Änderungen",
-        text: "Die öffentliche Website ist für verschlüsselte HTTPS-Verbindungen eingerichtet. Formularinhalte werden nicht als HTML ausgeführt; SMTP-Versand setzt eine verschlüsselte Verbindung voraus. Absolute Sicherheit kann dennoch nicht zugesichert werden. Ändern sich Funktionen, Dienstleister oder Verarbeitungszwecke, wird diese Erklärung entsprechend angepasst. Stand dieser Fassung: 14. Oktober 2026.",
+        text: "Die öffentliche Website ist für verschlüsselte HTTPS-Verbindungen eingerichtet. Formularinhalte werden nicht als HTML ausgeführt; SMTP-Versand setzt eine verschlüsselte Verbindung voraus. Absolute Sicherheit kann dennoch nicht zugesichert werden. Ändern sich Funktionen, Dienstleister oder Verarbeitungszwecke, wird diese Erklärung entsprechend angepasst. Stand dieser Fassung: 15. Oktober 2026.",
       },
     ],
   },

@@ -95,7 +95,7 @@ export const contentPages: Record<string, ContentPage> = {
       },
       {
         title: "Hosting und Integrationen",
-        text: "Vercel ist für diese Website vorbereitet. Andere Projekte können eine andere Umgebung benötigen. Anbieter, Datenstandorte, Verträge und laufende Kosten werden vor Nutzung abgestimmt.",
+        text: "Diese Website wird auf Vercel betrieben. Andere Projekte können eine andere Umgebung benötigen. Anbieter, Datenstandorte, Verträge und laufende Kosten werden vor Nutzung abgestimmt.",
       },
       {
         title: "Pflege statt unnötiger Komplexität",

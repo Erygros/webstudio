@@ -3,8 +3,10 @@ import { readFileSync } from "node:fs";
 // Manuell nach Deployment ausführen. Kein Cron, kein Secret und kein Tracking.
 // Die öffentlich erreichbare Schlüsseldatei weist die Domain-Berechtigung nach.
 const site = new URL(
-  process.env.NEXT_PUBLIC_SEO_URL || "https://webstudio-expert.de",
+  process.env.NEXT_PUBLIC_SEO_URL || "https://www.webstudio-expert.de",
 );
+if (site.hostname === "webstudio-expert.de")
+  site.hostname = "www.webstudio-expert.de";
 const key = readFileSync(
   new URL("../public/indexnow-key.txt", import.meta.url),
   "utf8",

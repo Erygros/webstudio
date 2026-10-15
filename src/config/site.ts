@@ -1,9 +1,18 @@
+function publicOrigin() {
+  const url = new URL(
+    process.env.NEXT_PUBLIC_SEO_URL || "https://www.webstudio-expert.de",
+  );
+  // Die Produktionsdomain leitet den Apex auf www um. Auch ältere ENV-Werte
+  // müssen deshalb auf die tatsächlich ausgelieferte kanonische Adresse zeigen.
+  if (url.hostname === "webstudio-expert.de")
+    url.hostname = "www.webstudio-expert.de";
+  return url.origin;
+}
 export const site = {
   name: process.env.NEXT_PUBLIC_BRAND_NAME || "Webstudio Expert",
   // Canonicals bleiben auf der öffentlichen Domain, auch wenn das CRM über
   // eine Vercel-Adresse erreichbar ist. Laufzeit-/CSRF-Konfiguration separat.
-  url: new URL(process.env.NEXT_PUBLIC_SEO_URL || "https://webstudio-expert.de")
-    .origin,
+  url: publicOrigin(),
   runtimeUrl: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "https://webstudio-expert.de",
   ).origin,

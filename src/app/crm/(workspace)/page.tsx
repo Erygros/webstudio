@@ -75,7 +75,7 @@ export default async function Dashboard() {
             m.inquiries.map((e) => (
               <Link
                 className="crm-list-row"
-                href={`/crm/leads/${e.company_id}`}
+                href={`/crm/anfragen/${e.id}`}
                 key={e.id}
               >
                 <span>{e.data?.name || "Anfrage"}</span>

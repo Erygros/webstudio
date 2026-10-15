@@ -1,5 +1,16 @@
 import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 import { crmServiceConfigured, serviceDb } from "@/crm/server/db";
+function signingKey() {
+  if (process.env.FORM_SECRET && process.env.FORM_SECRET.length >= 32)
+    return process.env.FORM_SECRET;
+  // Stabil über Vercel-Instanzen hinweg; niemals an den Browser ausgeben.
+  // Zweckgebundene Ableitung erlaubt den CRM-Empfang ohne zusätzliche Variable.
+  if (crmServiceConfigured())
+    return createHmac("sha256", process.env.SUPABASE_SERVICE_ROLE_KEY!)
+      .update("webstudio:website-forms:v1")
+      .digest("hex");
+  return null;
+}
 export function mailReady() {
   return !!(
     process.env.SMTP_HOST &&
@@ -9,25 +20,17 @@ export function mailReady() {
     process.env.INQUIRY_TO &&
     process.env.MAIL_PROVIDER_NAME &&
     process.env.MAIL_PROVIDER_ADDRESS &&
-    process.env.FORM_SECRET &&
-    process.env.FORM_SECRET.length >= 32 &&
     [465, 587].includes(Number(process.env.SMTP_PORT || "587"))
   );
 }
 export function formReady() {
-  return (
-    mailReady() ||
-    !!(
-      crmServiceConfigured() &&
-      process.env.FORM_SECRET &&
-      process.env.FORM_SECRET.length >= 32
-    )
-  );
+  return crmServiceConfigured() && !!signingKey();
 }
-const hmac = (value: string) =>
-  createHmac("sha256", process.env.FORM_SECRET || "")
-    .update(value)
-    .digest("hex");
+const hmac = (value: string) => {
+  const key = signingKey();
+  if (!key) throw new Error("Formularsignierung nicht verfügbar.");
+  return createHmac("sha256", key).update(value).digest("hex");
+};
 export function makeToken() {
   const payload = `${Date.now()}.${randomBytes(16).toString("hex")}`;
   return `${payload}.${hmac(payload)}`;

@@ -29,10 +29,12 @@ export function AppointmentForm({
     try {
       const response = await fetch("/api/form-token", { cache: "no-store" });
       const result = await response.json();
+      if (!response.ok || !result.token)
+        throw new Error("Formular derzeit nicht erreichbar");
       setToken(result.token || "");
     } catch {
       setError(
-        "Das Formular konnte nicht vorbereitet werden. Bitte die Seite neu laden.",
+        "Das Formular ist momentan nicht erreichbar. Bitte lade die Seite neu oder kontaktiere uns direkt per E-Mail oder Telefon.",
       );
     }
   }
@@ -97,7 +99,7 @@ export function AppointmentForm({
       }
     } catch {
       setError(
-        "Die Verbindung wurde unterbrochen. Der Versandstatus ist unklar. Prüfe deine E-Mail oder kontaktiere uns vor einem erneuten Versand.",
+        "Die Verbindung wurde unterbrochen. Ob deine Anfrage eingegangen ist, ist unklar. Bitte kontaktiere uns, bevor du sie erneut sendest.",
       );
       await prepare();
     } finally {
@@ -128,9 +130,8 @@ export function AppointmentForm({
       </p>
       {!enabled && (
         <div className="notice">
-          Der automatische Versand ist noch nicht eingerichtet. Du kannst deinen
-          Terminwunsch vorbereiten und mit dem Button unten in deiner E-Mail-App
-          öffnen.
+          Das Formular ist momentan nicht erreichbar. Du kannst deinen
+          Terminwunsch über den Button unten per E-Mail anfragen.
         </div>
       )}
       <div className="field-grid">

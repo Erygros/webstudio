@@ -65,19 +65,15 @@ export default async function Contact({
             <div className="contact-item" key={c.title}>
               <h3>{c.title}</h3>
               <p>{c.description}</p>
-              {c.value ? (
-                <a
-                  className="text-link"
-                  href={c.href}
-                  {...(c.href.startsWith("https")
-                    ? { target: "_blank", rel: "noopener noreferrer" }
-                    : {})}
-                >
-                  {c.value} ↗
-                </a>
-              ) : (
-                <span className="eyebrow">Noch nicht eingerichtet</span>
-              )}
+              <a
+                className="text-link"
+                href={c.href}
+                {...(c.href.startsWith("https")
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+              >
+                {c.value} ↗
+              </a>
             </div>
           ))}
           <div className="contact-item">

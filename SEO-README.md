@@ -4,7 +4,7 @@ Umsetzung vom 14.10.2026. Die öffentlichen Seiten sind auf das reale Unternehme
 
 ## Umgesetzt
 
-- Öffentliche Canonicals, Open Graph und Sitemap verwenden `https://webstudio-expert.de`. `NEXT_PUBLIC_SEO_URL` kann diesen Wert ändern. Die tatsächlich genutzte CRM-Adresse bleibt in `NEXT_PUBLIC_SITE_URL`; die öffentliche Herkunftsprüfung berücksichtigt beide konfigurierten Ursprünge.
+- Öffentliche Canonicals, Open Graph und Sitemap verwenden `https://www.webstudio-expert.de`. `NEXT_PUBLIC_SEO_URL` kann diesen Wert ändern. Die tatsächlich genutzte CRM-Adresse bleibt in `NEXT_PUBLIC_SITE_URL`; die öffentliche Herkunftsprüfung berücksichtigt beide konfigurierten Ursprünge.
 - Vercel-Aliase und Preview-Deployments erhalten `X-Robots-Tag: noindex`. CRM, API-Routen, Rechtstexte, 404 und reine Anfrage-/Terminformulare sind ausgeschlossen. Formulare bleiben über Kontakt und Leistungsseiten erreichbar. Die Sitemap enthält nur die indexierbaren öffentlichen Inhaltsseiten.
 - Einheitliche Unternehmens-, Inhaber-, Kontakt- und Standortdaten; verknüpfte JSON-LD-Entitäten für Unternehmen, Person, Website, Leistungen, Einstiegspreise, Artikel, Sammlungen, Breadcrumbs und tatsächlich sichtbare FAQs. Keine erfundenen Bewertungen, Erfolge, Kundenprojekte oder Öffnungszeiten.
 - Suchorientierte Titel und Beschreibungen, Webdesign aus Dortmund auf der Startseite und eine ausführliche Seite für den tatsächlichen Standort. Keine Stadtseiten ohne eigenen Bezug.
@@ -32,9 +32,9 @@ Die Themen sind anhand des Angebots geplant; es wurden keine gemessenen Suchvolu
 
 ## Veröffentlichung und Konten
 
-1. In Vercel `webstudio-expert.de` mit dem Produktionsprojekt verbinden. Die DNS-Werte aus dem Vercel-Domainbereich beim tatsächlichen DNS-Betreiber eintragen. Bestehende Mail-DNS-Einträge erhalten. `www.webstudio-expert.de` als Weiterleitung auf die Variante ohne `www` einrichten; diese entspricht den Canonicals. Siehe [Vercel: Domains und Weiterleitungen](https://vercel.com/docs/domains/working-with-domains/deploying-and-redirecting).
-2. `NEXT_PUBLIC_SEO_URL=https://webstudio-expert.de` in Vercel Production setzen (dies ist auch der Code-Standard). `NEXT_PUBLIC_SITE_URL` nur entsprechend der tatsächlichen CRM-/Website-Adresse ändern; bestehende Auth-Callbacks und Telefonie berücksichtigen. Nach Änderungen an Variablen neu deployen.
-3. In [Google Search Console](https://search.google.com/search-console) die endgültige Domain hinzufügen und mit dem dort erzeugten DNS-TXT-Eintrag verifizieren. Alternativ für eine URL-Präfix-Property den reinen HTML-Verifizierungscode als `GOOGLE_SITE_VERIFICATION` in Vercel hinterlegen und neu deployen. Keinen Beispieltokens verwenden. Sitemap `https://webstudio-expert.de/sitemap.xml` einreichen.
+1. In Vercel `webstudio-expert.de` mit dem Produktionsprojekt verbinden. Die DNS-Werte aus dem Vercel-Domainbereich beim tatsächlichen DNS-Betreiber eintragen. Bestehende Mail-DNS-Einträge erhalten. `webstudio-expert.de` auf `www.webstudio-expert.de` weiterleiten; diese Variante entspricht dem beobachteten Produktionsbetrieb und den Canonicals. Siehe [Vercel: Domains und Weiterleitungen](https://vercel.com/docs/domains/working-with-domains/deploying-and-redirecting).
+2. `NEXT_PUBLIC_SEO_URL=https://www.webstudio-expert.de` in Vercel Production setzen (dies ist auch der Code-Standard). `NEXT_PUBLIC_SITE_URL` nur entsprechend der tatsächlichen CRM-/Website-Adresse ändern; bestehende Auth-Callbacks und Telefonie berücksichtigen. Nach Änderungen an Variablen neu deployen.
+3. In [Google Search Console](https://search.google.com/search-console) die endgültige Domain hinzufügen und mit dem dort erzeugten DNS-TXT-Eintrag verifizieren. Alternativ für eine URL-Präfix-Property den reinen HTML-Verifizierungscode als `GOOGLE_SITE_VERIFICATION` in Vercel hinterlegen und neu deployen. Keinen Beispieltokens verwenden. Sitemap `https://www.webstudio-expert.de/sitemap.xml` einreichen.
 4. In [Bing Webmaster Tools](https://www.bing.com/webmasters/) dieselbe Website verifizieren oder aus Search Console importieren. Für die HTML-Methode den reinen `msvalidate.01`-Code als `BING_SITE_VERIFICATION` hinterlegen. Dieselbe Sitemap einreichen.
 5. Erst wenn die Domain öffentlich das neue Deployment ausliefert, IndexNow aus diesem Checkout ausführen:
 

@@ -8,6 +8,10 @@ import { MailTools } from "@/crm/components/mail-tools";
 import { Work } from "@/crm/components/work";
 import { session } from "@/crm/server/db";
 import { OsmImporter } from "@/crm/components/osm-importer";
+import {
+  WebsiteFormStatus,
+  WebsiteInquiryInbox,
+} from "@/crm/components/website-inquiries";
 export default async function Page({
   params,
   searchParams,
@@ -45,7 +49,14 @@ export default async function Page({
       </header>
       {key === "emails" && <MailTools companyId={q.company} />}
       {key === "leads" && <OsmImporter />}
-      <ResourcePanel resource={key} />
+      {key === "anfragen" ? (
+        <>
+          <WebsiteFormStatus />
+          <WebsiteInquiryInbox />
+        </>
+      ) : (
+        <ResourcePanel resource={key} />
+      )}
       {key === "telefonie" && <ResourcePanel resource="followups" />}
     </>
   );

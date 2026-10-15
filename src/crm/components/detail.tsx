@@ -10,6 +10,7 @@ import { useDialer } from "./phone";
 import { MailTools } from "./mail-tools";
 import { MailActions } from "./mail-actions";
 import { ProjectSummary } from "./project-summary";
+import { WebsiteInquiryInbox } from "./website-inquiries";
 export function Detail({
   resource: key,
   initial: row,
@@ -72,6 +73,7 @@ export function Detail({
         "Übersicht",
         "Kontakte",
         "Kommunikation",
+        "Website-Anfragen",
         "Follow-ups",
         "Angebote",
         "Rechnungen",
@@ -329,6 +331,9 @@ export function Detail({
           <ResourcePanel resource="telefonie" parent={row.id} />
           <ResourcePanel resource="emails" parent={row.id} />
         </>
+      )}
+      {company && tab === "Website-Anfragen" && (
+        <WebsiteInquiryInbox companyId={row.id} />
       )}
       {company && tab === "Follow-ups" && (
         <ResourcePanel resource="followups" parent={row.id} />

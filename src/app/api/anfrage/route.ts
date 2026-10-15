@@ -11,7 +11,6 @@ import {
 } from "@/server/form-security";
 import { readForm, validateAttachments } from "@/server/uploads";
 import { categories, services } from "@/data/services";
-import { crmServiceConfigured } from "@/crm/server/db";
 import { captureWebsiteInquiry } from "@/crm/server/website";
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -23,14 +22,23 @@ const fail = (message: string, status = 400) =>
 export async function POST(request: Request) {
   if (!formReady())
     return fail(
-      "Der Anfrageversand ist noch nicht eingerichtet. Bitte nutze einen verfügbaren direkten Kontaktweg.",
+      "Das Formular ist momentan nicht erreichbar. Bitte kontaktiere uns per E-Mail oder Telefon.",
       503,
     );
   const origin = request.headers.get("origin");
   const localOrigin =
     process.env.NODE_ENV === "development" &&
     origin === new URL(request.url).origin;
-  if (!localOrigin && origin !== site.runtimeUrl && origin !== site.url)
+  const publicUrl = new URL(site.url);
+  publicUrl.hostname = publicUrl.hostname.startsWith("www.")
+    ? publicUrl.hostname.slice(4)
+    : `www.${publicUrl.hostname}`;
+  if (
+    !localOrigin &&
+    origin !== site.runtimeUrl &&
+    origin !== site.url &&
+    origin !== publicUrl.origin
+  )
     return fail(
       "Die Herkunft der Anfrage konnte nicht bestätigt werden. Bitte die Website neu öffnen.",
       403,
@@ -96,34 +104,31 @@ export async function POST(request: Request) {
       503,
     );
   }
-  let captured = false;
   let attachmentsComplete = true;
-  if (crmServiceConfigured()) {
-    try {
-      const result = await captureWebsiteInquiry(d, attachments);
-      captured = true;
-      attachmentsComplete = result.attachmentsComplete;
-    } catch (e) {
-      return fail(
-        e instanceof Error ? e.message : "CRM-Speicherung fehlgeschlagen.",
-        503,
-      );
-    }
+  try {
+    const result = await captureWebsiteInquiry(d, attachments);
+    attachmentsComplete = result.attachmentsComplete;
+  } catch {
+    return fail(
+      "Der Eingang deiner Anfrage konnte nicht bestätigt werden. Bitte kontaktiere uns direkt, bevor du die Anfrage erneut sendest.",
+      503,
+    );
   }
-  if (!mailReady() && captured)
+  const received =
+    "Vielen Dank. Deine Anfrage ist eingegangen. Wir melden uns über die angegebenen Kontaktdaten.";
+  const attachmentNotice = attachmentsComplete
+    ? ""
+    : " Nicht alle Dateien konnten übernommen werden. Bitte sende die fehlenden Unterlagen direkt per E-Mail.";
+  if (!mailReady())
     return NextResponse.json(
       {
         success: true,
         confirmation: false,
-        message: attachmentsComplete
-          ? "Deine Anfrage wurde im CRM gespeichert. Der E-Mail-Versand ist noch nicht eingerichtet. Wir melden uns über deine Kontaktdaten."
-          : "Deine Anfrage wurde im CRM gespeichert, aber nicht alle Anhänge konnten übernommen werden. Bitte sende fehlende Unterlagen direkt per E-Mail. Keine automatische Bestätigungs-E-Mail.",
+        message: received + attachmentNotice,
       },
       { headers: { "Cache-Control": "no-store" } },
     );
   const port = Number(process.env.SMTP_PORT || "587");
-  if (![465, 587].includes(port))
-    return fail("Der E-Mail-Versand ist nicht korrekt konfiguriert.", 503);
   const transport = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port,
@@ -180,16 +185,13 @@ export async function POST(request: Request) {
     if (!info.accepted?.length) throw new Error("NOT_ACCEPTED");
   } catch {
     transport.close();
-    if (captured)
-      return NextResponse.json({
+    return NextResponse.json(
+      {
         success: true,
         confirmation: false,
-        message:
-          "Deine Anfrage wurde im CRM gespeichert. Die E-Mail-Benachrichtigung konnte nicht gesendet werden. Bitte nicht erneut absenden.",
-      });
-    return fail(
-      "Der E-Mail-Dienst konnte die Anfrage nicht bestätigen. Bitte später erneut versuchen oder direkt Kontakt aufnehmen.",
-      502,
+        message: received + attachmentNotice,
+      },
+      { headers: { "Cache-Control": "no-store" } },
     );
   }
   let confirmation = true;
@@ -210,9 +212,10 @@ export async function POST(request: Request) {
   return NextResponse.json(
     {
       success: true,
-      message: confirmation
-        ? "Deine Anfrage wurde vom E-Mail-Dienst angenommen. Eine Bestätigung wurde an deine E-Mail-Adresse gesendet."
-        : "Deine Anfrage wurde vom E-Mail-Dienst angenommen. Die Bestätigungs-E-Mail konnte nicht gesendet werden. Bitte sende die Anfrage nicht erneut.",
+      message:
+        received +
+        attachmentNotice +
+        (confirmation ? " Eine Bestätigungs-E-Mail wurde versendet." : ""),
       confirmation,
     },
     { headers: { "Cache-Control": "no-store" } },

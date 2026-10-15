@@ -65,10 +65,12 @@ export function InquiryForm({
     try {
       const response = await fetch("/api/form-token", { cache: "no-store" });
       const result = await response.json();
+      if (!response.ok || !result.token)
+        throw new Error("Formular derzeit nicht erreichbar");
       setToken(result.token || "");
     } catch {
       setError(
-        "Das Formular konnte nicht vorbereitet werden. Bitte lade die Seite neu.",
+        "Das Formular ist momentan nicht erreichbar. Bitte lade die Seite neu oder kontaktiere uns direkt per E-Mail oder Telefon.",
       );
     }
   };
@@ -162,7 +164,7 @@ export function InquiryForm({
       }
     } catch {
       setError(
-        "Die Verbindung wurde unterbrochen. Der Versandstatus ist unklar. Bitte prüfe deine E-Mail-Bestätigung oder kontaktiere uns, bevor du erneut sendest.",
+        "Die Verbindung wurde unterbrochen. Ob deine Anfrage eingegangen ist, ist unklar. Bitte kontaktiere uns, bevor du sie erneut sendest.",
       );
       await refreshToken();
     } finally {
@@ -231,15 +233,10 @@ export function InquiryForm({
       >
         {!enabled && (
           <div className="notice" role="status">
-            Der Formularversand ist noch nicht eingerichtet. Du kannst deine
-            Angaben vorbereiten.{" "}
-            {site.email ? (
-              <Link href={`mailto:${site.email}`}>
-                Bitte sende deine Anfrage direkt per E-Mail.
-              </Link>
-            ) : (
-              "Ein direkter Kontaktweg wird nach Konfiguration der Unternehmensdaten ergänzt."
-            )}
+            Das Formular ist momentan nicht erreichbar.{" "}
+            <Link href={`mailto:${site.email}`}>
+              Bitte sende deine Anfrage direkt per E-Mail.
+            </Link>
           </div>
         )}
         <span className="eyebrow">
@@ -554,7 +551,7 @@ export function InquiryForm({
                 ? "Wird gesendet …"
                 : enabled
                   ? "Anfrage absenden ↗"
-                  : "Versand noch nicht eingerichtet"}
+                  : "Derzeit nicht verfügbar"}
             </button>
           )}
         </div>

@@ -1,5 +1,7 @@
 # Webstudio Expert
 
+**Formulare und Launch:** Aktueller Stand und die kurze Produktionsabnahme stehen in [LAUNCH-CHECK.md](LAUNCH-CHECK.md). Öffentliche Anfragen werden zuerst dauerhaft im CRM gespeichert; SMTP ist dafür optional. Im CRM gibt es den Bereich **Website-Anfragen** einschließlich geschützter Verbindungsanzeige.
+
 **SEO/GEO/AEO:** Die aktuelle Umsetzung, Zielseiten und Einrichtung von Domain, Search Console, Bing und IndexNow stehen in [SEO-README.md](SEO-README.md). Die öffentliche SEO-Domain ist von der aktuell genutzten CRM-Adresse getrennt konfiguriert.
 
 **Neu: CRM unter `/crm`.** Einrichtung, Supabase-Migrationen, Telefonie, Postfach, Sicherheit und die aktuellen Grenzen stehen in [CRM-README.md](CRM-README.md). Das neue CRM-Briefing autorisiert Supabase ausdrücklich und ergänzt die unten beschriebene bisherige reine Website-Architektur. Bei aktivierter Supabase-Integration werden Website-Anfragen dauerhaft im CRM gespeichert; Aussagen zum fehlenden Datenspeicher beziehen sich auf den früheren Website-Modus.
@@ -34,7 +36,7 @@ npm start
 
 ## SMTP: nachzureichende Daten
 
-`.env.example` enthält echte öffentliche Angaben und leere SMTP-Zugangsfelder. Kein simulierter Versand. Bis zur vollständigen Konfiguration sind automatischer Formularversand und automatische Terminbestätigungsnachrichten deaktiviert. Direkte E-Mail, SMS und Anruf funktionieren unabhängig davon.
+`.env.example` enthält echte öffentliche Angaben und leere SMTP-Zugangsfelder. Öffentliche Anfragen werden mit eingerichteten Supabase-Zugängen unabhängig von SMTP dauerhaft im CRM gespeichert. SMTP ist ausschließlich für zusätzliche E-Mail-Benachrichtigungen und Empfangsbestätigungen nötig. Direkte E-Mail, SMS und Anruf sind weitere Kontaktwege.
 
 Erforderlich: `SMTP_HOST`, `SMTP_PORT` (587 mit verpflichtendem STARTTLS oder 465 mit TLS), `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_FROM`, `INQUIRY_TO`. Absender und interne Empfängeradresse sind bereits mit `kontakt@webstudio-expert.de` vorgesehen. `MAIL_PROVIDER_NAME` und `MAIL_PROVIDER_ADDRESS` benennen den tatsächlichen Mailanbieter für die Datenschutzerklärung und müssen vor Aktivierung ausgefüllt sein. `FORM_SECRET`: kryptographisch zufälliges Geheimnis, mindestens 32 Zeichen, nur serverseitig. Das lokale Geheimnis ist vorhanden; für Vercel muss ein eigenes Geheimnis in dessen Server-Umgebungsvariablen hinterlegt werden. Niemals Secrets ins Repository übernehmen.
 
@@ -56,7 +58,7 @@ Ein Termin wird erst nach persönlicher Bestätigung verbindlich. Es gibt bewuss
 
 Repository: [Erygros/webstudio](https://github.com/Erygros/webstudio). `vercel.json` bereitet Next.js, `npm ci`, `npm run build` und Funktionsregion Frankfurt (`fra1`) vor. Die Region verhindert nicht automatisch internationale Verarbeitung durch CDN, Support oder Unterauftragsverarbeiter.
 
-In Vercel das GitHub-Repository importieren, Domain verbinden und die erforderlichen Servervariablen hinterlegen. `NEXT_PUBLIC_SITE_URL=https://webstudio-expert.de` in Produktion; für Preview-Deployments deren tatsächlichen Ursprung verwenden. `NEXT_PUBLIC_*` sind öffentlich. `FORM_SECRET`, SMTP-Passwort und weitere Zugangsdaten dürfen diesen Präfix niemals verwenden. Ein GitHub-Push allein belegt noch kein erfolgreiches Vercel-Deployment. Keine Vercel-Zugangsdaten wurden übermittelt.
+In Vercel das GitHub-Repository importieren, Domain verbinden und die erforderlichen Servervariablen hinterlegen. `NEXT_PUBLIC_SITE_URL` auf den tatsächlich genutzten CRM-Ursprung setzen; bei Nutzung der öffentlichen Domain ist dies aktuell `https://www.webstudio-expert.de`. Für Preview-Deployments deren tatsächlichen Ursprung verwenden. Die öffentliche SEO-Adresse wird getrennt über `NEXT_PUBLIC_SEO_URL` verwaltet. `NEXT_PUBLIC_*` sind öffentlich. `FORM_SECRET`, SMTP-Passwort und weitere Zugangsdaten dürfen diesen Präfix niemals verwenden. Ein GitHub-Push allein belegt noch kein erfolgreiches Vercel-Deployment. Keine Vercel-Zugangsdaten wurden übermittelt.
 
 ## Rechtstexte und tatsächlicher Betrieb
 
