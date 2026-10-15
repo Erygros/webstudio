@@ -189,6 +189,20 @@ img {
   font-size: 19px;
   line-height: 1;
 }
+.ui-icon {
+  display: inline-block;
+  flex: 0 0 auto;
+  vertical-align: middle;
+  pointer-events: none;
+}
+.service-row > span,
+.service-directory > a > span,
+.mobile-menu nav > a > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg);
+}
 .buttons {
   display: flex;
   gap: 12px;
@@ -381,17 +395,12 @@ img {
   display: none;
   background: none;
   border: 0;
-  width: 36px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   gap: 5px;
-}
-.menu-button span {
-  height: 1px;
-  width: 22px;
-  background: var(--fg);
 }
 .mobile-menu {
   position: fixed;
@@ -402,7 +411,10 @@ img {
   padding: 24px;
 }
 .mobile-close {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
   margin-left: auto;
   background: none;
   border: 0;
@@ -424,6 +436,10 @@ img {
   letter-spacing: 0;
   color: var(--muted);
   padding: 6px 0 6px 12px;
+}
+.mobile-menu nav > a > span .ui-icon {
+  width: 22px;
+  height: 22px;
 }
 .hero {
   padding: 72px var(--pad) 30px;
@@ -891,6 +907,9 @@ img {
   display: none;
 }
 .faq-list summary > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-size: 22px;
   line-height: 1;
 }

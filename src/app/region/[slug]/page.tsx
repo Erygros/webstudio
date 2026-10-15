@@ -1,3 +1,4 @@
+import { Icon } from "@/components/icon";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { regionalPages } from "@/data/regions";
@@ -68,7 +69,7 @@ export default async function Region({
               <div className="buttons" style={{ marginTop: 24 }}>
                 {section.links.map((link) => (
                   <Link className="text-link" key={link.href} href={link.href}>
-                    {link.title} ↗
+                    {link.title} <Icon name="arrow-up-right" />
                   </Link>
                 ))}
               </div>

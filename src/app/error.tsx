@@ -1,4 +1,5 @@
 "use client";
+import { Icon } from "@/components/icon";
 import Link from "next/link";
 export default function ErrorPage({
   reset,
@@ -16,7 +17,7 @@ export default function ErrorPage({
       </p>
       <div className="buttons">
         <button className="button" onClick={reset}>
-          Erneut laden ↗
+          Erneut laden <Icon name="arrow-up-right" />
         </button>
         <Link className="button secondary" href="/">
           Zur Startseite

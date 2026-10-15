@@ -1,3 +1,4 @@
+import { Icon } from "@/components/icon";
 import Link from "next/link";
 import {
   packages,
@@ -39,7 +40,9 @@ export function Pricing({
               href={`/projektanfrage?paket=${encodeURIComponent(care ? `Betreuung ${p.name}` : p.name)}`}
             >
               {care ? "Betreuung anfragen" : "Paket anfragen"}
-              <span aria-hidden="true">↗</span>
+              <span aria-hidden="true">
+                <Icon name="arrow-up-right" />
+              </span>
             </Link>
           </article>
         ))}

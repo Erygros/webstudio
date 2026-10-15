@@ -1,3 +1,4 @@
+import { Icon } from "@/components/icon";
 import { business, site } from "@/config/site";
 import { PageIntro, Breadcrumbs, Button, JsonLd } from "@/components/ui";
 import { InquiryForm } from "@/components/inquiry-form";
@@ -72,7 +73,7 @@ export default async function Contact({
                   ? { target: "_blank", rel: "noopener noreferrer" }
                   : {})}
               >
-                {c.value} ↗
+                {c.value} <Icon name="arrow-up-right" />
               </a>
             </div>
           ))}
@@ -83,14 +84,14 @@ export default async function Contact({
               Rückruftermin wird anschließend abgestimmt.
             </p>
             <a className="text-link" href="/kontakt?rueckruf=ja#nachricht">
-              Rückruf anfragen ↗
+              Rückruf anfragen <Icon name="arrow-up-right" />
             </a>
           </div>
           <div className="contact-item">
             <h3>Projektanfrage</h3>
             <p>Mit Leistung, Umfang und Budgetrahmen gezielt starten.</p>
             <a className="text-link" href="/projektanfrage">
-              Projekt beschreiben ↗
+              Projekt beschreiben <Icon name="arrow-up-right" />
             </a>
           </div>
         </div>

@@ -1,3 +1,4 @@
+import { Icon } from "@/components/icon";
 import Image from "next/image";
 import Link from "next/link";
 import { categories } from "@/data/services";
@@ -101,10 +102,11 @@ export default function Home() {
           </p>
           <div className="buttons" style={{ marginTop: 24 }}>
             <Link className="text-link" href="/region/dortmund">
-              Website in Dortmund erstellen lassen ↗
+              Website in Dortmund erstellen lassen{" "}
+              <Icon name="arrow-up-right" />
             </Link>
             <Link className="text-link" href="/ueber-uns">
-              Enrico Gross und die Arbeitsweise ↗
+              Enrico Gross und die Arbeitsweise <Icon name="arrow-up-right" />
             </Link>
           </div>
         </div>
@@ -124,7 +126,9 @@ export default function Home() {
             >
               <h3>{c.name}</h3>
               <p>{c.description}</p>
-              <span aria-hidden="true">↗</span>
+              <span aria-hidden="true">
+                <Icon name="arrow-up-right" />
+              </span>
             </Link>
           ))}
         </div>
@@ -142,7 +146,10 @@ export default function Home() {
               Angebot, deinen Verein oder deine eigene Arbeit.
             </p>
             <Link className="text-link" href="/leistungen/websites">
-              Websites entdecken <span>↗</span>
+              Websites entdecken{" "}
+              <span>
+                <Icon name="arrow-up-right" />
+              </span>
             </Link>
           </article>
           <article>
@@ -152,7 +159,10 @@ export default function Home() {
               aufbauen. Mit verständlichen Wegen für deine Kunden.
             </p>
             <Link className="text-link" href="/leistungen/e-commerce">
-              E-Commerce entdecken <span>↗</span>
+              E-Commerce entdecken{" "}
+              <span>
+                <Icon name="arrow-up-right" />
+              </span>
             </Link>
           </article>
           <article>
@@ -162,7 +172,10 @@ export default function Home() {
               dein Team, deine Kunden und deine Prozesse.
             </p>
             <Link className="text-link" href="/leistungen/software">
-              Software entdecken <span>↗</span>
+              Software entdecken{" "}
+              <span>
+                <Icon name="arrow-up-right" />
+              </span>
             </Link>
           </article>
         </div>
@@ -180,7 +193,10 @@ export default function Home() {
         </Reveal>
         <div className="section-link">
           <Link className="text-link" href="/projekte">
-            Alle Demonstrationsprojekte <span>↗</span>
+            Alle Demonstrationsprojekte{" "}
+            <span>
+              <Icon name="arrow-up-right" />
+            </span>
           </Link>
         </div>
       </section>
@@ -201,7 +217,10 @@ export default function Home() {
         <Pricing compact />
         <div className="section-link">
           <Link className="text-link" href="/preise">
-            Pakete und Konditionen ansehen <span>↗</span>
+            Pakete und Konditionen ansehen{" "}
+            <span>
+              <Icon name="arrow-up-right" />
+            </span>
           </Link>
         </div>
       </section>
@@ -230,7 +249,7 @@ export default function Home() {
           <span className="eyebrow">Vor der Anfrage</span>
           <h2>Webdesign: die wichtigsten Fragen.</h2>
           <Link className="text-link" href="/faq" style={{ marginTop: 24 }}>
-            Alle Fragen zur Zusammenarbeit ↗
+            Alle Fragen zur Zusammenarbeit <Icon name="arrow-up-right" />
           </Link>
         </div>
         <Faq
@@ -263,7 +282,7 @@ export default function Home() {
               <h3>{a.title}</h3>
               <p>{a.intro}</p>
               <Link className="text-link" href={`/wissen/${a.slug}`}>
-                Ratgeber lesen ↗
+                Ratgeber lesen <Icon name="arrow-up-right" />
               </Link>
             </article>
           ))}

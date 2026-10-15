@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { site } from "@/config/site";
 import { serializeJsonLd } from "@/lib/seo";
-export function Arrow({ diagonal = false }: { diagonal?: boolean }) {
-  return <span aria-hidden="true">{diagonal ? "↗" : "↗"}</span>;
+import { Icon } from "@/components/icon";
+export function Arrow({ diagonal = true }: { diagonal?: boolean }) {
+  return <Icon name={diagonal ? "arrow-up-right" : "arrow-right"} />;
 }
 export function Button({
   href,
@@ -98,7 +99,9 @@ export function Faq({
         <details key={item.question}>
           <summary>
             {item.question}
-            <span aria-hidden="true">+</span>
+            <span aria-hidden="true">
+              <Icon name="plus" />
+            </span>
           </summary>
           <p>{item.answer}</p>
         </details>

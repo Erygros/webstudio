@@ -1,3 +1,4 @@
+import { Icon } from "@/components/icon";
 import Link from "next/link";
 import { articles } from "@/data/articles";
 import { PageIntro, Breadcrumbs, Cta, JsonLd } from "@/components/ui";
@@ -23,7 +24,7 @@ export default function Knowledge() {
             <h2 style={{ fontSize: 28 }}>{a.title}</h2>
             <p>{a.intro}</p>
             <Link className="text-link" href={`/wissen/${a.slug}`}>
-              Artikel lesen ↗
+              Artikel lesen <Icon name="arrow-up-right" />
             </Link>
           </article>
         ))}

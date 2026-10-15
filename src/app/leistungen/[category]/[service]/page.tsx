@@ -1,3 +1,4 @@
+import { Icon } from "@/components/icon";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -91,7 +92,7 @@ export default async function Service({
             <div className="buttons" style={{ marginTop: 24 }}>
               {guide.links.map((link) => (
                 <Link className="text-link" key={link.href} href={link.href}>
-                  {link.title} ↗
+                  {link.title} <Icon name="arrow-up-right" />
                 </Link>
               ))}
             </div>
@@ -108,7 +109,9 @@ export default async function Service({
             {s.features.map((f) => (
               <li key={f}>
                 {f}
-                <span aria-hidden="true">✓</span>
+                <span aria-hidden="true">
+                  <Icon name="check" />
+                </span>
               </li>
             ))}
           </ul>
@@ -189,7 +192,9 @@ export default async function Service({
                   <h3>{item.name}</h3>
                   <p>{item.intro}</p>
                 </div>
-                <span aria-hidden="true">↗</span>
+                <span aria-hidden="true">
+                  <Icon name="arrow-up-right" />
+                </span>
               </Link>
             ))}
         </div>

@@ -1,3 +1,4 @@
+import { Icon } from "@/components/icon";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -107,7 +108,7 @@ export default async function Project({
             ))}
         </div>
         <Link className="text-link" href="/projekte" style={{ marginTop: 30 }}>
-          Zur Projektübersicht ↗
+          Zur Projektübersicht <Icon name="arrow-up-right" />
         </Link>
       </section>
       <JsonLd

@@ -1,4 +1,5 @@
 "use client";
+import { Icon } from "@/components/icon";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -100,7 +101,10 @@ export function ExitBanner() {
           href="/projektanfrage"
           onClick={() => setVisible(false)}
         >
-          Projekt anfragen <span aria-hidden="true">↗</span>
+          Projekt anfragen{" "}
+          <span aria-hidden="true">
+            <Icon name="arrow-up-right" />
+          </span>
         </Link>
         <button className="plain-button" onClick={dismiss}>
           Später

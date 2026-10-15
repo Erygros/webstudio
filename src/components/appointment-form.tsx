@@ -1,4 +1,5 @@
 "use client";
+import { Icon } from "@/components/icon";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { site } from "@/config/site";
@@ -116,7 +117,7 @@ export function AppointmentForm({
           Termin ist noch nicht reserviert.
         </p>
         <Link href="/kontakt" className="button secondary">
-          Zum Kontakt ↗
+          Zum Kontakt <Icon name="arrow-up-right" />
         </Link>
       </section>
     );
@@ -241,14 +242,20 @@ export function AppointmentForm({
       <div className="form-controls">
         {enabled ? (
           <button className="button" disabled={!token || busy} type="submit">
-            {busy ? "Wird gesendet …" : "Termin anfragen ↗"}
+            {busy ? (
+              "Wird gesendet …"
+            ) : (
+              <>
+                Termin anfragen <Icon name="arrow-up-right" />
+              </>
+            )}
           </button>
         ) : (
           <a
             className="button"
             href={`mailto:${site.email}?${mail.toString()}`}
           >
-            Terminwunsch in E-Mail öffnen ↗
+            Terminwunsch in E-Mail öffnen <Icon name="arrow-up-right" />
           </a>
         )}
       </div>

@@ -1,3 +1,4 @@
+import { Icon } from "@/components/icon";
 import Image from "next/image";
 import Link from "next/link";
 import { projects } from "@/data/projects";
@@ -17,7 +18,7 @@ export function ProjectCard({
           sizes="(max-width: 760px) 100vw, 50vw"
         />
         <span className="project-open" aria-label="Projektdetails öffnen">
-          ↗
+          <Icon name="arrow-up-right" />
         </span>
       </Link>
       <div className="project-caption">

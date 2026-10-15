@@ -1,3 +1,4 @@
+import { Icon } from "@/components/icon";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { categories, serviceHref } from "@/data/services";
@@ -63,7 +64,9 @@ export default async function Category({
                 <h3>{s.name}</h3>
                 <p>{s.intro}</p>
               </div>
-              <span aria-hidden="true">↗</span>
+              <span aria-hidden="true">
+                <Icon name="arrow-up-right" />
+              </span>
             </Link>
           ))}
         </div>

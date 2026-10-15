@@ -1,3 +1,4 @@
+import { Icon } from "@/components/icon";
 import Link from "next/link";
 import {
   Breadcrumbs,
@@ -35,7 +36,7 @@ export default function Prices() {
             href="/wissen/was-eine-website-kostet"
             style={{ marginTop: 24 }}
           >
-            So entsteht ein Website-Angebot ↗
+            So entsteht ein Website-Angebot <Icon name="arrow-up-right" />
           </Link>
         </div>
         <Faq

@@ -1,3 +1,4 @@
+import { Icon } from "@/components/icon";
 import Link from "next/link";
 import { PageIntro, Breadcrumbs, SectionHead, Faq, Cta } from "@/components/ui";
 import { Pricing } from "@/components/pricing";
@@ -41,7 +42,7 @@ export default function Care() {
             nach gesonderter Vereinbarung.
           </p>
           <Link className="text-link" href="/leistungen/betreuung">
-            Alle Betreuungsleistungen ↗
+            Alle Betreuungsleistungen <Icon name="arrow-up-right" />
           </Link>
         </div>
       </section>

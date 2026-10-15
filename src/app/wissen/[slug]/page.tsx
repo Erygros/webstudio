@@ -1,3 +1,4 @@
+import { Icon } from "@/components/icon";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { articles } from "@/data/articles";
@@ -139,7 +140,7 @@ export default async function Article({
             <div className="buttons">
               {a.related.map((link) => (
                 <Link className="text-link" key={link.href} href={link.href}>
-                  {link.title} ↗
+                  {link.title} <Icon name="arrow-up-right" />
                 </Link>
               ))}
             </div>

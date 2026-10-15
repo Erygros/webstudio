@@ -1,3 +1,4 @@
+import { Icon } from "@/components/icon";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { contentPages } from "@/data/pages";
@@ -53,7 +54,7 @@ export default async function ContentPage({
               <div className="buttons" style={{ marginTop: 22 }}>
                 {s.links.map((link) => (
                   <Link className="text-link" href={link.href} key={link.href}>
-                    {link.title} ↗
+                    {link.title} <Icon name="arrow-up-right" />
                   </Link>
                 ))}
               </div>

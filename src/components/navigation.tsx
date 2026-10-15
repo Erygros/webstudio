@@ -1,4 +1,5 @@
 "use client";
+import { Icon } from "@/components/icon";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -135,7 +136,10 @@ export function Navigation({
             {dropdown && (
               <div id="service-dropdown" className="dropdown">
                 <Link href="/leistungen" className="dropdown-overview">
-                  Alle Leistungen <span>↗</span>
+                  Alle Leistungen{" "}
+                  <span>
+                    <Icon name="arrow-up-right" />
+                  </span>
                 </Link>
                 {categories.map((c) => (
                   <Link key={c.slug} href={`/leistungen/${c.slug}`}>
@@ -169,7 +173,10 @@ export function Navigation({
             </svg>
           </button>
           <Link className="nav-cta" href="/projektanfrage">
-            Projekt anfragen <span aria-hidden="true">↗</span>
+            Projekt anfragen{" "}
+            <span aria-hidden="true">
+              <Icon name="arrow-up-right" />
+            </span>
           </Link>
           <button
             ref={menuButton}
@@ -179,8 +186,7 @@ export function Navigation({
             onClick={() => setOpen(!open)}
             aria-label="Menü öffnen"
           >
-            <span />
-            <span />
+            <Icon name="menu" size={22} />
           </button>
         </div>
       </header>
@@ -205,11 +211,14 @@ export function Navigation({
                 menuButton.current?.focus();
               }}
             >
-              Menü schließen ×
+              Menü schließen <Icon name="close" />
             </button>
             <nav aria-label="Mobile Hauptnavigation">
               <Link href="/leistungen" onClick={() => setOpen(false)}>
-                Leistungen <span>↗</span>
+                Leistungen{" "}
+                <span>
+                  <Icon name="arrow-up-right" />
+                </span>
               </Link>
               {categories.map((c) => (
                 <Link
@@ -223,11 +232,17 @@ export function Navigation({
               ))}
               {links.map(([name, href]) => (
                 <Link key={href} href={href} onClick={() => setOpen(false)}>
-                  {name} <span>↗</span>
+                  {name}{" "}
+                  <span>
+                    <Icon name="arrow-up-right" />
+                  </span>
                 </Link>
               ))}
               <Link href="/projektanfrage" onClick={() => setOpen(false)}>
-                Projekt anfragen <span>↗</span>
+                Projekt anfragen{" "}
+                <span>
+                  <Icon name="arrow-up-right" />
+                </span>
               </Link>
             </nav>
           </motion.div>

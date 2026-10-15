@@ -1,3 +1,4 @@
+import { Icon } from "@/components/icon";
 import Link from "next/link";
 import { categories, services, serviceHref } from "@/data/services";
 import {
@@ -43,7 +44,9 @@ export default function Services() {
                   <h3>{s.name}</h3>
                   <p>{s.intro}</p>
                 </div>
-                <span aria-hidden="true">↗</span>
+                <span aria-hidden="true">
+                  <Icon name="arrow-up-right" />
+                </span>
               </Link>
             ))}
           </div>

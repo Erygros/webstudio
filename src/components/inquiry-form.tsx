@@ -1,4 +1,5 @@
 "use client";
+import { Icon } from "@/components/icon";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { categories, services } from "@/data/services";
@@ -195,7 +196,7 @@ export function InquiryForm({
         </h2>
         <p role="status">{success}</p>
         <Link href="/" className="button secondary">
-          Zur Startseite ↗
+          Zur Startseite <Icon name="arrow-up-right" />
         </Link>
       </div>
     );
@@ -212,7 +213,9 @@ export function InquiryForm({
           <ol className="steps">
             {stepNames.map((name, i) => (
               <li key={name} aria-current={i === step ? "step" : undefined}>
-                <span>{i < step ? "✓" : i + 1}</span>
+                <span>
+                  {i < step ? <Icon name="check" size={14} /> : i + 1}
+                </span>
                 {name}
               </li>
             ))}
@@ -532,14 +535,17 @@ export function InquiryForm({
               disabled={busy}
               onClick={() => changeStep(step - 1)}
             >
-              ← Zurück
+              <Icon name="arrow-left" /> Zurück
             </button>
           ) : (
             <span />
           )}
           {project && step < 5 ? (
             <button className="button" type="button" onClick={next}>
-              Weiter <span aria-hidden="true">→</span>
+              Weiter{" "}
+              <span aria-hidden="true">
+                <Icon name="arrow-right" />
+              </span>
             </button>
           ) : (
             <button
@@ -547,11 +553,15 @@ export function InquiryForm({
               type="submit"
               disabled={!enabled || busy || !token}
             >
-              {busy
-                ? "Wird gesendet …"
-                : enabled
-                  ? "Anfrage absenden ↗"
-                  : "Derzeit nicht verfügbar"}
+              {busy ? (
+                "Wird gesendet …"
+              ) : enabled ? (
+                <>
+                  Anfrage absenden <Icon name="arrow-up-right" />
+                </>
+              ) : (
+                "Derzeit nicht verfügbar"
+              )}
             </button>
           )}
         </div>
