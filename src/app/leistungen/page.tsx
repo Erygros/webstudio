@@ -52,6 +52,16 @@ export default function Services() {
           </div>
         </section>
       ))}
+      <section className="section">
+        <SectionHead
+          label="Zusätzliche Dienstleistung"
+          title="Rechtlich gegen unzulässige Bewertungen vorgehen."
+          description="Google, kununu, Trustpilot und weitere Plattformen. Kostenlose Erstberatung; 59 € nur bei erfolgreicher Entfernung. Vorauszahlung nach Beauftragung, bei Misserfolg vollständig zurück."
+        />
+        <Link className="button" href="/bewertungen">
+          Bewertung prüfen lassen <Icon name="arrow-up-right" />
+        </Link>
+      </section>
       <JsonLd
         value={collectionSchema(
           "/leistungen",

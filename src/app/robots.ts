@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { site } from "@/config/site";
 import { publicIndexing } from "@/lib/seo";
 export default function robots(): MetadataRoute.Robots {
-  const privatePaths = ["/api/", "/crm", "/crm/"];
+  const privatePaths = ["/api/", "/crm", "/crm/", "/bewertungen/auftrag/"];
   return {
     rules: ["*", "OAI-SearchBot", "PerplexityBot", "Claude-SearchBot"].map(
       (userAgent) => ({

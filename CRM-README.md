@@ -101,6 +101,8 @@ KI optional über einen OpenAI-kompatiblen HTTPS-Endpunkt. Nur begrenzte berecht
 
 ## Öffentliche Website
 
+Der zusätzliche Bereich **Bewertungen** nimmt kostenlose Bewertungsanfragen über `/bewertungen` auf, speichert die gesonderte Beauftragung und zeigt Vorgangs-, Zahlungs-, Ergebnis- und E-Mail-Status. Die erste Logo-E-Mail wird sieben Minuten nach Eingang fällig. Der Zeitgeber läuft im bestehenden Supabase-Projekt. Zur Aktivierung siehe [REVIEWS-SETUP.md](REVIEWS-SETUP.md); im bestehenden CRM ausschließlich `supabase/reviews-install.sql` und anschließend die separate Scheduler-Einrichtung verwenden. Kein neuer Lead-Import und keine Löschung bestehender Daten. Bankzahlungen, Rückerstattungen und anwaltliche Arbeit werden nicht durch einen SMTP-Zeitgeber ersetzt.
+
 Bei vollständiger Supabase-Serverkonfiguration und vorhandenem Formulargeheimnis können Website-Anfragen **auch ohne SMTP** sicher im CRM gespeichert werden. Eingaben und Anhänge werden zugeordnet, Unternehmen anhand E-Mail geprüft, Aufgabe/Notification erstellt. Terminwünsche kommen mit Status **Angefragt** in den Kalender; sie werden nicht automatisch als bestätigt ausgegeben. Bestätigte Termine besitzen eine Überschneidungssperre in der Datenbank. Formularschutz verwendet bei Supabase-Konfiguration dauerhafte gemeinsame Ratenlimits und Nonce-Sperren. Ohne CRM-Konfiguration bleibt die vorhandene SMTP-/lokale Schutzvariante bestehen.
 
 Vor Aktivierung die öffentliche Datenschutzerklärung um tatsächliches Supabase-Projekt, Vertragskonstellation, Standort, Fristen und weitere eingeschaltete Integrationen ergänzen. Ein CRUD-CRM allein ist kein automatisch vollständiges Datenschutz-/Löschkonzept.

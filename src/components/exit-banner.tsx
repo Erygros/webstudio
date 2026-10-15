@@ -27,6 +27,7 @@ export function ExitBanner() {
     if (
       pathname.startsWith("/projektanfrage") ||
       pathname.startsWith("/kontakt") ||
+      pathname.startsWith("/bewertungen") ||
       pathname.startsWith("/terminbuchung")
     )
       return;

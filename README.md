@@ -76,6 +76,10 @@ Keine Analyse- oder Werbedienste, externe Schriftarten oder eingebetteten Fremdk
 
 Individuelle Metadaten, Canonicals, Social Cards, Breadcrumbs, JSON-LD, Sitemap und robots.txt. Ausführliche Standortseite für Dortmund, acht vertiefte Leistungsseiten und fünf Ratgeber. Englische Sprache vorbereitet; keine Teilübersetzungen oder massenhaften Stadtseiten veröffentlicht. Rechtliche Informationsseiten, reine Anfrageformulare und Vercel-Aliase sind auf noindex gesetzt. Sicherheitsheader inklusive CSP; Inline-Skripte/-Styles bleiben für Next.js-Hydration und Theme-Wahl erlaubt. Untrusted HTML niemals direkt rendern.
 
+## Bewertungsschutz
+
+Die neue Dienstleistung ist unter `/bewertungen` erreichbar, mit kostenlosem separatem Anfrageformular und geschützter Beauftragung. Das CRM führt Anfragen unter **Bewertungen**. Bestätigungen mit Logo und Überweisungsdaten werden über SMTP verschickt; der Zeitgeber nutzt die bestehende Supabase-Datenbank. **Vor Nutzung sind die neue SQL-Migration und Scheduler-Konfiguration erforderlich:** [REVIEWS-SETUP.md](REVIEWS-SETUP.md).
+
 ## Lokale Social-Media-Anwendung
 
 Unter `desktop/` liegt eine eigenständige Windows-Anwendung für Instagram-Bildbeiträge und LinkedIn-Textbeiträge. Beitragsentwürfe, Grafikexport, lokale Planung und offizielle API-Anbindungen sind enthalten. Plattformkonten und autorisierte Zugangstokens sind zum Veröffentlichen erforderlich. Einrichtung und Grenzen: [desktop/README.md](desktop/README.md). Der Ordner ist von der TypeScript-Prüfung der Website ausgeschlossen; Desktop-Abhängigkeiten und Installer werden separat erstellt.

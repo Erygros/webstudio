@@ -593,12 +593,22 @@ export const resources: Record<string, Resource> = {
     search: "data->>name",
     parent: "company_id",
   },
+  bewertungen: {
+    table: "crm_review_requests",
+    title: "Bewertungen",
+    singular: "Bewertungsanfrage",
+    fields: [],
+    columns: ["reference", "name", "platform", "status", "created_at"],
+    roles: [],
+    search: "name",
+  },
 };
 export const navModules = [
   ["", "Dashboard"],
   ["arbeit", "Arbeit"],
   ["leads", "Leads"],
   ["anfragen", "Website-Anfragen"],
+  ["bewertungen", "Bewertungen"],
   ["telefonie", "Telefonie"],
   ["emails", "E-Mails"],
   ["kunden", "Kunden"],

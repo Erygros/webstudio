@@ -9,6 +9,7 @@ import { categories, services, serviceHref } from "@/data/services";
 const contentRevision = "2026-10-14";
 export function publicSeoPages(): { path: string; modified?: string }[] {
   return [
+    { path: "/bewertungen", modified: "2026-10-15" },
     ...["/", "/preise", "/kontakt", "/wissen"].map((path) => ({
       path,
       modified: contentRevision,

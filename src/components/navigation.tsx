@@ -147,6 +147,10 @@ export function Navigation({
                     <span>{c.count} Leistungen</span>
                   </Link>
                 ))}
+                <Link href="/bewertungen">
+                  <strong>Bewertungsschutz</strong>
+                  <span>Google, kununu, Trustpilot & weitere</span>
+                </Link>
               </div>
             )}
           </div>
@@ -230,6 +234,13 @@ export function Navigation({
                   {c.name}
                 </Link>
               ))}
+              <Link
+                className="mobile-category"
+                href="/bewertungen"
+                onClick={() => setOpen(false)}
+              >
+                Bewertungen prüfen lassen
+              </Link>
               {links.map(([name, href]) => (
                 <Link key={href} href={href} onClick={() => setOpen(false)}>
                   {name}{" "}

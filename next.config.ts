@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 const config: NextConfig = {
   poweredByHeader: false,
+  outputFileTracingIncludes: {
+    "/api/internal/review-mail": ["./public/brand/wordmark-black.png"],
+  },
   async headers() {
     return [
       {
@@ -40,6 +43,14 @@ const config: NextConfig = {
             },
           ]
         : []),
+      {
+        source: "/bewertungen/auftrag/:path*",
+        headers: [
+          { key: "Cache-Control", value: "private, no-store" },
+          { key: "Referrer-Policy", value: "no-referrer" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
+        ],
+      },
       {
         source: "/crm/:path*",
         headers: [

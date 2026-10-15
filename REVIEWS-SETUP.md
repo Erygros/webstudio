@@ -1,0 +1,53 @@
+# Bewertungsschutz: Website, Beauftragung und CRM
+
+## Aktivieren (bestehendes Supabase und Vercel)
+
+1. Den gesamten Inhalt von [supabase/reviews-install.sql](supabase/reviews-install.sql) im **Supabase SQL Editor** ausführen. Er enthält die beiden neuen Migrationen, nicht den vollständigen CRM-Neuinstaller. Bestehende Leads und Anfragen werden nicht verändert. Alternativ die Migrationen `202610150002_reviews.sql` und `202610150003_review_scheduler.sql` in dieser Reihenfolge ausführen.
+2. In Vercel einen mindestens 32 Zeichen langen zufälligen **CRON_SECRET** als reine Servervariable setzen beziehungsweise den bestehenden Wert weiterverwenden, wenn er lang genug ist. Ein Geheimnis lokal erzeugen: `node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"`. Nicht hier im Chat teilen und nicht mit `NEXT_PUBLIC_` benennen.
+3. SMTP unter **CRM → Einstellungen → Integrationen** konfigurieren. Alternativ die bestehenden Vercel-Variablen `SMTP_HOST`, `SMTP_PORT` (465 oder 587), `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_FROM` setzen. Bei verschlüsselter CRM-Konfiguration muss der bereits zugehörige `CRM_ENCRYPTION_KEY` erhalten bleiben. Tatsächlichen Mailanbieter samt Adresse für die öffentliche Datenschutzerklärung über `MAIL_PROVIDER_NAME` und `MAIL_PROVIDER_ADDRESS` ergänzen. Bei mehreren SMTP-Konfigurationen hat die aktivierte CRM-Konfiguration Vorrang.
+4. Die gepushte Version auf Vercel deployen; nach Änderungen von Umgebungsvariablen erneut deployen. Die Produktion muss unter **https://www.webstudio-expert.de** öffentlich erreichbar sein. Bestehende Supabase-Servervariablen bleiben erforderlich.
+5. [supabase/reviews-scheduler-setup.sql](supabase/reviews-scheduler-setup.sql) öffnen, **nur den Platzhalter** durch genau denselben `CRON_SECRET` ersetzen und im Supabase SQL Editor ausführen. Der Wert wird in Supabase Vault hinterlegt und nicht in den öffentlichen Code geschrieben.
+6. Nach ungefähr ein bis zwei Minuten im CRM unter **Bewertungen → Einrichtung prüfen** den Status lesen. SMTP muss konfiguriert, der Zeitgeber aktiv und der Versandprozess erreichbar sein. Bei blockierendem Vercel Deployment Protection muss dieser Produktions-Endpunkt für den eigenen Zeitgeber erreichbar gemacht werden; der Endpunkt selbst bleibt durch das geheime Bearer-Token geschützt.
+
+Die Website bietet das neue Formular erst an, wenn Datenbank, Zeitgeber und der regelmäßig erreichte Versandprozess bereit sind. Bis dahin nennt sie die direkten Kontaktwege statt falscher Erfolgsmeldungen. Es werden keine Testanfragen angelegt oder Test-E-Mails versandt.
+
+Die Erweiterungen `pg_cron`, `pg_net` und Supabase Vault werden im bestehenden Supabase-Projekt benutzt. Falls die SQL-Rechte zum Aktivieren der Erweiterungen fehlen, müssen sie im Supabase-Dashboard aktiviert werden. Ein zusätzlicher Scheduler-, Mailing- oder Zahlungsanbieter wird nicht benötigt. Der bestehende tägliche Vercel-Job wird nicht geändert; auf dessen Hobby-Taktung lässt sich kein 5–10-Minuten-Versand stützen.
+
+## Kundenablauf
+
+- Öffentliche Leistungsseite: **/bewertungen**, verlinkt im Leistungsmenü, Footer und Leistungsüberblick; in der Sitemap enthalten.
+- Erstes Formular: Plattform/anderer Plattformname, HTTPS-Bewertungslink, Name, E-Mail, optional Telefon, Unternehmen und Hinweise. Keine Dateien oder Plattform-Passwörter. Kostenlose, unverbindliche Anfrage.
+- Anfrage und ein zugehöriger E-Mail-Auftrag werden in **einer Datenbanktransaktion** gespeichert. Erst dann erscheint die Erfolgsmeldung. Wiederholung desselben signierten Formulars erzeugt denselben Vorgang statt einer zweiten E-Mail.
+- Nach sieben Minuten wird die erste E-Mail fällig. Der Zeitgeber kontrolliert jede Minute und weckt den eigenen Website-Endpunkt nur bei fälligen Nachrichten oder für einen periodischen Erreichbarkeitsnachweis. Pro Aufruf werden bis zu fünf E-Mail-Aufträge parallel und atomar exklusiv beansprucht. In normalen Betriebsbedingungen soll die erste E-Mail nach etwa 5–10 Minuten eintreffen; Providerverzögerungen, Last, Datenbankpause oder Störungen können die Zustellung verlängern. Ein SMTP-Akzeptanzstatus ist kein Nachweis für die Zustellung im Empfängerpostfach.
+- Persönliche HTML-/Text-E-Mail mit Name, Plattform, tatsächlichem Bewertungslink, Vorgangszeichen, Enrico-Gross-Signatur und inline eingebettetem Logo. Keine Kennzeichnung „Automatisch versendete E-Mail“, keine Trackingpixel, kein externer Grafikabruf und keine KI-generierten Aussagen über eine angeblich bereits durchgeführte Rechtsprüfung.
+- Ein geschützter Link führt zu **/bewertungen/auftrag/[id]**. Dort sieht der Kunde die Konditionen, den konkreten Einzelvorgang und eine klare Kostenzusammenfassung, ergänzt Rechnungsanschrift und Kundentyp und bestätigt bewusst mit „Zahlungspflichtig beauftragen“. Die Bedingungen werden zum Auftrag unverändert gespeichert.
+- Verbraucher erhalten Widerrufsbelehrung/Musterformular; ein vorzeitiger Beginn erfordert zwei nicht vorangekreuzte ausdrückliche Erklärungen. Anderenfalls wird eine interne Mindestwartezeit hinterlegt. Die tatsächlich geltende Widerrufsfrist inklusive eventueller Besonderheiten ist vor anwaltlichem Tätigwerden zu berücksichtigen; die gespeicherte Zeit ist kein vollständiger Rechtsfrist-Rechner.
+- Die Vertragsbestätigung wird in einer zweiten Nachricht über denselben Versandweg verschickt und enthält die vollständigen Bedingungen, Widerrufsinformationen und die dokumentierten Erklärungen auf dauerhaftem Datenträger. Anschließend 59 € Vorauszahlung an **Enrico Gross, DE17 1001 0178 8022 2535 33**, Vorgangszeichen als Verwendungszweck.
+- Der vollständige Endpreis beträgt **59 € nur bei erfolgreicher Entfernung**, einschließlich der vorgesehenen außergerichtlichen anwaltlichen Tätigkeit. Vorauszahlung bei Misserfolg oder fehlender rechtlicher Möglichkeit vollständig erstatten. Kein Erfolgs- oder Zeitversprechen. Zulässige negative Kritik wird nicht pauschal als löschbar dargestellt. Gerichtliche Verfahren sind nicht enthalten.
+
+Der Betreiber wurde aufgrund der angegebenen Bankverbindung als Enrico Gross/Webstudio Expert für die Abwicklung eingesetzt. Die benannte Kanzlei ist **IT-ADVO Rechtsanwälte Simbach & Kessler, Berliner Allee 59, 40212 Düsseldorf**: Rechtsanwalt Colin Simbach (IT-Recht und Reputationsschutz) und Rechtsanwalt Sebastian Kessler (IT-Recht). Diese Zusammenarbeit und Leistungs-/Preisangaben beruhen auf den Angaben des Betreibers. Die Kanzlei muss das tatsächliche Mandats-, Vollmachts- und Vergütungsmodell einschließlich des erfolgsabhängigen Gesamtpreises bestätigen und entsprechend arbeiten; die Website ersetzt keine anwaltliche Einzelfallprüfung und behauptet keine bereits geprüfte Rechtsverletzung.
+
+## CRM: Bewertungen
+
+- Vorgangsstatus **Offen / Abgeschlossen / Storniert**.
+- Ergebnis **Ungeprüft / In Prüfung / Erfolgreich entfernt / Nicht entfernt**.
+- Zahlungsstatus **Ausstehend / Eingegangen / Erstattung erforderlich / Erstattet**.
+- Interne Notizen, ursprüngliche Kundenangaben, Beauftragung, vereinbarte Bedingungen, Erklärungen zum frühen Beginn sowie E-Mail-Inhalt und Versandstatus.
+- Statusänderungen werden protokolliert. Nach dokumentierter Vorauszahlung und erfolglosem Abschluss beziehungsweise passender Stornierung wird eine Erstattung als erforderlich markiert. Eine Zahlung kann vor Beauftragung nicht regulär als eingegangen markiert werden. Zeitpunkte bereits dokumentierter Ein-/Rückzahlungen bleiben erhalten.
+- **Keine Bankanbindung:** Zahlungseingang, tatsächliche Löschung und Rücküberweisung müssen durch die berechtigten Mitarbeiter geprüft und erfasst werden. Das CRM führt keine Überweisungen aus und erzeugt hierdurch keine automatische Rechnung. Erforderliche Rechnungen sind über die vorhandene Buchhaltung auszustellen.
+- Bei unklarer SMTP-Antwort oder Abbruch wird nicht blind erneut gesendet. Nach tatsächlicher Postfach-/SMTP-Prüfung kann ein Mitarbeiter die Nachricht ausdrücklich erneut einplanen. Ein erneuter Versand wird protokolliert. Eine externe SMTP-Verbindung bietet keine absolute Exactly-once-Garantie.
+- Stornierte/geschlossene Vorgänge erhalten keine noch ausstehende erste Angebots-E-Mail. Eine bereits beauftragte Vertragsbestätigung bleibt vorgesehen und erwähnt einen inzwischen geschlossenen Status. Eine vom SMTP-Server bereits angenommene E-Mail lässt sich nicht zurückrufen.
+
+## Zugriff, Betrieb und Aufbewahrung
+
+RLS ist für alle neuen Tabellen aktiv. Öffentliche Nutzer können Tabellen weder lesen noch direkt beschreiben. Administrations-/Vertriebsmitarbeiter dürfen im CRM lesen und die vorgesehenen Bearbeitungsfelder ändern. Versandzustände, Preis, Auftrag und ursprüngliche Anfragefelder werden nicht durch das allgemeine CRUD-Formular überschrieben. Datensatzanlage, Beauftragung und Versand-Claims laufen ausschließlich über serverseitige, nicht anonym ausführbare Funktionen.
+
+Beauftragungslinks sind zweckgebunden signiert, das Angebot läuft nach 30 Tagen ohne Beauftragung ab. Schutzschlüssel nicht unnötig wechseln: Eine Änderung des verwendeten `FORM_SECRET` oder des als Fallback genutzten Service-Schlüssels macht vorhandene Links ungültig. Die Links sind vertraulich. Beauftragungsseiten sind von Indexierung ausgeschlossen und geben keinen Referrer weiter.
+
+Keine automatische Bewertungssuche, kein Scraping und keine automatisierten rechtlichen Plattformbeschwerden. Die tatsächliche rechtliche Arbeit bleibt bei den benannten Anwälten. Änderungen an Mailanbieter, Kanzlei oder Vertragsmodell müssen in Datenschutz/Konditionen nachvollzogen werden. Die neue Datenschutzerklärung beschreibt Daten und Kanzleiempfänger; die Umsetzung ist keine anwaltliche Freigabe der Texte. Der genannte Rückerstattungsablauf muss organisatorisch eingehalten werden. Gesetzliche Aufbewahrung, Löschung nicht mehr benötigter Anfragen, Postfachaufbewahrung sowie echte Datenbank-Backups bleiben Betriebsaufgaben; es gibt keinen neuen unbemerkten Löschjob.
+
+## Kontrolle und Quellen
+
+Auf ausdrücklichen Wunsch keine automatisierten Tests, keine Testbestellungen und keine Test-E-Mails. Build/TypeScript-Prüfung bestätigen die technische Kompilierung. Die SQL-Dateien und Live-Zustellung müssen nach der Aktivierung vom Betreiber überprüft werden; Codex hat keine Produktions-Datenbankzugänge und hat die Migration nicht ausgeführt.
+
+[Supabase-Zeitgeber und Vault](https://supabase.com/docs/guides/functions/schedule-functions), [Vercel-Cron-Limits](https://vercel.com/docs/cron-jobs/usage-and-pricing), [Rechtsdienstleistungsgesetz](https://www.gesetze-im-internet.de/rdg/), [§ 312j BGB](https://www.gesetze-im-internet.de/bgb/__312j.html), [§ 356 BGB](https://www.gesetze-im-internet.de/bgb/__356.html).

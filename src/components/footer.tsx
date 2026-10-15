@@ -26,6 +26,7 @@ export function Footer() {
           <Link href="/wissen">Wissen</Link>
           <Link href="/faq">Fragen & Antworten</Link>
           <Link href="/betreuung">Betreuung</Link>
+          <Link href="/bewertungen">Bewertungsschutz</Link>
           <Link href="/terminbuchung">Termin anfragen</Link>
         </div>
         <div>

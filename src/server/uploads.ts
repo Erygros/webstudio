@@ -2,9 +2,9 @@ export const MAX_BODY = 3_500_000;
 export const MAX_FILES = 3;
 export const MAX_FILE_SIZE = 2_000_000;
 export const MAX_TOTAL_SIZE = 3_000_000;
-export async function readForm(request: Request) {
+export async function readForm(request: Request, limit = MAX_BODY) {
   const size = request.headers.get("content-length");
-  if (size && Number(size) > MAX_BODY)
+  if (size && Number(size) > limit)
     throw new Error(
       "Die Anfrage ist zu groß. Anhänge dürfen zusammen maximal 3 MB enthalten.",
     );
@@ -17,7 +17,7 @@ export async function readForm(request: Request) {
       const { value, done } = await reader.read();
       if (done) break;
       total += value.byteLength;
-      if (total > MAX_BODY) {
+      if (total > limit) {
         await reader.cancel();
         throw new Error("Die Anfrage ist zu groß. Anhänge bitte verkleinern.");
       }

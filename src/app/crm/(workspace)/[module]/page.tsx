@@ -8,6 +8,7 @@ import { MailTools } from "@/crm/components/mail-tools";
 import { Work } from "@/crm/components/work";
 import { session } from "@/crm/server/db";
 import { OsmImporter } from "@/crm/components/osm-importer";
+import { ReviewsInbox } from "@/crm/components/reviews";
 import {
   WebsiteFormStatus,
   WebsiteInquiryInbox,
@@ -21,6 +22,28 @@ export default async function Page({
 }) {
   const { module: key } = await params;
   const q = await searchParams;
+  if (key === "bewertungen") {
+    const current = await session();
+    if (!["administrator", "vertrieb"].includes(current!.profile.role))
+      return (
+        <p>
+          Bewertungsanfragen sind für Administration und Vertrieb verfügbar.
+        </p>
+      );
+    return (
+      <>
+        <header className="crm-page-head">
+          <span className="eyebrow">Webstudio Expert / CRM</span>
+          <h1>Bewertungen</h1>
+          <p>
+            Kostenlose Anfragen, Beauftragungen und die Bearbeitung einzelner
+            Bewertungen.
+          </p>
+        </header>
+        <ReviewsInbox />
+      </>
+    );
+  }
   if (key === "arbeit") {
     const current = await session();
     if (!["administrator", "vertrieb"].includes(current!.profile.role))

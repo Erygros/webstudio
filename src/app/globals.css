@@ -1887,6 +1887,138 @@ h3 {
     grid-template-columns: 1fr;
   }
 }
+.review-intro-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(30px, 6vw, 100px);
+  align-items: start;
+}
+.review-intro-grid h2 {
+  margin: 18px 0 24px;
+}
+.review-intro-grid p,
+.review-summary p {
+  line-height: 1.7;
+}
+.review-summary {
+  border: 1px solid var(--line);
+  padding: clamp(22px, 3vw, 38px);
+}
+.review-summary ol {
+  padding-left: 20px;
+  margin-bottom: 0;
+}
+.review-summary li {
+  padding-left: 8px;
+  margin-bottom: 25px;
+}
+.review-summary li:last-child {
+  margin-bottom: 0;
+}
+.review-summary li p {
+  margin-top: 8px;
+  font-size: 14px;
+}
+.review-form fieldset,
+.review-order fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.review-form fieldset:disabled {
+  opacity: 0.65;
+}
+.review-form .honeypot {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.review-help {
+  display: block;
+  font-size: 13px;
+  line-height: 1.7;
+  margin: 12px 0 24px;
+  font-weight: 400;
+}
+.review-form input,
+.review-order input {
+  min-width: 0;
+}
+.review-order-wrap {
+  max-width: 1000px;
+  margin-inline: auto;
+}
+.review-contract {
+  border-block: 1px solid var(--line);
+  padding: 24px 0;
+  margin: 28px 0;
+}
+.review-contract h3 {
+  margin: 24px 0 14px;
+}
+.review-contract p {
+  font-size: 14px;
+  line-height: 1.8;
+  margin-bottom: 18px;
+}
+.review-order .review-summary {
+  margin: 28px 0;
+}
+.review-crm-list {
+  display: grid;
+  gap: 22px;
+}
+.review-crm-card {
+  border: 1px solid var(--line);
+  padding: 24px;
+  overflow-wrap: anywhere;
+}
+.review-crm-card h3 {
+  font-size: 18px;
+  margin: 10px 0;
+}
+.review-crm-card p {
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 12px 0;
+}
+.review-crm-details {
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+  margin-top: 20px;
+}
+.review-message,
+.review-mail-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.review-mail-text {
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.8;
+  padding: 20px 0;
+}
+.review-crm-details details {
+  margin: 20px 0;
+}
+.review-crm-editor {
+  margin-top: 30px;
+}
+@media (max-width: 760px) {
+  .review-intro-grid {
+    grid-template-columns: 1fr;
+  }
+  .review-crm-card {
+    padding: 16px;
+  }
+  .review-crm-card .crm-panel-head {
+    flex-wrap: wrap;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
