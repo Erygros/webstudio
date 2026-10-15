@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+  <title>Webstudio Social</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">W<span>.</span><small>WEBSTUDIO<br>SOCIAL</small></div>
+    <p class="nav-label">DEIN REDAKTIONSRAUM</p>
+    <nav aria-label="Hauptnavigation">
+      <button class="nav active" data-view="compose">Beitrag erstellen</button>
+      <button class="nav" data-view="planner">Veröffentlichungsplan <span id="planned-count">0</span></button>
+      <button class="nav" data-view="accounts">Konten verbinden</button>
+    </nav>
+    <div class="sidebar-bottom"><span class="local-dot"></span> Lokal auf deinem PC<p>Kein Planungsabo.<br>Deine Inhalte. Dein Zeitplan.</p><button class="text-link" data-open="crm">CRM öffnen</button><button class="text-link" data-open="guide">Einrichtung & Hilfe</button></div>
+  </aside>
+  <main>
+    <header class="topbar"><span>Webstudio Expert <span class="slash">/</span> Social Media</span><div class="scheduler"><span id="scheduler-label">Zeitplan pausiert</span><button id="pause" class="small">Aktivieren</button></div></header>
+    <div id="notice" role="status" aria-live="polite" hidden></div>
+    <section id="compose" class="view">
+      <div class="page-heading"><div><p class="eyebrow">AUS IDEEN WERDEN BEITRÄGE</p><h1>Zeig, was du machst.</h1><p>Ein guter Beitrag beginnt mit einer klaren Botschaft.</p></div></div>
+      <div class="workspace">
+        <form id="post-form" class="panel editor">
+          <div class="panel-heading"><h2 id="editor-title">Neuer Beitrag</h2><button type="button" id="reset" class="text-link">Zurücksetzen</button></div>
+          <label>Plattform<select id="platform"><option value="instagram">Instagram · @webstudio_expert</option><option value="linkedin">LinkedIn · Enrico Gross</option></select></label>
+          <div id="connection-hint" class="hint"></div>
+          <label>Interner Titel<input id="post-title" maxlength="100" placeholder="Zum Beispiel: Mein Angebot für lokale Unternehmen"></label>
+          <label>Mit einer Textvorlage starten<select id="template"><option value="">Eigenen Text schreiben</option><option value="intro">Webstudio Expert vorstellen</option><option value="mobile">Tipp: Websites auf dem Smartphone</option><option value="local">Websites für lokale Unternehmen</option><option value="process">So beginnt ein Website-Projekt</option></select></label>
+          <label>Beitragstext<textarea id="post-text" rows="9" maxlength="2200" required placeholder="Was möchtest du deinen zukünftigen Kunden zeigen?"></textarea></label>
+          <div class="counter"><span>Vor dem Einplanen Inhalt prüfen.</span><span id="character-count">0 / 2200</span></div>
+          <label id="image-label">Öffentliche JPEG-Bildadresse<input id="image-url" type="url" maxlength="2048" placeholder="https://www.webstudio-expert.de/social/beitrag.jpg"><span class="field-help">Instagram lädt das Bild von dieser Adresse. Ein lokaler Dateipfad funktioniert nicht. LinkedIn veröffentlicht in dieser Version ausschließlich Text.</span></label>
+          <label>Veröffentlichungszeitpunkt <span class="optional">optional</span><input id="scheduled-at" type="datetime-local"><span class="field-help" id="timezone"></span></label>
+          <div class="actions"><button type="submit" class="secondary">Entwurf speichern</button><button type="button" id="schedule" class="primary">Beitrag einplanen</button></div>
+          <p class="field-help">Einplanen gibt diesen Beitrag zur automatischen Veröffentlichung frei. Der Zeitplan muss aktiv und dein PC online sein.</p>
+        </form>
+        <div class="preview-column">
+          <div class="panel preview"><div class="panel-heading"><h2>Textvorschau</h2><span id="preview-platform" class="tag">Instagram</span></div><div class="profile"><div class="avatar">W.</div><div><strong id="preview-name">webstudio_expert</strong><small>Vorschau · noch nicht veröffentlicht</small></div></div><p id="preview-text" class="preview-text">Dein Beitrag erscheint hier.</p><p class="field-help">Die Plattform kann Text und Bilder anders darstellen. Diese Vorschau lädt keine externen Bilder.</p></div>
+          <div class="panel image-studio"><div class="panel-heading"><h2>Deine Beitragsgrafik</h2><span class="tag">1080 × 1080</span></div><canvas id="artwork" width="1080" height="1080" aria-label="Vorschau der Beitragsgrafik"></canvas><label>Überschrift<input id="art-title" maxlength="90" value="Eine Website, die zu dir passt."></label><label>Zusatzzeile<input id="art-subtitle" maxlength="100" value="Individuelle Weblösungen aus Dortmund."></label><button type="button" id="export-image" class="secondary full">Grafik als JPEG speichern</button><p class="field-help">Grafik exportieren, auf deiner Website bereitstellen und die öffentliche Bildadresse im Beitrag eintragen.</p></div>
+        </div>
+      </div>
+    </section>
+    <section id="planner" class="view" hidden>
+      <div class="page-heading"><div><p class="eyebrow">DEIN VERÖFFENTLICHUNGSPLAN</p><h1>Alles zur richtigen Zeit.</h1><p>Entwürfe, geplante Beiträge und Veröffentlichungen an einem Ort.</p></div><button id="export-posts" class="secondary">Beiträge exportieren</button></div>
+      <div class="plan-note">Die Anwendung läuft beim Schließen im Infobereich weiter. „Beenden“ stoppt die Planung. Um mehr als 15 Minuten verpasste Termine benötigen deine Prüfung.</div>
+      <label class="filter">Anzeigen<select id="filter"><option value="all">Alle Beiträge</option><option value="draft">Entwürfe</option><option value="scheduled">Geplant</option><option value="published">Veröffentlicht</option><option value="attention">Benötigt Prüfung</option></select></label>
+      <div id="posts" class="posts"></div>
+    </section>
+    <section id="accounts" class="view" hidden>
+      <div class="page-heading"><div><p class="eyebrow">INSTAGRAM & LINKEDIN</p><h1>Deine Bühne verbinden.</h1><p>Profil-Links sind hinterlegt. Zum Veröffentlichen werden zusätzlich API-Zugänge benötigt.</p></div></div>
+      <div class="account-grid">
+        <form id="instagram-form" class="panel"><div class="panel-heading"><h2>Instagram</h2><button type="button" class="text-link" data-open="instagram">Profil öffnen</button></div><p>@webstudio_expert</p><p class="field-help">Professionelles Konto mit Instagram Login. Benötigt: instagram_business_basic und instagram_business_content_publish. Kein Facebook-Login-Token.</p><label>Instagram-Konto-ID<input id="ig-id" inputmode="numeric" placeholder="Wird beim Speichern aus deinem Token ermittelt"></label><label>API-Version<input id="ig-version" required></label><label>Zugangstoken<input id="ig-token" type="password" autocomplete="off" placeholder="Neuen Token einfügen; leer = bisherigen behalten"></label><p id="ig-status" class="hint"></p><div class="actions"><button class="primary">Verbindung speichern</button><button type="button" class="secondary" data-check="instagram">Verbindung prüfen</button></div><div class="actions"><button type="button" class="text-link" data-open="meta">Meta Developer öffnen</button><button type="button" class="text-link danger" data-disconnect="instagram">Verbindung entfernen</button></div></form>
+        <form id="linkedin-form" class="panel"><div class="panel-heading"><h2>LinkedIn</h2><button type="button" class="text-link" data-open="linkedin">Profil öffnen</button></div><p>Enrico Gross · persönliches Profil</p><p class="field-help">Eine Developer-App mit „Share on LinkedIn“ und „Sign In with LinkedIn using OpenID Connect“ einrichten. Benötigt: w_member_social, openid und profile.</p><label>Mitglieds-URN<input id="li-author" placeholder="Wird beim Speichern aus deinem Token ermittelt"><span class="field-help">Kann leer bleiben: Die Anwendung liest die ID beim Speichern eines neuen Tokens und bittet dich, das erkannte Konto zu bestätigen.</span></label><label>API-Version<input id="li-version" required></label><label>Zugangstoken<input id="li-token" type="password" autocomplete="off" placeholder="Neuen Token einfügen; leer = bisherigen behalten"></label><p id="li-status" class="hint"></p><div class="actions"><button class="primary">Verbindung speichern</button><button type="button" class="secondary" data-check="linkedin">Verbindung prüfen</button></div><div class="actions"><button type="button" class="text-link" data-open="linkedinDeveloper">LinkedIn Developer öffnen</button><button type="button" class="text-link danger" data-disconnect="linkedin">Verbindung entfernen</button></div></form>
+      </div>
+      <div class="panel details"><h2>Dein PC übernimmt die Planung.</h2><p>Die Anwendung veröffentlicht nur deine gespeicherten, freigegebenen Beiträge. Es gibt keine automatische Texterstellung über kostenpflichtige KI-Dienste. Tokens werden über Windows verschlüsselt gespeichert und nie exportiert.</p><p>Ein Verbindungstest liest dein Profil. Er veröffentlicht keinen Beitrag und bestätigt nicht alle Schreibrechte. Abgelaufene Tokens musst du erneuern.</p><label class="checkbox"><input id="startup" type="checkbox">Beim Windows-Start im Hintergrund öffnen (wird beim Speichern einer Verbindung übernommen)</label><p id="data-path" class="field-help"></p><button class="text-link" data-open="guide">Schritt-für-Schritt-Anleitung öffnen</button></div>
+    </section>
+  </main>
+  <script src="renderer.js"></script>
+</body>
+</html>

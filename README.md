@@ -76,6 +76,10 @@ Keine Analyse- oder Werbedienste, externe Schriftarten oder eingebetteten Fremdk
 
 Individuelle Metadaten, Canonicals, Social Cards, Breadcrumbs, JSON-LD, Sitemap und robots.txt. Ausführliche Standortseite für Dortmund, acht vertiefte Leistungsseiten und fünf Ratgeber. Englische Sprache vorbereitet; keine Teilübersetzungen oder massenhaften Stadtseiten veröffentlicht. Rechtliche Informationsseiten, reine Anfrageformulare und Vercel-Aliase sind auf noindex gesetzt. Sicherheitsheader inklusive CSP; Inline-Skripte/-Styles bleiben für Next.js-Hydration und Theme-Wahl erlaubt. Untrusted HTML niemals direkt rendern.
 
+## Lokale Social-Media-Anwendung
+
+Unter `desktop/` liegt eine eigenständige Windows-Anwendung für Instagram-Bildbeiträge und LinkedIn-Textbeiträge. Beitragsentwürfe, Grafikexport, lokale Planung und offizielle API-Anbindungen sind enthalten. Plattformkonten und autorisierte Zugangstokens sind zum Veröffentlichen erforderlich. Einrichtung und Grenzen: [desktop/README.md](desktop/README.md). Der Ordner ist von der TypeScript-Prüfung der Website ausgeschlossen; Desktop-Abhängigkeiten und Installer werden separat erstellt.
+
 ## Noch ausstehend
 
 SMTP-/Postfachanbieter und Zugangsdaten, Vercel-Account-Verknüpfung mit Domain und Servervariablen, Prüfung der tatsächlichen Hosting-/Mail-Verträge sowie die manuelle Endabnahme. Verbindlicher Kalender und CRM-Datenspeicherung werden nach der offenen Speicherentscheidung beziehungsweise dem folgenden CRM-Briefing ergänzt. Keine automatisierten Tests, Playtests oder ausgehenden Testnachrichten wurden ausgeführt.

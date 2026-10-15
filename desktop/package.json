@@ -1,0 +1,44 @@
+{
+  "name": "webstudio-social",
+  "version": "1.0.0",
+  "description": "Lokale Beitragsplanung für Webstudio Expert",
+  "author": "Enrico Gross — Webstudio Expert",
+  "private": true,
+  "main": "main.cjs",
+  "scripts": {
+    "prestart": "node node_modules/electron/install.js",
+    "start": "electron .",
+    "pack": "electron-builder --win --dir",
+    "dist": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "44.7.2",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "de.webstudio-expert.social",
+    "productName": "Webstudio Social",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "main.cjs",
+      "preload.cjs",
+      "publishers.cjs",
+      "ui/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    }
+  },
+  "allowScripts": {
+    "electron@44.7.2": true
+  }
+}
