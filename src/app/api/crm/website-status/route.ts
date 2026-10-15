@@ -16,6 +16,16 @@ export async function GET(request: Request) {
     ];
     if (crmServiceConfigured()) {
       const db = serviceDb();
+      const { data: schema, error: schemaError } = await db.rpc(
+        "crm_website_schema_status",
+      );
+      checks.push({
+        label: "Reparatur der Formular-Speicherfunktion (202610150001)",
+        ok:
+          !schemaError &&
+          schema?.version === "202610150001" &&
+          schema?.audit_repaired === true,
+      });
       const tables = [
         ["crm_website_inquiries", "id", "Anfragen-Speicher"],
         ["crm_companies", "id", "Kontakte / Leads"],

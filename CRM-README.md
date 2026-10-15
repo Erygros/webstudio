@@ -1,5 +1,15 @@
 # CRM · Webstudio Expert
 
+## Reparatur für Formularfehler 503 (15.10.2026)
+
+Auf einer vorhandenen Datenbank ausschließlich [202610150001_website_inquiry_repair.sql](supabase/migrations/202610150001_website_inquiry_repair.sql) vollständig im Supabase SQL Editor ausführen. Das gesamte Installationsskript nicht erneut auf einer bestehenden Datenbank starten. Die Reparatur ist wiederholbar, löscht keine Datensätze und deaktiviert keine Zugriffsregeln.
+
+Der gemeinsame Audit-Trigger verwendete `NEW.status` auch bei Kontakten ohne entsprechende Spalte. Die neue Funktion liest vorherige und aktuelle Zeilen sicher als JSON und erfasst Statusänderungen ausschließlich bei Unternehmen. Der Eingang ordnet vorhandene E-Mail-Adressen vor dem INSERT zu, damit der globale Duplikat-Trigger nicht schon vor `ON CONFLICT` abbricht. Bestehende Kontaktdaten bleiben erhalten; Anfrage, Aufgabe und Benachrichtigung werden gemeinsam gespeichert.
+
+Nach Ausführung das öffentliche Formular neu laden und erneut absenden. Im CRM unter **Website-Anfragen → Verbindung prüfen** wird der Reparaturstand `202610150001` geprüft. Die Statusanzeige ist weiterhin rein lesend und ersetzt keine Prüfung des tatsächlich gespeicherten Eintrags. Die SQL-Reparatur wurde mangels Datenbankzugang nicht durch den Agenten ausgeführt; es wurden keine Probe-Anfragen angelegt.
+
+Technischer Hintergrund: [PostgreSQL – Auswertungsreihenfolge von Ausdrücken](https://www.postgresql.org/docs/current/sql-expressions.html#SYNTAX-EXPRESS-EVAL), [Trigger-Zeilen und ihre Felder](https://www.postgresql.org/docs/current/plpgsql-trigger.html).
+
 Geschützter Arbeitsbereich unter `/crm`, integriert in die vorhandene Website. Die Website bleibt öffentlich, das CRM hat eigene Navigation und keine öffentliche Registrierung. Ohne Supabase-Konfiguration erscheint eine Einrichtungsseite; es gibt keine Fake-Datensätze oder simulierten erfolgreichen Integrationen.
 
 ## Einrichten

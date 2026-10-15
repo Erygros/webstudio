@@ -15,10 +15,16 @@ export async function captureWebsiteInquiry(
     request_key_in: key,
     payload: safe,
   });
-  if (error || typeof companyId !== "string" || !companyId)
+  if (error || typeof companyId !== "string" || !companyId) {
+    // Keine Kontaktdaten, SQL-Details oder Zugangsdaten protokollieren.
+    console.error("[website-inquiry] CRM persistence failed", {
+      code: error?.code || "INVALID_RESULT",
+      reference: key.slice(0, 12),
+    });
     throw new Error(
       "Die Anfrage konnte nicht sicher im CRM gespeichert werden. Bitte später erneut versuchen.",
     );
+  }
   let attachmentsComplete = true;
   for (const attachment of attachments) {
     try {

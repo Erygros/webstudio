@@ -1,5 +1,7 @@
 # Launch-Stand vom 15. Oktober 2026
 
+**Nachtrag zum gemeldeten Formularfehler 503:** Die Freischaltung des Formulars war bestätigt, die Speicherung scheiterte jedoch beim Datenbankaufruf. Für die gefundenen Fehler im gemeinsamen Audit-Trigger und bei der Zuordnung vorhandener E-Mail-Kontakte ist jetzt [202610150001_website_inquiry_repair.sql](supabase/migrations/202610150001_website_inquiry_repair.sql) auf der vorhandenen Supabase-Datenbank auszuführen. Erst danach eine neue Anfrage und deren CRM-Eingang kontrollieren. Die vorherige Aussage, dass für die reine Website-Umstellung keine Migration nötig war, ersetzte keine Prüfung der bereits installierten Datenbankfunktionen.
+
 Die öffentlichen Formulare sind auf direkten CRM-Empfang umgestellt. Kontakt-, Rückruf-, Projekt- und Termin-Anfragen verwenden dieselbe serverseitig validierte Speicherung. Die bestehenden Supabase-Tabellen und die bereits installierte Funktion `crm_ingest_inquiry` werden wiederverwendet. Für diese Änderung ist keine neue Datenbankmigration erforderlich.
 
 ## Umgesetzt und im Quelltext geprüft
