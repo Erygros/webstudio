@@ -1291,25 +1291,28 @@ img {
   position: fixed;
   inset: auto 20px 20px;
   z-index: 150;
-  max-width: 780px;
+  max-width: 560px;
   max-height: calc(100dvh - 40px);
   overflow-y: auto;
   margin-inline: auto;
-  padding: clamp(20px, 4vw, 32px);
+  padding: 20px;
   color: var(--fg);
   background: var(--bg);
   border: 1px solid var(--line);
   box-shadow: 0 12px 48px #0003;
 }
-.tracking-consent h2,
+.tracking-consent h2 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
 .tracking-settings h2 {
   font-size: 22px;
   margin-bottom: 12px;
 }
 .tracking-consent p {
-  font-size: 14px;
-  line-height: 1.6;
-  margin-bottom: 14px;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 12px;
 }
 .tracking-consent a {
   text-decoration: underline;
@@ -1320,7 +1323,16 @@ img {
 .tracking-consent .cookie-controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 8px;
+  margin-top: 14px;
+}
+.tracking-consent .button {
+  flex: 1 1 auto;
+  min-height: 42px;
+  padding: 10px 12px;
+  font-size: 12px;
+  text-align: center;
+  text-decoration: none;
 }
 @media (max-width: 600px) {
   .tracking-consent {
@@ -1328,7 +1340,7 @@ img {
     max-height: calc(100dvh - 24px);
   }
   .tracking-consent .button {
-    flex: 1 1 180px;
+    flex: 1 1 130px;
   }
 }
 .cookie-controls {

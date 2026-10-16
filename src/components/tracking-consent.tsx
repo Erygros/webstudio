@@ -62,6 +62,43 @@ export function TrackingConsent({ settings = false }: { settings?: boolean }) {
   )
     return null;
 
+  if (!settings) {
+    return (
+      <section
+        className="tracking-consent"
+        aria-labelledby="cookie-banner-title"
+      >
+        <h2 id="cookie-banner-title">Cookies &amp; Datenschutz</h2>
+        <p>
+          Wir verwenden Cookies und vergleichbare Technologien für Statistik und
+          Marketing – aber nur mit Ihrer Einwilligung. Technisch notwendige
+          Speicherungen sind davon ausgenommen. Details in der{" "}
+          <Link href="/datenschutz">Datenschutzerklärung</Link>.
+        </p>
+        <div className="cookie-controls">
+          <button
+            className="button secondary"
+            type="button"
+            onClick={() => save(true, true)}
+          >
+            Alle akzeptieren
+          </button>
+          <button
+            className="button secondary"
+            type="button"
+            onClick={() => save(false, false)}
+          >
+            Nur notwendige
+          </button>
+          <Link className="button secondary" href="/cookie-einstellungen">
+            Einstellungen
+          </Link>
+        </div>
+        {error && <p role="alert">{error}</p>}
+      </section>
+    );
+  }
+
   return (
     <section
       className={settings ? "tracking-settings" : "tracking-consent"}
