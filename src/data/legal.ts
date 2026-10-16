@@ -155,6 +155,21 @@ export const legalPages: Record<string, ContentPage> = {
         ],
       },
       {
+        title: "8b. Vercel Web Analytics",
+        text: "Nach deiner gesonderten Zustimmung nutzen wir Vercel Web Analytics von Vercel Inc., USA, zur statistischen Auswertung öffentlicher Seitenaufrufe. Verarbeitet werden aufgerufene Seiten, Herkunft und technische Geräteinformationen. Der Dienst verwendet keine Analyse-Cookies und bildet laut Anbieter einen zeitlich begrenzten Besucher-Hash aus der Anfrage. CRM und private Bestellseiten sind ausgeschlossen. URL-Suchparameter und Fragmente werden vor dem Ereignisversand entfernt; Formularinhalte und individuelle Ereignisse senden wir nicht. Rechtsgrundlage ist Art. 6 Abs. 1 Buchst. a DSGVO. Die Zustimmung wird separat unter webstudio-vercel-analytics-consent-v1 für 180 Tage lokal gespeichert und kann über Cookie-Einstellungen widerrufen werden. Internationale Übermittlungen richten sich nach den Vercel-Vertragsbedingungen und den dort vorgesehenen Datenschutzgarantien. Die zuvor erteilte Leadinfo-Zustimmung gilt nicht für Vercel Web Analytics.",
+        links: [
+          {
+            title: "Vercel Web Analytics: Datenschutzinformationen",
+            href: "https://vercel.com/docs/analytics/privacy-policy",
+          },
+          {
+            title: "Vercel-Auftragsverarbeitungsbedingungen",
+            href: "https://vercel.com/legal/dpa",
+          },
+          { title: "Einwilligung verwalten", href: "/cookie-einstellungen" },
+        ],
+      },
+      {
         title: "9. Speicherdauer",
         text: "Anfragen ohne anschließenden Auftrag werden nach Abschluss der Bearbeitung grundsätzlich innerhalb von sechs Monaten aus unseren aktiv verwalteten Anfragebeständen gelöscht, sofern keine weiteren Rückfragen, Rechtsansprüche oder Aufbewahrungspflichten entgegenstehen. Terminwünsche werden entsprechend behandelt. Entsteht ein Vertragsverhältnis, werden relevante Unterlagen für Vertragsdurchführung und gesetzliche Aufbewahrung aufbewahrt. Die Frist richtet sich nach der jeweiligen Unterlagenart und der geltenden handels- oder steuerrechtlichen Pflicht. Nicht benötigte Anlagen werden früher gelöscht. Wenn das CRM aktiviert ist, werden Anfragen, Terminwünsche und private Dokumente dauerhaft bis zur erforderlichen Löschung gespeichert. Nicht aufbewahrungspflichtige Daten können durch den zuständigen Administrator entfernt werden; eine Archivierung ist keine Löschung. Die Löschung im geschäftlichen Postfach und die Berücksichtigung von Backups werden organisatorisch umgesetzt. Technische Hostprotokolle unterliegen den Betriebsregeln des Hostinganbieters.",
       },

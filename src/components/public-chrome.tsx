@@ -1,6 +1,7 @@
 "use client";
 import { usePathname } from "next/navigation";
 import { TrackingConsent } from "@/components/tracking-consent";
+import { PublicAnalytics } from "@/components/public-analytics";
 export function PublicChrome({
   children,
   header,
@@ -23,6 +24,7 @@ export function PublicChrome({
       </main>
       {footer}
       <TrackingConsent />
+      <PublicAnalytics />
       {structuredData}
     </>
   );

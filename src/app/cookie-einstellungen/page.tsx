@@ -4,7 +4,7 @@ import { Breadcrumbs, PageIntro } from "@/components/ui";
 import { seo } from "@/lib/seo";
 export const metadata = seo(
   "Cookie-Einstellungen und Darstellung",
-  "Verwalte deine freiwillige Zustimmung zur Besuchsanalyse mit Leadinfo und die lokal gespeicherte Darstellung.",
+  "Verwalte deine Zustimmung zu Leadinfo und Vercel Web Analytics sowie die lokal gespeicherte Darstellung.",
   "/cookie-einstellungen",
   { noIndex: true },
 );
@@ -19,7 +19,7 @@ export default function Cookies() {
       <PageIntro
         label="Privatsphäre"
         title="Deine Privatsphäre. Deine Auswahl."
-        description="Leadinfo wird erst nach deiner Zustimmung geladen. Hier kannst du deine Auswahl ändern oder für die Zukunft widerrufen."
+        description="Leadinfo und Vercel Web Analytics werden jeweils erst nach deiner Zustimmung geladen. Hier kannst du deine Auswahl ändern oder für die Zukunft widerrufen."
       />
       <section className="section content-split">
         <h2>Deine Darstellung.</h2>

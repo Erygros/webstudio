@@ -13,7 +13,7 @@ Die Content-Security-Policy erlaubt ausschließlich die benötigten Leadinfo-Skr
 - Die Domain `www.webstudio-expert.de` muss zum Tracker gehören.
 - Formular-Tracking, Persona Insights und Bildschirmaufzeichnungen **ausgeschaltet lassen**. Diese Funktionen sind nicht Teil dieser Integration oder der hierfür erteilten Zustimmung. Die Kontoeinstellungen können nicht aus diesem Repository verwaltet werden.
 - Vertrag zur Auftragsverarbeitung sowie Datenaufbewahrung/Löschung im Anbieter-Konto prüfen und passend festlegen.
-- Nach dem Deployment die öffentliche Website öffnen und bewusst „Leadinfo erlauben“ auswählen. Anschließend die Installation im Leadinfo-Portal prüfen. Ohne Zustimmung oder bei einem Inhaltsblocker wird der Tracker absichtlich nicht geladen; eine automatische Anbieterprüfung kann ihn dann als nicht gefunden melden.
+- Nach dem Deployment die öffentliche Website öffnen, „Leadinfo: Unternehmensbesuche erkennen“ auswählen und „Auswahl speichern“ drücken. Vercel Web Analytics ist separat auswählbar. Anschließend die Installation im Leadinfo-Portal prüfen. Ohne Zustimmung oder bei einem Inhaltsblocker wird der Tracker absichtlich nicht geladen; eine automatische Anbieterprüfung kann ihn dann als nicht gefunden melden.
 
 Quellen: [Leadinfo Datenschutz](https://help.leadinfo.com/de/ist-die-verwendung-von-leadinfo-dsgvo-konform), [CSP](https://help.leadinfo.com/en/why-is-the-leadinfo-tracker-blocked-on-my-website), [Formular-Tracking](https://help.leadinfo.com/en/form-tracking).
 
