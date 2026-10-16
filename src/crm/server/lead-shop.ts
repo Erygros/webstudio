@@ -1,12 +1,11 @@
 import "server-only";
-import { createHash, createHmac } from "node:crypto";
+import { createHash } from "node:crypto";
 import nodemailer from "nodemailer";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { serviceDb, crmServiceConfigured } from "./db";
 import { smtpConfig } from "./integrations";
 import { websiteMailReady } from "./website-mail";
-import { csvCell } from "./import-export";
 import { business, site } from "@/config/site";
 import { shopMoney } from "@/lib/lead-shop";
 
@@ -21,141 +20,46 @@ export type LeadOrder = {
   terms: string;
   status: string;
   created_at: string;
-  expires_at: string;
   paid_at: string | null;
+  internal_notes: string;
+  fulfilled_at: string | null;
+  delivery_note: string;
+  delivery_mode: string;
+  // Historical paid downloads remain protected and accessible; no new files are created.
   file_path: string | null;
   file_sha256: string | null;
   token_hash: string | null;
-  token_version: number;
   token_expires_at: string | null;
   revoked: boolean;
-  fulfillment_state: string;
-  claim_id: string;
-  error: string;
-  internal_notes: string;
 };
 export const tokenHash = (value: string) =>
   createHash("sha256").update(value).digest("hex");
-export function leadDownloadToken(
-  order: Pick<LeadOrder, "id" | "token_version">,
-) {
-  const secret = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!secret) throw new Error("Serverzugang fehlt.");
-  return createHmac("sha256", secret)
-    .update(`lead-download:v1:${order.id}:${order.token_version}`)
-    .digest("hex");
-}
-export function leadDownloadUrl(order: LeadOrder) {
-  return `${site.url}/leads/download?id=${order.id}&token=${leadDownloadToken(order)}`;
-}
 export async function shopStatus() {
-  if (!crmServiceConfigured()) return { available: false, stock: 0 };
+  if (!crmServiceConfigured())
+    return { available: false, manualDelivery: false };
   try {
-    const db = serviceDb();
-    const [settings, stock, clock, mail] = await Promise.all([
-      db
+    const [settings, mail] = await Promise.all([
+      serviceDb()
         .from("crm_lead_shop_settings")
-        .select("enabled,recipient,iban")
-        .eq("id", true)
-        .single(),
-      db
-        .from("crm_lead_catalog")
-        .select("id", { count: "exact", head: true })
-        .eq("active", true)
-        .is("reserved_order", null)
-        .is("sold_order", null),
-      db
-        .from("crm_lead_shop_automation")
-        .select("worker_seen,last_tick")
+        .select("enabled,recipient,iban,manual_delivery,notification_email")
         .eq("id", true)
         .single(),
       websiteMailReady(),
     ]);
-    const recent = (v: string | null) =>
-      !!v && Date.now() - Date.parse(v) < 10 * 60 * 1000;
+    const config = settings.data;
     return {
       available:
         !settings.error &&
-        !stock.error &&
-        !!settings.data?.enabled &&
-        !!settings.data.iban &&
-        !!settings.data.recipient &&
-        mail &&
-        recent(clock.data?.worker_seen) &&
-        recent(clock.data?.last_tick),
-      stock: stock.count || 0,
+        !!config?.enabled &&
+        config.manual_delivery === true &&
+        !!config.recipient &&
+        !!config.iban &&
+        !!config.notification_email &&
+        mail,
+      manualDelivery: config?.manual_delivery === true,
     };
   } catch {
-    return { available: false, stock: 0 };
-  }
-}
-
-export async function fulfillLeadOrder() {
-  const db = serviceDb();
-  const { data, error } = await db.rpc("crm_claim_lead_fulfillment");
-  if (error) throw new Error("Bereitstellungswarteschlange nicht verfügbar.");
-  const row = data?.[0] as LeadOrder | undefined;
-  if (!row) return;
-  try {
-    const rows: {
-      name: string;
-      phone: string;
-      email: string;
-      website: string;
-    }[] = [];
-    for (let offset = 0; offset < row.quantity; offset += 1000) {
-      const part = await db
-        .from("crm_lead_order_items")
-        .select("name,phone,email,website")
-        .eq("order_id", row.id)
-        .order("lead_id")
-        .range(offset, Math.min(row.quantity - 1, offset + 999));
-      if (part.error)
-        throw new Error("Bestellte Kontakte konnten nicht gelesen werden.");
-      rows.push(...part.data);
-    }
-    if (rows.length !== row.quantity)
-      throw new Error("Kontaktanzahl stimmt nicht mit der Bestellung überein.");
-    const csv =
-      "\uFEFF" +
-      [
-        ["Firmenname", "Telefonnummer", "E-Mail-Adresse", "Website"]
-          .map(csvCell)
-          .join(";"),
-        ...rows.map((r) =>
-          [r.name, r.phone, r.email, r.website].map(csvCell).join(";"),
-        ),
-      ].join("\r\n");
-    const content = Buffer.from(csv, "utf8"),
-      sha = tokenHash(csv),
-      filePath = `${row.id}/${sha}.csv`;
-    const upload = await db.storage
-      .from("lead-shop-private")
-      .upload(filePath, content, { contentType: "text/csv", upsert: true });
-    if (upload.error)
-      throw new Error("CSV konnte nicht geschützt gespeichert werden.");
-    const finished = await db.rpc("crm_finish_lead_fulfillment", {
-      id_in: row.id,
-      claim_in: row.claim_id,
-      path_in: filePath,
-      sha_in: sha,
-      token_hash_in: tokenHash(leadDownloadToken(row)),
-    });
-    if (finished.error)
-      throw new Error("Downloadfreigabe konnte nicht gespeichert werden.");
-  } catch (error) {
-    await db
-      .from("crm_lead_orders")
-      .update({
-        fulfillment_state: "failed",
-        error:
-          error instanceof Error
-            ? error.message
-            : "Bereitstellung fehlgeschlagen",
-      })
-      .eq("id", row.id)
-      .eq("claim_id", row.claim_id)
-      .eq("fulfillment_state", "processing");
+    return { available: false, manualDelivery: false };
   }
 }
 const escape = (value: string) =>
@@ -166,54 +70,62 @@ const escape = (value: string) =>
         ch
       ]!,
   );
-export async function deliverLeadMail() {
+export async function deliverLeadMail(orderId?: string) {
   const cfg = await smtpConfig();
   if (!cfg.host || !cfg.user || !cfg.password || ![465, 587].includes(cfg.port))
     return;
   const db = serviceDb();
-  const claim = await db.rpc("crm_claim_lead_mail");
+  const claim = await db.rpc("crm_claim_lead_manual_mail", {
+    order_in: orderId || null,
+  });
   if (claim.error) throw new Error("E-Mail-Warteschlange nicht verfügbar.");
   const job = claim.data?.[0];
   if (!job) return;
-  const { data } = await db
+  const record = await db
     .from("crm_lead_orders")
     .select("*")
     .eq("id", job.order_id)
     .single();
-  if (!data) throw new Error("Bestellung fehlt.");
-  const row = data as LeadOrder;
-  const subject =
-    job.kind === "download"
-      ? `Ihre Leadliste steht bereit – ${row.reference}`
-      : `Bestellbestätigung – ${row.reference}`;
+  if (record.error || !record.data) throw new Error("Bestellung fehlt.");
+  const row = record.data as LeadOrder;
+  const owner = job.kind.startsWith("owner_");
+  if (job.kind !== "confirmation" && !owner)
+    throw new Error("Versandart nicht freigegeben.");
+  const recipient = job.to_address || (owner ? "" : row.customer.email);
+  if (!recipient) throw new Error("Empfänger fehlt.");
+  const labels: Record<string, string> = {
+    owner_order: "Neue Lead-Bestellung",
+    owner_payment: "Lead-Bestellung bezahlt – manuell ausliefern",
+    owner_sent: "Lead-Bestellung als versendet markiert",
+    owner_cancelled: "Lead-Bestellung storniert",
+  };
+  const subject = `${owner ? labels[job.kind] : "Bestellbestätigung"} · ${row.reference}`;
   const address = [
     row.customer.company,
     row.customer.contact,
     `${row.customer.street} ${row.customer.houseNumber}`,
     `${row.customer.postcode} ${row.customer.city}`,
     row.customer.country,
-    row.customer.email,
-    row.customer.phone,
-    row.customer.vatId,
+    `E-Mail: ${row.customer.email}`,
+    `Telefon: ${row.customer.phone}`,
+    row.customer.vatId ? `USt-IdNr.: ${row.customer.vatId}` : "",
   ]
     .filter(Boolean)
     .join("\n");
-  const payment = `Empfänger: ${row.bank.recipient}\nIBAN: ${row.bank.iban}\nVerwendungszweck: ${row.reference}\nRechnungsbetrag: ${shopMoney(row.total_cents)}\nSteuerbefreiung für Kleinunternehmer gemäß § 19 UStG. Keine zusätzliche Umsatzsteuer.`;
-  const introduction =
-    job.kind === "download"
-      ? `Der Zahlungseingang zu Ihrer Bestellung ist bestätigt. Ihre exklusive Liste mit ${row.quantity} Firmenkontakten ist verfügbar.\n\n${leadDownloadUrl(row)}\n\nDer persönliche Downloadlink ist 90 Tage ab Bereitstellung gültig. Bitte geben Sie ihn nicht weiter. Bei Problemen antworten Sie mit Ihrer Bestellnummer auf diese Nachricht.`
-      : "Ihr Kauf wurde bestätigt. Sie erhalten nach bestätigtem Zahlungseingang einen Downloadlink per E-Mail, über den Sie Ihre Leadliste direkt auf unserer Website herunterladen können.";
-  const text = [
-    `Guten Tag ${row.customer.contact},`,
-    introduction,
-    `Bestellnummer: ${row.reference}\nPaket: ${row.package}\nAnzahl: ${row.quantity}\nGesamtbetrag: ${shopMoney(row.total_cents)}`,
-    job.kind === "confirmation" ? payment : "Zahlung vollständig bestätigt.",
-    "Rechnungs- und Kontaktdaten\n" + address,
-    job.kind === "confirmation"
-      ? "Bestellbedingungen\n" + row.terms
-      : "Die gelieferten Kontaktdaten enthalten keine Werbeeinwilligung.",
-    `Freundliche Grüße\n${business.owner}\n${site.name}\n${business.street}, ${business.postcode} ${business.city}\n${site.email}\n${site.phone}`,
-  ].join("\n\n");
+  const summary = `Bestellnummer: ${row.reference}\nPaket: ${row.package}\nAnzahl: ${row.quantity} Firmenkontakte\nGesamtbetrag: ${shopMoney(row.total_cents)}\nStatus: ${row.status}\nBezahlt: ${row.paid_at ? "Ja" : "Nein"}`;
+  const payment = `Empfänger: ${row.bank.recipient}\nIBAN: ${row.bank.iban}\nVerwendungszweck: ${row.reference}\nVollständiger Zahlbetrag: ${shopMoney(row.total_cents)}\nSteuerbefreiung für Kleinunternehmer gemäß § 19 UStG. Keine zusätzliche Umsatzsteuer.`;
+  const crmLink = `${site.url}/crm/lead-verkauf?vorgang=${row.id}`;
+  const text = owner
+    ? `${labels[job.kind]}. Rufe die Bestellung im CRM auf.\n\n${summary}\n\n${address}\n\nCRM: ${crmLink}\n\n${row.paid_at ? "Die Zahlung ist im CRM bestätigt. CSV-Dateien werden ausschließlich über dein eigenes E-Mail-Programm versendet." : "Zahlung noch nicht bestätigt. Vor dem lokalen Versand den tatsächlichen Bankeingang prüfen."}${row.delivery_note ? "\nVersandnotiz: " + row.delivery_note : ""}`
+    : [
+        `Guten Tag ${row.customer.contact},`,
+        "Ihr Kauf wurde bestätigt. Nach bestätigtem Zahlungseingang senden wir Ihre Leadliste als CSV-Datei an die bei der Bestellung angegebene E-Mail-Adresse.",
+        summary,
+        payment,
+        "Rechnungs- und Kontaktdaten\n" + address,
+        "Bestellbedingungen\n" + row.terms,
+        `Freundliche Grüße\n${business.owner}\n${site.name}\n${business.street}, ${business.postcode} ${business.city}\n${site.email}\n${site.phone}`,
+      ].join("\n\n");
   const messageId = `<lead-shop-${job.id}@webstudio-expert.de>`;
   const archived = await db
     .from("crm_lead_shop_mail")
@@ -234,39 +146,31 @@ export async function deliverLeadMail() {
     disableUrlAccess: true,
   });
   try {
-    // Recheck paid/revoked state immediately before transmitting a download.
-    if (job.kind === "download") {
-      const check = await db
-        .from("crm_lead_orders")
-        .select("status,revoked")
-        .eq("id", row.id)
-        .single();
-      if (
-        check.error ||
-        check.data.revoked ||
-        check.data.status !== "Bereitgestellt"
-      )
-        throw new Error("Freigabe geändert");
-    }
-    const logo = await readFile(
-      path.join(process.cwd(), "public/brand/wordmark-black.png"),
-    );
+    const logo = owner
+      ? null
+      : await readFile(
+          path.join(process.cwd(), "public/brand/wordmark-black.png"),
+        );
     const info = await transport.sendMail({
       from: cfg.from,
-      to: row.customer.email,
-      replyTo: site.email,
+      to: recipient,
+      replyTo: owner ? row.customer.email : site.email,
       messageId,
       subject,
       text,
-      html: `<div style="font-family:Arial,sans-serif;max-width:620px;color:#191919;background:white;padding:24px"><img src="cid:webstudio-lead-logo" width="180" alt="Webstudio Expert" style="max-width:100%;height:auto;margin-bottom:24px">${job.kind === "download" ? `<p><a href="${escape(leadDownloadUrl(row))}" style="display:inline-block;padding:14px 20px;background:#191919;color:white;text-decoration:none">Leadliste herunterladen</a></p>` : ""}<div style="white-space:pre-wrap;line-height:1.6">${escape(text)}</div></div>`,
-      attachments: [
-        {
-          filename: "webstudio-expert.png",
-          content: logo,
-          cid: "webstudio-lead-logo",
-          contentType: "image/png",
-        },
-      ],
+      ...(!owner
+        ? {
+            html: `<div style="font-family:Arial,sans-serif;max-width:620px;padding:24px"><img src="cid:webstudio-lead-logo" width="180" alt="Webstudio Expert"><div style="white-space:pre-wrap;line-height:1.6">${escape(text)}</div></div>`,
+            attachments: [
+              {
+                filename: "webstudio-expert.png",
+                content: logo!,
+                cid: "webstudio-lead-logo",
+                contentType: "image/png",
+              },
+            ],
+          }
+        : {}),
     });
     if (!info.accepted?.length)
       throw new Error("SMTP hat Nachricht nicht angenommen");
@@ -274,13 +178,18 @@ export async function deliverLeadMail() {
       .from("crm_lead_shop_mail")
       .update({ status: "sent", sent_at: new Date().toISOString(), error: "" })
       .eq("id", job.id)
-      .eq("claim_id", job.claim_id);
+      .eq("claim_id", job.claim_id)
+      .eq("status", "sending")
+      .select("id")
+      .single();
     if (done.error) throw new Error("Versandstatus nicht gespeichert");
-    await db.from("crm_lead_shop_events").insert({
-      order_id: row.id,
-      action: `mail.${job.kind}.accepted`,
-      detail: { message_id: messageId },
-    });
+    await db
+      .from("crm_lead_shop_events")
+      .insert({
+        order_id: row.id,
+        action: `mail.${job.kind}.accepted`,
+        detail: { message_id: messageId },
+      });
   } catch {
     await db
       .from("crm_lead_shop_mail")
@@ -290,18 +199,26 @@ export async function deliverLeadMail() {
           "Versandstatus unklar. Gesendetes Postfach prüfen; kein automatischer Neuversand.",
       })
       .eq("id", job.id)
-      .eq("claim_id", job.claim_id);
+      .eq("claim_id", job.claim_id)
+      .eq("status", "sending");
   } finally {
     transport.close();
   }
 }
+export async function notifyLeadOrder(orderId: string) {
+  // Jobs were committed with the order/payment. SMTP failure cannot undo a purchase.
+  const results = await Promise.allSettled([
+    deliverLeadMail(orderId),
+    deliverLeadMail(orderId),
+  ]);
+  if (results.some((r) => r.status === "rejected"))
+    console.error("lead_order_notice_deferred");
+}
 export async function runLeadShopWorker() {
-  const db = serviceDb();
-  const heartbeat = await db
+  const heartbeat = await serviceDb()
     .from("crm_lead_shop_automation")
     .update({ worker_seen: new Date().toISOString() })
     .eq("id", true);
   if (heartbeat.error) throw new Error("Lead-Shop-Migration fehlt.");
-  await fulfillLeadOrder();
   await Promise.all([deliverLeadMail(), deliverLeadMail()]);
 }

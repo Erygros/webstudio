@@ -1,7 +1,6 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { crmFetch } from "./api";
-import { parseCsv } from "@/crm/server/import-export";
 import { shopMoney } from "@/lib/lead-shop";
 import type { LeadOrder } from "@/crm/server/lead-shop";
 type Mail = {
@@ -12,33 +11,68 @@ type Mail = {
   error: string;
   sent_at: string | null;
 };
+type Settings = {
+  enabled: boolean;
+  manual_delivery: boolean;
+  notification_email: string;
+  recipient: string;
+  iban: string;
+};
 type Dashboard = {
   rows: LeadOrder[];
   count: number;
-  settings: { recipient: string; iban: string; enabled: boolean };
-  status: { available: boolean; stock: number };
-  clock: { last_tick: string | null; worker_seen: string | null };
+  settings: Settings;
+  status: { available: boolean; manualDelivery: boolean };
   mail: Mail[];
   administrator: boolean;
-  events: { action: string; created_at: string; detail: unknown }[];
+  events: { action: string; created_at: string }[];
+};
+const mailLabels: Record<string, string> = {
+  confirmation: "Bestätigung an Kunden",
+  owner_order: "Bestellmeldung an Betreiber",
+  owner_payment: "Zahlungsmeldung an Betreiber",
+  owner_sent: "Versandmeldung an Betreiber",
+  owner_cancelled: "Stornomeldung an Betreiber",
+};
+const states: Record<string, string> = {
+  pending: "Eingeplant",
+  sending: "Versand läuft",
+  sent: "Vom Mailserver angenommen",
+  unknown: "Unklar – Postfach prüfen",
+  cancelled: "Deaktiviert",
 };
 function OrderCard({
   row,
   mail,
   reload,
+  initialOpen,
 }: {
   row: LeadOrder;
   mail: Mail[];
   reload: () => Promise<void>;
+  initialOpen: boolean;
 }) {
-  const [open, setOpen] = useState(false),
+  const [open, setOpen] = useState(initialOpen),
     [reference, setReference] = useState(""),
     [amount, setAmount] = useState(String(row.total_cents / 100)),
     [checked, setChecked] = useState(false),
     [notes, setNotes] = useState(row.internal_notes),
+    [sentConfirmed, setSentConfirmed] = useState(false),
+    [deliveryNote, setDeliveryNote] = useState(""),
     [busy, setBusy] = useState(false),
     [error, setError] = useState("");
   const [events, setEvents] = useState<Dashboard["events"]>([]);
+  async function history() {
+    try {
+      const d = await crmFetch<Dashboard>(`lead-shop?id=${row.id}`);
+      setEvents(d.events);
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  }
+  useEffect(() => {
+    if (initialOpen) void history();
+  }, [initialOpen]);
   async function action(action: string, extra: Record<string, unknown> = {}) {
     if (busy) return;
     setBusy(true);
@@ -56,14 +90,18 @@ function OrderCard({
       setBusy(false);
     }
   }
-  async function history() {
-    try {
-      const d = await crmFetch<Dashboard>(`lead-shop?id=${row.id}`);
-      setEvents(d.events);
-    } catch (e) {
-      setError((e as Error).message);
-    }
-  }
+  const labels: Record<string, string> = {
+    company: "Firma",
+    contact: "Ansprechpartner",
+    street: "Straße",
+    houseNumber: "Hausnummer",
+    postcode: "PLZ",
+    city: "Ort",
+    country: "Land",
+    email: "E-Mail",
+    phone: "Telefon",
+    vatId: "USt-IdNr.",
+  };
   return (
     <article className="crm-panel">
       <div className="crm-panel-head">
@@ -73,7 +111,11 @@ function OrderCard({
           </span>
           <h3>{row.customer.company}</h3>
           <p>
-            {row.quantity} Kontakte · {shopMoney(row.total_cents)} ·{" "}
+            {row.package} · {row.quantity.toLocaleString("de-DE")} Kontakte ·{" "}
+            {shopMoney(row.total_cents)}
+          </p>
+          <p>
+            <strong>{row.paid_at ? "Bezahlt" : "Nicht bezahlt"}</strong> ·{" "}
             {row.status}
           </p>
         </div>
@@ -84,7 +126,7 @@ function OrderCard({
             if (!open) void history();
           }}
         >
-          {open ? "Schließen" : "Bestellung öffnen"}
+          {open ? "Schließen" : "Bestellung ansehen"}
         </button>
       </div>
       {open && (
@@ -92,27 +134,14 @@ function OrderCard({
           <dl className="lead-summary">
             {Object.entries(row.customer).map(([key, value]) => (
               <div key={key}>
-                <dt>
-                  {{
-                    company: "Firma",
-                    contact: "Ansprechpartner",
-                    street: "Straße",
-                    houseNumber: "Hausnummer",
-                    postcode: "PLZ",
-                    city: "Ort",
-                    country: "Land",
-                    email: "E-Mail",
-                    phone: "Telefon",
-                    vatId: "USt-IdNr.",
-                  }[key] || key}
-                </dt>
+                <dt>{labels[key] || key}</dt>
                 <dd>{value || "Nicht angegeben"}</dd>
               </div>
             ))}
           </dl>
           <p>
-            Reservierung bis: {new Date(row.expires_at).toLocaleString("de-DE")}{" "}
-            · Auszahlung: {row.bank.recipient} / {row.bank.iban}
+            Zahlungsanweisung: {row.bank.recipient} · {row.bank.iban} ·
+            Verwendungszweck {row.reference}
           </p>
           {row.status === "Zahlung ausstehend" && (
             <form
@@ -127,11 +156,7 @@ function OrderCard({
                 });
               }}
             >
-              <h3>Zahlung zuordnen</h3>
-              <p>
-                Bankkonto tatsächlich prüfen. Die Website liest keine
-                Kontoumsätze aus.
-              </p>
+              <h3>Zahlung erfassen</h3>
               <div className="crm-form-grid">
                 <label className="form-field">
                   Eingegangener Betrag in Euro
@@ -143,7 +168,7 @@ function OrderCard({
                   />
                 </label>
                 <label className="form-field">
-                  Eindeutige Banktransaktionsreferenz
+                  Banktransaktionsreferenz
                   <input
                     required
                     minLength={4}
@@ -156,113 +181,86 @@ function OrderCard({
               <label className="consent">
                 <input
                   type="checkbox"
-                  required
                   checked={checked}
+                  required
                   onChange={(e) => setChecked(e.target.checked)}
                 />
                 <span>
-                  Ich habe den tatsächlichen Zahlungseingang, Betrag und die
-                  Zuordnung im Bankkonto geprüft.
+                  Ich habe den tatsächlichen Zahlungseingang und die Zuordnung
+                  im Bankkonto geprüft.
                 </span>
               </label>
               <div className="crm-actions">
                 <button className="button" disabled={busy || !checked}>
-                  Zahlung bestätigen und Bereitstellung auslösen
+                  Als bezahlt markieren
                 </button>
                 <button
                   className="button secondary"
                   type="button"
                   disabled={busy}
                   onClick={() => {
-                    if (
-                      confirm(
-                        "Unbezahlte Bestellung stornieren und Kontakte wieder freigeben?",
-                      )
-                    )
+                    if (confirm("Unbezahlte Bestellung stornieren?"))
                       void action("cancel");
                   }}
                 >
-                  Bestellung stornieren
+                  Stornieren
                 </button>
               </div>
             </form>
           )}
           {row.paid_at && (
             <p>
-              Zahlung bestätigt: {new Date(row.paid_at).toLocaleString("de-DE")}{" "}
-              · Bereitstellung: {row.fulfillment_state} · Download:{" "}
-              {row.revoked ? "Gesperrt" : "Nicht gesperrt"}
+              Zahlung bestätigt: {new Date(row.paid_at).toLocaleString("de-DE")}
             </p>
           )}
-          {row.error && <p role="alert">{row.error}</p>}
-          <div className="crm-actions">
-            {row.fulfillment_state === "failed" && row.status === "Bezahlt" && (
+          {row.status === "Bezahlt" && (
+            <section>
+              <h3>Manueller Versand</h3>
+              <p>
+                Die CSV-Datei über dein eigenes E-Mail-Programm an{" "}
+                <a href={`mailto:${row.customer.email}`}>
+                  {row.customer.email}
+                </a>{" "}
+                versenden. Das CRM lädt keine Datei hoch und versendet keine
+                Leadlisten.
+              </p>
+              <label className="form-field">
+                Versandnotiz (optional)
+                <input
+                  maxLength={1000}
+                  value={deliveryNote}
+                  onChange={(e) => setDeliveryNote(e.target.value)}
+                />
+              </label>
+              <label className="consent">
+                <input
+                  type="checkbox"
+                  checked={sentConfirmed}
+                  onChange={(e) => setSentConfirmed(e.target.checked)}
+                />
+                <span>
+                  Ich habe die gekaufte Liste außerhalb des CRM an den Kunden
+                  versendet.
+                </span>
+              </label>
               <button
                 className="button secondary"
-                disabled={busy}
-                onClick={() => action("retry-file")}
+                disabled={busy || !sentConfirmed}
+                onClick={() =>
+                  action("sent", { sentConfirmed: true, note: deliveryNote })
+                }
               >
-                Bereitstellung erneut einplanen
+                Als extern versendet markieren
               </button>
-            )}
-            {row.status === "Bereitgestellt" && (
-              <>
-                <button
-                  className="button secondary"
-                  disabled={busy || row.revoked}
-                  onClick={() => action("revoke")}
-                >
-                  Download sperren
-                </button>
-                <button
-                  className="button secondary"
-                  disabled={busy}
-                  onClick={() => {
-                    if (
-                      confirm(
-                        "Download für weitere 90 Tage freigeben und E-Mail erneut einplanen?",
-                      )
-                    )
-                      void action("renew");
-                  }}
-                >
-                  Download erneuern und E-Mail senden
-                </button>
-              </>
-            )}
-          </div>
-          <h3>E-Mail-Verlauf</h3>
-          {mail.map((m) => (
-            <div key={m.id}>
-              <p>
-                {m.kind === "download" ? "Downloadlink" : "Bestellbestätigung"}:{" "}
-                {m.status}
-                {m.sent_at
-                  ? " · " + new Date(m.sent_at).toLocaleString("de-DE")
-                  : ""}{" "}
-                {m.error}
-              </p>
-              {m.status === "unknown" && (
-                <button
-                  className="button secondary"
-                  disabled={busy}
-                  onClick={() => {
-                    if (
-                      confirm(
-                        "Gesendetes Postfach und SMTP-Protokoll geprüft? Erneut senden kann eine doppelte E-Mail erzeugen.",
-                      )
-                    )
-                      void action("retry-mail", {
-                        id: m.id,
-                        mailboxChecked: true,
-                      });
-                  }}
-                >
-                  Nach Postfachprüfung erneut senden
-                </button>
-              )}
-            </div>
-          ))}
+            </section>
+          )}
+          {row.fulfilled_at && (
+            <p>
+              Extern versendet:{" "}
+              {new Date(row.fulfilled_at).toLocaleString("de-DE")}{" "}
+              {row.delivery_note}
+            </p>
+          )}
           <label className="form-field">
             Interne Notiz
             <textarea
@@ -278,242 +276,66 @@ function OrderCard({
           >
             Notiz speichern
           </button>
-          <h3>Protokoll</h3>
-          <ul>
-            {events.map((e, i) => (
-              <li key={i}>
-                {new Date(e.created_at).toLocaleString("de-DE")} · {e.action}
-              </li>
+          <details>
+            <summary>E-Mail- und Änderungsverlauf</summary>
+            {mail.map((m) => (
+              <div key={m.id}>
+                <p>
+                  {mailLabels[m.kind] || m.kind}: {states[m.status] || m.status}{" "}
+                  {m.error}
+                </p>
+                {m.status === "unknown" && (
+                  <button
+                    className="button secondary"
+                    disabled={busy}
+                    onClick={() => {
+                      if (
+                        confirm(
+                          "Gesendetes Postfach und SMTP-Protokoll geprüft? Eine Wiederholung kann doppelte Nachrichten erzeugen.",
+                        )
+                      )
+                        void action("retry-mail", {
+                          id: m.id,
+                          mailboxChecked: true,
+                        });
+                    }}
+                  >
+                    Nach Postfachprüfung erneut senden
+                  </button>
+                )}
+              </div>
             ))}
-          </ul>
+            <ul>
+              {events.map((e, i) => (
+                <li key={i}>
+                  {new Date(e.created_at).toLocaleString("de-DE")} · {e.action}
+                </li>
+              ))}
+            </ul>
+          </details>
           {error && <p role="alert">{error}</p>}
         </>
       )}
     </article>
   );
 }
-function CatalogImport({ reload }: { reload: () => Promise<void> }) {
-  const rows = useRef<string[][]>([]),
-    [headers, setHeaders] = useState<string[]>([]),
-    [mapping, setMapping] = useState<Record<string, string>>({}),
-    [source, setSource] = useState(""),
-    [date, setDate] = useState(""),
-    [rights, setRights] = useState(false),
-    [busy, setBusy] = useState(false),
-    [message, setMessage] = useState("");
-  async function file(file?: File) {
-    if (!file) return;
-    setMessage("");
-    setHeaders([]);
-    rows.current = [];
-    if (file.size > 150000000) {
-      setMessage(
-        "CSV darf höchstens 150 MB groß sein. Größere Bestände in mehrere Dateien aufteilen.",
-      );
-      return;
-    }
-    setBusy(true);
-    try {
-      const parsed = parseCsv(await file.text());
-      const head = parsed.shift();
-      if (!head || !parsed.length)
-        throw new Error("CSV enthält keine Datensätze.");
-      if (parsed.length > 500000)
-        throw new Error("Höchstens 500.000 Zeilen pro Datei.");
-      rows.current = parsed;
-      setHeaders(head);
-      const map: Record<string, string> = {};
-      head.forEach((v, i) => {
-        const h = v.toLowerCase().replace(/[^a-z]/g, "");
-        if (["firmenname", "firma", "name", "company"].includes(h))
-          map.name = String(i);
-        if (["telefonnummer", "telefon", "phone"].includes(h))
-          map.phone = String(i);
-        if (["emailadresse", "email"].includes(h)) map.email = String(i);
-        if (["website", "webseite", "url"].includes(h)) map.website = String(i);
-      });
-      setMapping(map);
-    } catch (e) {
-      setMessage((e as Error).message);
-    } finally {
-      setBusy(false);
-    }
-  }
-  async function run() {
-    setBusy(true);
-    setMessage("");
-    const batchId = crypto.randomUUID();
-    let inserted = 0,
-      invalid = 0,
-      duplicates = 0;
-    try {
-      for (let offset = 0; offset < rows.current.length; offset += 1000) {
-        if (offset) await new Promise((resolve) => setTimeout(resolve, 650));
-        const batch = rows.current
-          .slice(offset, offset + 1000)
-          .map((r) =>
-            Object.fromEntries(
-              ["name", "phone", "email", "website"].map((k) => [
-                k,
-                (r[Number(mapping[k])] || "").trim(),
-              ]),
-            ),
-          );
-        const d = await crmFetch<{
-          inserted: number;
-          invalid: number;
-          duplicates: number;
-        }>("lead-shop", {
-          method: "POST",
-          body: JSON.stringify({
-            action: "import",
-            batchId,
-            source,
-            verifiedAt: date,
-            rightsConfirmed: rights,
-            rows: batch,
-          }),
-        });
-        inserted += d.inserted;
-        invalid += d.invalid;
-        duplicates += d.duplicates;
-        setMessage(
-          `${Math.min(offset + 1000, rows.current.length)} / ${rows.current.length} verarbeitet · ${inserted} neu · ${invalid} ungültig · ${duplicates} Duplikate`,
-        );
-      }
-      await reload();
-      setMessage((m) => "Import abgeschlossen. " + m);
-    } catch (e) {
-      setMessage(
-        (m) =>
-          m +
-          " · " +
-          (e as Error).message +
-          " Bereits gespeicherte Kontakte bleiben erhalten. Beim erneuten Import werden Duplikate übersprungen.",
-      );
-    } finally {
-      setBusy(false);
-    }
-  }
-  return (
-    <section className="crm-panel">
-      <h2>Verkaufsbestand importieren</h2>
-      <p>
-        Nur vorhandene, rechtmäßig weitergebbare und auf bestehende Unternehmen
-        geprüfte Kontakte. Keine Übernahme aus der normalen CRM-Lead-Tabelle.
-        Die Daten werden exklusiv verkauft.
-      </p>
-      <label className="form-field">
-        CSV-Datei
-        <input
-          type="file"
-          accept=".csv,text/csv"
-          disabled={busy}
-          onChange={(e) => void file(e.target.files?.[0])}
-        />
-      </label>
-      {headers.length > 0 && (
-        <>
-          <div className="crm-form-grid">
-            {[
-              ["name", "Firmenname"],
-              ["phone", "Telefonnummer"],
-              ["email", "E-Mail-Adresse"],
-              ["website", "Website"],
-            ].map(([key, label]) => (
-              <label className="form-field" key={key}>
-                {label}
-                <select
-                  value={mapping[key] ?? ""}
-                  disabled={busy}
-                  onChange={(e) =>
-                    setMapping({ ...mapping, [key]: e.target.value })
-                  }
-                >
-                  <option value="">Spalte auswählen</option>
-                  {headers.map((h, i) => (
-                    <option value={i} key={i}>
-                      {h}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            ))}
-          </div>
-          <p>
-            {rows.current.length.toLocaleString("de-DE")} Zeilen. Alle vier
-            Felder sind erforderlich. Doppelte Website-Domains, Telefonnummern
-            oder E-Mail-Adressen werden auch über frühere Importe hinweg
-            übersprungen; vorhandene und verkaufte Daten werden nicht
-            überschrieben.
-          </p>
-          <label className="form-field">
-            Datenquelle und Nachweis des Weitergaberechts
-            <textarea
-              required
-              minLength={5}
-              maxLength={2000}
-              disabled={busy}
-              value={source}
-              onChange={(e) => setSource(e.target.value)}
-            />
-          </label>
-          <label className="form-field">
-            Datum der Bestandsprüfung
-            <input
-              type="date"
-              required
-              value={date}
-              disabled={busy}
-              max={new Date().toISOString().slice(0, 10)}
-              onChange={(e) => setDate(e.target.value)}
-            />
-          </label>
-          <label className="consent">
-            <input
-              type="checkbox"
-              checked={rights}
-              disabled={busy}
-              onChange={(e) => setRights(e.target.checked)}
-            />
-            <span>
-              Ich bestätige die dokumentierte Datenquelle, die erforderlichen
-              Weitergaberechte, die Prüfung auf bestehende Unternehmen und die
-              zulässige Verarbeitung der Kontaktdaten.
-            </span>
-          </label>
-          <button
-            className="button"
-            disabled={
-              busy ||
-              !rights ||
-              !date ||
-              source.trim().length < 5 ||
-              ["name", "phone", "email", "website"].some(
-                (k) => mapping[k] === undefined || mapping[k] === "",
-              )
-            }
-            onClick={run}
-          >
-            {busy ? "Import läuft …" : "Vorhandene Kontakte importieren"}
-          </button>
-        </>
-      )}
-      {message && <p role="status">{message}</p>}
-    </section>
-  );
-}
-export function LeadShopAdmin() {
+export function LeadShopAdmin({ initialId }: { initialId?: string }) {
   const [data, setData] = useState<Dashboard | null>(null),
     [error, setError] = useState(""),
     [offset, setOffset] = useState(0),
     [status, setStatus] = useState("");
-  const [bank, setBank] = useState({ enabled: false, recipient: "", iban: "" }),
-    [bankBusy, setBankBusy] = useState(false);
+  const [bank, setBank] = useState<Settings>({
+      enabled: false,
+      manual_delivery: true,
+      notification_email: "bewerbung.enricogross30@gmail.com",
+      recipient: "",
+      iban: "",
+    }),
+    [busy, setBusy] = useState(false);
   async function load() {
     try {
       const d = await crmFetch<Dashboard>(
-        `lead-shop?offset=${offset}&status=${encodeURIComponent(status)}`,
+        `lead-shop?offset=${offset}&status=${encodeURIComponent(status)}${initialId ? `&id=${encodeURIComponent(initialId)}` : ""}`,
       );
       setData(d);
       setError("");
@@ -523,20 +345,28 @@ export function LeadShopAdmin() {
   }
   useEffect(() => {
     void load();
-    const timer = setInterval(() => void load(), 15 * 60 * 1000);
-    const changed = () => void load();
-    window.addEventListener("crm-change", changed);
-    return () => {
-      clearInterval(timer);
-      window.removeEventListener("crm-change", changed);
-    };
-  }, [offset, status]);
+    const timer = setInterval(() => void load(), 60000);
+    return () => clearInterval(timer);
+  }, [offset, status, initialId]);
   useEffect(() => {
-    if (data?.settings) setBank(data.settings);
-  }, [data?.settings.recipient, data?.settings.iban, data?.settings.enabled]);
-  async function saveBank(e: React.FormEvent) {
+    if (data?.settings)
+      setBank({
+        enabled: data.settings.enabled,
+        manual_delivery: data.settings.manual_delivery,
+        notification_email: data.settings.notification_email,
+        recipient: data.settings.recipient,
+        iban: data.settings.iban,
+      });
+  }, [
+    data?.settings.enabled,
+    data?.settings.manual_delivery,
+    data?.settings.notification_email,
+    data?.settings.recipient,
+    data?.settings.iban,
+  ]);
+  async function save(e: React.FormEvent) {
     e.preventDefault();
-    setBankBusy(true);
+    setBusy(true);
     try {
       await crmFetch("lead-shop", {
         method: "POST",
@@ -546,7 +376,7 @@ export function LeadShopAdmin() {
     } catch (e) {
       setError((e as Error).message);
     } finally {
-      setBankBusy(false);
+      setBusy(false);
     }
   }
   return (
@@ -555,7 +385,8 @@ export function LeadShopAdmin() {
         <span className="eyebrow">Webstudio Expert / CRM</span>
         <h1>Lead-Verkauf</h1>
         <p>
-          Bestellungen, Bankabgleich, exklusive Kontakte und Downloadfreigaben.
+          Verkaufsstatus, Zahlungsdaten und Bestellübersicht. CSV-Dateien werden
+          lokal per E-Mail ausgeliefert.
         </p>
       </header>
       {error && (
@@ -568,76 +399,105 @@ export function LeadShopAdmin() {
           <section className="crm-panel">
             <h2>Verkaufsstatus</h2>
             <p>
-              {data.status.stock.toLocaleString("de-DE")} frei verfügbare
-              Kontakte · Öffentlicher Verkauf:{" "}
-              {data.status.available
-                ? "Bereit"
-                : "Gesperrt – Bankkonfiguration, Bestand, SMTP und Zeitgeber prüfen"}
+              Öffentlicher Verkauf:{" "}
+              <strong>
+                {data.status.available
+                  ? "Aktiv"
+                  : "Inaktiv – Verkaufseinstellungen, Bankdaten und SMTP prüfen"}
+              </strong>
             </p>
             <p>
-              Letzter Versandlauf:{" "}
-              {data.clock?.worker_seen
-                ? new Date(data.clock.worker_seen).toLocaleString("de-DE")
-                : "Noch keiner"}
-              . Bankkontrolle durch die Buchhaltung alle 15 Minuten;
-              Kontoumsätze werden nicht automatisch abgerufen.
+              Kein CSV-Upload und keine Bestandsprüfung erforderlich. Die
+              exklusive Zusammenstellung und die Vermeidung mehrfach verkaufter
+              Kontakte verwaltest du lokal.
             </p>
             <button className="button secondary" onClick={load}>
-              Bestellungen aktualisieren
+              Übersicht aktualisieren
             </button>
           </section>
           {data.administrator && (
-            <>
-              <section className="crm-panel">
-                <h2>Zahlungskonfiguration</h2>
-                <form onSubmit={saveBank}>
-                  <div className="crm-form-grid">
-                    <label className="form-field">
-                      Kontoinhaber / Empfänger
-                      <input
-                        required
-                        maxLength={150}
-                        value={bank.recipient}
-                        onChange={(e) =>
-                          setBank({ ...bank, recipient: e.target.value })
-                        }
-                      />
-                    </label>
-                    <label className="form-field">
-                      IBAN
-                      <input
-                        required
-                        value={bank.iban}
-                        onChange={(e) =>
-                          setBank({ ...bank, iban: e.target.value })
-                        }
-                      />
-                    </label>
-                  </div>
-                  <label className="consent">
+            <section className="crm-panel">
+              <h2>Verkauf und Zahlung konfigurieren</h2>
+              <form onSubmit={save}>
+                <label className="consent">
+                  <input
+                    type="checkbox"
+                    checked={bank.manual_delivery}
+                    onChange={(e) =>
+                      setBank({ ...bank, manual_delivery: e.target.checked })
+                    }
+                  />
+                  <span>
+                    Manuelle Auslieferung aktivieren: Bestellungen ohne
+                    hochgeladene CSV annehmen. Dateien werden ausschließlich
+                    über unser eigenes E-Mail-Programm versendet.
+                  </span>
+                </label>
+                <label className="consent">
+                  <input
+                    type="checkbox"
+                    checked={bank.enabled}
+                    onChange={(e) =>
+                      setBank({ ...bank, enabled: e.target.checked })
+                    }
+                  />
+                  <span>Verkauf auf der Website aktivieren</span>
+                </label>
+                <div className="crm-form-grid">
+                  <label className="form-field">
+                    Kontoinhaber / Empfänger
                     <input
-                      type="checkbox"
-                      checked={bank.enabled}
+                      required
+                      maxLength={150}
+                      value={bank.recipient}
                       onChange={(e) =>
-                        setBank({ ...bank, enabled: e.target.checked })
+                        setBank({ ...bank, recipient: e.target.value })
                       }
                     />
-                    <span>
-                      Verkauf aktivieren. Neue Bestellungen übernehmen diese
-                      Bankdaten; vorhandene Bestellungen behalten ihre
-                      gespeicherten Zahlungsinformationen.
-                    </span>
                   </label>
-                  <button className="button" disabled={bankBusy}>
-                    Bankdaten speichern
-                  </button>
-                </form>
-              </section>
-              <CatalogImport reload={load} />
-            </>
+                  <label className="form-field">
+                    IBAN
+                    <input
+                      required
+                      value={bank.iban}
+                      onChange={(e) =>
+                        setBank({ ...bank, iban: e.target.value })
+                      }
+                    />
+                  </label>
+                  <label className="form-field">
+                    E-Mail für Bestell- und Statusmeldungen
+                    <input
+                      required
+                      type="email"
+                      maxLength={254}
+                      value={bank.notification_email}
+                      onChange={(e) =>
+                        setBank({ ...bank, notification_email: e.target.value })
+                      }
+                    />
+                  </label>
+                </div>
+                <p>
+                  Jede neue Bestellung wird mit Käuferdaten, Paket, Menge,
+                  Preis, Zahlungsstatus und CRM-Link gemeldet. Zahlungs-,
+                  Versand- und Stornoänderungen erhalten ebenfalls eine Meldung.
+                  Kunden erhalten automatisch ihre Bestellbestätigung und
+                  Überweisungsdaten.
+                </p>
+                <button className="button" disabled={busy}>
+                  Einstellungen speichern
+                </button>
+              </form>
+            </section>
           )}
           <section className="crm-panel">
             <h2>Bestellungen ({data.count})</h2>
+            {initialId && (
+              <a className="text-link" href="/crm/lead-verkauf">
+                Alle Bestellungen anzeigen
+              </a>
+            )}
             <label className="form-field">
               Status
               <select
@@ -651,9 +511,10 @@ export function LeadShopAdmin() {
                 {[
                   "Zahlung ausstehend",
                   "Bezahlt",
-                  "Bereitgestellt",
+                  "Versendet",
                   "Storniert",
                   "Abgelaufen",
+                  "Bereitgestellt",
                 ].map((s) => (
                   <option key={s}>{s}</option>
                 ))}
@@ -666,6 +527,7 @@ export function LeadShopAdmin() {
               row={row}
               mail={data.mail.filter((m) => m.order_id === row.id)}
               reload={load}
+              initialOpen={row.id === initialId}
             />
           ))}
           {!data.rows.length && <p>Keine Bestellungen in dieser Auswahl.</p>}

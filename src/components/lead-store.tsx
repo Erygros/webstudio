@@ -29,13 +29,7 @@ type Receipt = {
   bank: { recipient: string; iban: string };
   status: string;
 };
-export function LeadStore({
-  available,
-  stock,
-}: {
-  available: boolean;
-  stock: number;
-}) {
+export function LeadStore({ available }: { available: boolean }) {
   const [quantity, setQuantity] = useState(1000),
     [selection, setSelection] = useState<{
       package: "Standard" | "Enterprise";
@@ -167,12 +161,12 @@ export function LeadStore({
           <ul>
             <li>Firmenname und Website</li>
             <li>Telefonnummer und E-Mail-Adresse</li>
-            <li>CSV-Download nach Zahlungseingang</li>
+            <li>CSV-Datei per E-Mail nach Zahlungseingang</li>
             <li>Kein erneuter Verkauf durch uns</li>
           </ul>
           <button
             className="button"
-            disabled={!available || stock < 500 || attempted || !!receipt}
+            disabled={!available || attempted || !!receipt}
             onClick={() => select("Standard", 500)}
           >
             Jetzt kaufen
@@ -221,7 +215,7 @@ export function LeadStore({
           </p>
           <button
             className="button"
-            disabled={!available || stock < quantity || attempted || !!receipt}
+            disabled={!available || attempted || !!receipt}
             onClick={() => select("Enterprise", quantity)}
           >
             Jetzt kaufen
@@ -233,15 +227,10 @@ export function LeadStore({
         Kleinunternehmer gemäß § 19 UStG; keine zusätzliche Umsatzsteuer.
         Ausschließlich B2B.
       </p>
-      {!available || stock < 500 ? (
+      {!available ? (
         <p className="notice">
           Die Pakete sind derzeit nicht bestellbar. Für Rückfragen{" "}
           <Link href="/kontakt">kontaktieren Sie uns</Link>.
-        </p>
-      ) : stock < quantity ? (
-        <p role="status">
-          Für die ausgewählte Menge sind aktuell nicht genügend exklusive
-          Kontakte verfügbar. Bitte wählen Sie eine kleinere Menge.
         </p>
       ) : null}
       <div ref={checkout} className="lead-checkout">
@@ -250,9 +239,8 @@ export function LeadStore({
             <span className="eyebrow">Bestellbestätigung</span>
             <h2>Ihr Kauf wurde bestätigt.</h2>
             <p>
-              Sie erhalten nach bestätigtem Zahlungseingang einen Downloadlink
-              per E-Mail, über den Sie Ihre Leadliste direkt auf unserer Website
-              herunterladen können.
+              Nach bestätigtem Zahlungseingang senden wir Ihre Leadliste als
+              CSV-Datei an die bei der Bestellung angegebene E-Mail-Adresse.
             </p>
             <dl className="lead-summary">
               <dt>Bestellnummer / Verwendungszweck</dt>

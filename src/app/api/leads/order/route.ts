@@ -6,7 +6,7 @@ import {
   leadTermsVersion,
 } from "@/lib/lead-shop";
 import { serviceDb } from "@/crm/server/db";
-import { shopStatus } from "@/crm/server/lead-shop";
+import { shopStatus, notifyLeadOrder } from "@/crm/server/lead-shop";
 import {
   publicReviewOrigin,
   readReviewJson,
@@ -14,6 +14,7 @@ import {
 } from "@/server/review-request";
 import { allowed, verifyToken } from "@/server/form-security";
 export const runtime = "nodejs";
+export const maxDuration = 60;
 export async function POST(request: Request) {
   try {
     if (!publicReviewOrigin(request))
@@ -98,6 +99,7 @@ export async function POST(request: Request) {
         },
         409,
       );
+    await notifyLeadOrder(data.id);
     return reviewResponse({
       reference: data.reference,
       totalCents: data.total_cents,

@@ -4,6 +4,8 @@ const config: NextConfig = {
   outputFileTracingIncludes: {
     "/api/internal/review-mail": ["./public/brand/wordmark-black.png"],
     "/api/internal/lead-shop": ["./public/brand/wordmark-black.png"],
+    "/api/leads/order": ["./public/brand/wordmark-black.png"],
+    "/api/crm/lead-shop": ["./public/brand/wordmark-black.png"],
   },
   async headers() {
     return [

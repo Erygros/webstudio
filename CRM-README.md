@@ -43,7 +43,7 @@ Die historische Migration 015 bleibt Bestandteil der Datenbankhistorie, da sie a
 
 ## Exklusiver Lead-Verkauf
 
-Öffentliche Verkaufsseite `/leads`, geschützte Verwaltung `/crm/lead-verkauf`. Eigener Verkaufsbestand mit CSV-Import, exklusive Reservierungen, manuelle Bankzuordnung durch die Buchhaltung, serverseitige CSV-Auslieferung und SMTP-Bestell-/Downloadbestätigungen. Bankkonfiguration und Import sind auf Administration beschränkt. Einrichtung: [LEAD-SHOP-SETUP.md](LEAD-SHOP-SETUP.md). Einmalig nur Migration `202610160001_lead_shop.sql` im bestehenden Projekt ausführen; keine erneute CRM-Gesamtinstallation. Der bestehende Vault-Zeitgeber und `CRON_SECRET` werden wiederverwendet.
+Öffentliche Verkaufsseite `/leads`, geschützte Bestellübersicht `/crm/lead-verkauf`. Verkauf ohne CSV-Upload oder CRM-Bestand: Die Dateien werden lokal zusammengestellt und über das eigene E-Mail-Programm versendet. Das CRM speichert Käufer, Paket, Menge, Betrag, Zahlungsstatus und optional den bestätigten externen Versand. Neue Bestellungen sowie Zahlungs-, Versand- und Stornoänderungen werden an das im CRM konfigurierte Betreiberpostfach gemeldet. Kunden erhalten automatisch Bestellbestätigung und Überweisungsdaten. Administration verwaltet Verkaufsschalter und Bankkonfiguration. Einrichtung: [LEAD-SHOP-SETUP.md](LEAD-SHOP-SETUP.md), kombinierte SQL-Datei `supabase/lead-shop-manual-install.sql`. Der bestehende SMTP-Zugang, Vault-Zeitgeber und `CRON_SECRET` werden wiederverwendet.
 
 ## Module
 

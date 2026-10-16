@@ -30,7 +30,7 @@ export default async function Page({
           Der Lead-Verkauf ist für Administration und Buchhaltung verfügbar.
         </p>
       );
-    return <LeadShopAdmin />;
+    return <LeadShopAdmin initialId={q.vorgang} />;
   }
   if (key === "bewertungen") {
     const current = await session();

@@ -3,13 +3,13 @@ import { z } from "zod";
 export const leadPrices = [
   14900, 26900, 38900, 49900, 59900, 69900, 78900, 87900, 93900, 99900,
 ] as const;
-export const leadTermsVersion = "2026-10-16-v1";
+export const leadTermsVersion = "2026-10-16-v2-manual";
 export const leadTerms = [
   "Angebot ausschließlich für Unternehmer (§ 14 BGB), die für ihr Unternehmen bestellen. Vertragspartner ist Enrico Gross / Webstudio Expert, Karinstraße 5, 44388 Dortmund, kontakt@webstudio-expert.de.",
   "Vertragsgegenstand ist eine CSV-Datei mit der bestellten Anzahl vorhandener B2B-Firmenkontakte: Firmenname, Telefonnummer, E-Mail-Adresse und Website. Eine Branchen- oder Regionalauswahl ist nicht Bestandteil dieses Angebots. Es handelt sich um Kontaktdaten, nicht um konkrete Kaufanfragen oder garantierte Kunden.",
-  "Die Liste wird exklusiv aus unserem Verkaufsbestand zusammengestellt. Bereits verkaufte Kontakte werden von Webstudio Expert nicht erneut verkauft. Dies garantiert weder eine weltweite Exklusivität öffentlich zugänglicher Daten noch, dass der Käufer diese Kontakte nicht bereits kennt. Eine Weiterveräußerung der Liste ist nicht gestattet.",
+  "Die Liste wird exklusiv zusammengestellt. Bereits verkaufte Kontakte werden von Webstudio Expert nicht erneut verkauft. Dies garantiert weder eine weltweite Exklusivität öffentlich zugänglicher Daten noch, dass der Käufer diese Kontakte nicht bereits kennt. Eine Weiterveräußerung der Liste ist nicht gestattet.",
   "Die Bestellung wird mit dem Button „Kostenpflichtig bestellen“ verbindlich abgegeben und mit der gespeicherten Bestellbestätigung angenommen. Alle Beträge sind in Euro. Steuerbefreiung für Kleinunternehmer gemäß § 19 UStG; keine zusätzliche Umsatzsteuer. Zahlung per Banküberweisung unter Angabe der Bestellnummer.",
-  "Die Bereitstellung erfolgt nach bestätigtem vollständigem Zahlungseingang per individuellem Downloadlink auf unserer Website. Unbezahlte Bestellungen werden nach 14 Tagen geschlossen und ihre Reservierungen aufgehoben. Nach Ablauf bitte vor einer Überweisung Kontakt aufnehmen. Eine Kundenmeldung über eine Zahlung genügt nicht zur Freigabe.",
+  "Nach bestätigtem vollständigem Zahlungseingang wird die bestellte CSV-Datei per E-Mail an die in der Bestellung angegebene Adresse versendet. Die Zusammenstellung und der Versand erfolgen durch Webstudio Expert. Eine Kundenmeldung über eine Zahlung genügt nicht zur Auslieferung.",
   "Die Angaben stammen aus der jeweils dokumentierten Datenquelle. Trotz Bestandsbereinigung können sich Kontaktdaten und Unternehmensstatus ändern. Es wird keine aktuelle telefonische Erreichbarkeit oder E-Mail-Zustellbarkeit garantiert. Bei unvollständigen oder fehlerhaften gelieferten Datensätzen bitte mit Bestellnummer melden; gesetzliche Mängelrechte bleiben unberührt.",
   "Der Kauf enthält keine Werbeeinwilligung der aufgeführten Unternehmen oder Personen. Der Käufer muss vor jeder Nutzung selbst die datenschutz- und wettbewerbsrechtlichen Voraussetzungen, insbesondere § 7 UWG sowie einschlägige Informations- und Widerspruchspflichten, beachten. Einwilligungspflichtige E-Mails dürfen nicht allein aufgrund des Listenkaufs versendet werden.",
 ] as const;
@@ -61,6 +61,8 @@ export const leadUnitPrice = (cents: number, quantity: number) =>
   }).format(cents / 100 / quantity);
 export const bankSchema = z.object({
   enabled: z.boolean(),
+  manual_delivery: z.boolean(),
+  notification_email: z.email().max(254),
   recipient: z.string().trim().min(2).max(150),
   iban: z
     .string()
