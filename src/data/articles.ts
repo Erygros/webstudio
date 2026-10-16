@@ -15,6 +15,120 @@ export type Article = {
 
 export const articles: Article[] = [
   {
+    slug: "website-bekommt-keine-anfragen",
+    title: "Warum bekommt meine Website keine Anfragen?",
+    intro:
+      "Keine Anfragen trotz eigener Website? So unterscheidest du fehlende Sichtbarkeit, ein unklares Angebot und Hürden beim Kontakt – mit einer Checkliste für kleine Unternehmen.",
+    answer:
+      "Prüfe zuerst, ob passende Interessenten deine Website überhaupt erreichen. Prüfe danach, ob sie dein Angebot verstehen, ihm vertrauen und dich einfach kontaktieren können. Wenige Besucher, unpassende Besucher und ein fehlerhaftes Formular brauchen unterschiedliche Lösungen. Ein neues Design allein behebt diese Ursachen nicht automatisch.",
+    updated: "2026-10-16",
+    sections: [
+      {
+        title: "Zuerst Sichtbarkeit und Anfragen auseinanderhalten",
+        text: "Eine ausbleibende Anfrage sagt noch nicht, an welcher Stelle etwas fehlt. Der Leistungsbericht der Google Search Console zeigt Impressionen und Klicks aus der Google-Suche, unter anderem nach Suchanfrage und Seite. Diese Werte sind keine Übersicht aller Website-Besuche und keine Zählung deiner Kontaktanfragen. Vergleiche deshalb Suchdaten und tatsächlich eingegangene Kontakte getrennt. Bei einer jungen Website mit wenigen Aufrufen reichen einzelne Tage kaum für belastbare Schlüsse.",
+        items: [
+          "Kaum Impressionen: Prüfe, ob die wichtige Leistungsseite indexiert ist und ob sie eine konkrete Kundenfrage beantwortet.",
+          "Impressionen, aber wenige Klicks: Vergleiche Suchanfragen, Seitentitel und Beschreibung. Passt das angekündigte Angebot zum gesuchten Anliegen?",
+          "Passende Klicks, aber keine Kontakte: Prüfe die Einstiegsseite, das Angebot und den vollständigen Kontaktweg.",
+          "Anfragen werden gemeldet, kommen aber nicht an: Kontrolliere Speicherung, Benachrichtigungen und Zustellung, bevor du mehr Besucher auf das Formular schickst.",
+        ],
+      },
+      {
+        title: "Das Angebot aus Sicht eines neuen Besuchers lesen",
+        text: "Öffne die Seite, auf der ein Interessent tatsächlich landet. Das muss nicht die Startseite sein. Kann jemand ohne Vorwissen erkennen, welche Leistung du für wen und in welchem Gebiet anbietest? Eine Formulierung wie „Ihr Partner für Qualität“ lässt diese Fragen offen. Ein fiktives Beispiel für einen Gartenbetrieb wäre konkreter: „Gartenpflege für private Grundstücke in Dortmund – regelmäßige Pflege oder einmaliger Rückschnitt nach Besichtigung.“ Verwende nur Leistungen und Einsatzgebiete, die du wirklich abdeckst.",
+        items: [
+          "Benenne die konkrete Leistung statt ausschließlich allgemeiner Qualitätsversprechen.",
+          "Erkläre, für welche Kunden und Aufgaben das Angebot geeignet ist.",
+          "Zeige den nächsten Schritt: etwa eine unverbindliche Anfrage mit kurzer Beschreibung des Vorhabens.",
+          "Lass eine Person außerhalb deines Unternehmens das Angebot in eigenen Worten zusammenfassen. Rückfragen zeigen dir, welche Informationen fehlen.",
+        ],
+      },
+      {
+        title: "Die wichtigsten Fragen vor dem Kontakt beantworten",
+        text: "Ein Interessent muss einschätzen können, ob sich eine Anfrage lohnt. Beschreibe deshalb den Leistungsumfang, den Ablauf und die Informationen, die du für eine Einschätzung benötigst. Wenn ein verbindlicher Preis erst nach einer Prüfung möglich ist, erkläre die Preisfaktoren und wann ein Angebot erstellt wird. Konkrete Antworten helfen bei der Entscheidung besser als lange Texte, die dieselben Werbeaussagen wiederholen. Erfinde keine Referenzen, Bewertungen oder Verfügbarkeiten, um eine noch junge Website voller wirken zu lassen.",
+        items: [
+          "Was ist enthalten, welche Zusatzleistungen werden gesondert vereinbart?",
+          "Wie läuft es nach der Anfrage weiter, und ist die erste Einschätzung unverbindlich?",
+          "Welche echten Arbeitsbeispiele oder nachvollziehbaren Qualifikationen kannst du zeigen?",
+          "Wer ist erreichbar, und welche Kontaktmöglichkeit passt zu welchem Anliegen?",
+        ],
+      },
+      {
+        title: "Den Kontaktweg auf dem Smartphone durchgehen",
+        text: "Prüfe die Website auch auf einem echten Smartphone. Suche den Kontakt von einer Leistungsseite aus, ohne die Navigation bereits zu kennen. Achte auf überlagernde Banner, schlecht lesbare Beschriftungen und Eingabefelder, die beim Öffnen der Bildschirmtastatur schwer erreichbar werden. W3C empfiehlt verständliche Formularhinweise sowie klare Rückmeldungen bei Fehlern und erfolgreichem Abschluss. Ein Button allein ist noch kein verlässlicher Kontaktweg.",
+        items: [
+          "Telefonnummer und E-Mail-Adresse müssen auffindbar und auf dem Gerät sinnvoll nutzbar sein.",
+          "Frage zunächst nur die Angaben ab, die du für die erste Bearbeitung brauchst; umfangreiche Projektdetails können später folgen.",
+          "Kennzeichne Pflichtfelder sichtbar und erkläre Fehler direkt am betroffenen Feld.",
+          "Bestätige einen erfolgreichen Eingang eindeutig. Bei unklarem Versandstatus darf die Oberfläche keinen sicheren Eingang behaupten.",
+          "Führe eine abgesprochene eigene Kontrollanfrage aus und prüfe den Eingang im CRM beziehungsweise Postfach. Eine sichtbare Erfolgsmeldung allein bestätigt keine E-Mail-Zustellung.",
+        ],
+      },
+      {
+        title: "Passende Besucher statt nur mehr Besucher gewinnen",
+        text: "Viele Aufrufe helfen wenig, wenn die Besucher etwas anderes suchen. Prüfe bei den Suchanfragen und deinen veröffentlichten Links, welche Erwartung sie erzeugen. Wer nach einer Anleitung zur Eigenreparatur sucht, möchte möglicherweise keine Dienstleistung buchen. Wer eine konkrete Leistung in deinem Einsatzgebiet sucht, braucht dagegen eine Seite mit Leistungsumfang, Ablauf und Kontakt. Ein Ratgeber kann Fragen beantworten und zu einer passenden Leistungsseite führen; er muss nicht selbst jede Anfrage abschließen.",
+        items: [
+          "Ordne jeder wichtigen Leistung eine verständliche Seite und einen passenden nächsten Schritt zu.",
+          "Verlinke aus Ratgebern gezielt auf die Leistung, die zur behandelten Frage passt.",
+          "Beschreibe regionale Angebote mit echten Angaben zu Einsatzgebiet und Ablauf, statt Ortsnamen ohne zusätzlichen Nutzen auszutauschen.",
+        ],
+      },
+      {
+        title: "Mit einer überschaubaren Änderung beginnen",
+        text: "Notiere vor einer Änderung die betroffene Seite, das beobachtete Problem und die erwartete Verbesserung. Behebe zuerst kaputte Kontaktwege. Überarbeite danach das Angebot auf den wichtigsten Einstiegsseiten und erst anschließend weniger dringende Gestaltungsdetails. Halte Zeitraum, relevante Suchklicks und qualifizierte Anfragen fest. Bei wenig Traffic sind größere Schwankungen normal; eine einzelne Anfrage beweist noch keinen dauerhaften Effekt. Ein neues Analysewerkzeug ist für diesen ersten Check nicht zwingend nötig.",
+        items: [
+          "Beispiel: Auf der Seite zur Gartenpflege fehlt das Einsatzgebiet. Ergänze es sichtbar und vergleiche anschließend die Eignung der eingehenden Anfragen.",
+          "Beispiel: Ein Formular verlangt bereits beim Erstkontakt zahlreiche Detailangaben. Prüfe, welche davon für die erste Rückmeldung tatsächlich erforderlich sind.",
+          "Dokumentiere auch Anrufe und direkte E-Mails, damit eine bessere Kontaktmöglichkeit nicht irrtümlich als Rückgang der Formularanfragen erscheint.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        question: "Brauche ich sofort eine komplett neue Website?",
+        answer:
+          "Nicht zwingend. Ein unklarer Leistungstext, ein schwer erreichbarer Kontakt oder ein technischer Fehler lässt sich häufig gezielt bearbeiten. Ein Relaunch wird sinnvoll, wenn die vorhandene Struktur oder Technik notwendige Verbesserungen nicht wirtschaftlich zulässt.",
+      },
+      {
+        question: "Wie viele Besucher brauche ich für eine Anfrage?",
+        answer:
+          "Dafür gibt es keine verlässliche Zahl für jedes Unternehmen. Leistung, Zielgruppe, Preis, Suchabsicht und Kontaktweg unterscheiden sich. Bewerte passende Besucher und qualifizierte Anfragen über einen ausreichenden Zeitraum, statt einen pauschalen Prozentwert als Ziel zu übernehmen.",
+      },
+      {
+        question: "Kann ich das ohne kostenpflichtiges Analysewerkzeug prüfen?",
+        answer:
+          "Ja. Für den Einstieg kannst du die Google Search Console, tatsächlich eingegangene Anfragen und einen manuellen Durchgang der Website verwenden. Die Search Console zeigt Suchleistung bei Google, aber weder sämtliche Besuche noch automatisch alle Anfragen.",
+      },
+      {
+        question: "Bringt ein täglicher Blogbeitrag automatisch mehr Anfragen?",
+        answer:
+          "Nein. Entscheidend sind hilfreiche Inhalte zu tatsächlichen Kundenfragen und ein sinnvoller Weg zur passenden Leistung. Google empfiehlt nutzerorientierte Inhalte und rät davon ab, bloß für eine vermeintliche Aktualität viele neue Inhalte zu veröffentlichen. Ein Veröffentlichungsrhythmus allein ist keine Ranking- oder Anfragegarantie.",
+      },
+    ],
+    related: [
+      { title: "Websites und Webdesign", href: "/leistungen/websites" },
+      {
+        title: "Ein klares Website-Briefing vorbereiten",
+        href: "/wissen/website-briefing",
+      },
+      { title: "Verbesserung der Website anfragen", href: "/kontakt" },
+    ],
+    sources: [
+      {
+        title: "Google Search Console: Leistungsbericht und Suchkennzahlen",
+        href: "https://support.google.com/webmasters/answer/7576553?hl=de",
+      },
+      {
+        title: "W3C: verständliche Rückmeldungen in Formularen (englisch)",
+        href: "https://www.w3.org/WAI/tutorials/forms/notifications/",
+      },
+      {
+        title: "Google Search Central: hilfreiche, nutzerorientierte Inhalte",
+        href: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content?hl=de",
+      },
+    ],
+  },
+  {
     slug: "website-oder-webanwendung",
     title: "Website oder Webanwendung?",
     answer:

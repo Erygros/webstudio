@@ -5,7 +5,7 @@ import { PageIntro, Breadcrumbs, Cta, JsonLd } from "@/components/ui";
 import { collectionSchema, seo } from "@/lib/seo";
 export const metadata = seo(
   "Wissen für dein Webprojekt",
-  "Ratgeber zu Website-Kosten, Briefing, CMS, Webanwendungen und Übergabe. Vergleiche und Checklisten zur Vorbereitung deines Webprojekts.",
+  "Ratgeber zu Website-Anfragen, Kosten, Briefing, CMS und Übergabe. Praktische Checklisten zur Planung und Verbesserung deiner Website.",
   "/wissen",
 );
 export default function Knowledge() {

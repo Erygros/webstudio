@@ -10,7 +10,15 @@ const contentRevision = "2026-10-14";
 export function publicSeoPages(): { path: string; modified?: string }[] {
   return [
     { path: "/bewertungen", modified: "2026-10-15" },
-    ...["/", "/preise", "/kontakt", "/wissen"].map((path) => ({
+    {
+      path: "/wissen",
+      modified: articles.reduce(
+        (latest, article) =>
+          article.updated > latest ? article.updated : latest,
+        contentRevision,
+      ),
+    },
+    ...["/", "/preise", "/kontakt"].map((path) => ({
       path,
       modified: contentRevision,
     })),
