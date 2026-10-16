@@ -1,3 +1,4 @@
+import { verifyTurnstile } from "@/server/turnstile";
 import { createHash } from "node:crypto";
 import {
   leadOrderSchema,
@@ -25,6 +26,8 @@ export async function POST(request: Request) {
     >;
     const token = String(raw.formToken || "");
     delete raw.formToken;
+    const turnstileToken = raw.turnstileToken;
+    delete raw.turnstileToken;
     if (!verifyToken(token))
       return reviewResponse(
         { message: "Bitte Formular neu öffnen und kurz warten." },
@@ -56,6 +59,8 @@ export async function POST(request: Request) {
         },
         503,
       );
+    const challenge = await verifyTurnstile(turnstileToken, "lead_order");
+    if (challenge) return challenge;
     const {
       requestId,
       package: pack,

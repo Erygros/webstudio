@@ -1,4 +1,5 @@
 "use client";
+import { Turnstile, useTurnstile } from "@/components/turnstile";
 import { Icon } from "@/components/icon";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -33,6 +34,7 @@ export function InquiryForm({
   initialReference = "",
   mode = "project",
 }: Props) {
+  const captcha = useTurnstile();
   const project = mode === "project";
   const [step, setStep] = useState(0);
   const [error, setError] = useState("");
@@ -132,6 +134,7 @@ export function InquiryForm({
       next();
       return;
     }
+    if (!captcha.ready) return;
     const parsed = inquirySchema.safeParse({ ...data, token, features });
     if (!parsed.success) {
       setError(parsed.error.issues.map((i) => i.message).join("\n"));
@@ -140,6 +143,7 @@ export function InquiryForm({
     setBusy(true);
     setError("");
     const body = new FormData();
+    body.set("turnstileToken", captcha.token);
     Object.entries(data).forEach(([key, value]) => body.set(key, value));
     body.set("token", token);
     features.forEach((f) => body.append("features", f));
@@ -169,6 +173,7 @@ export function InquiryForm({
       );
       await refreshToken();
     } finally {
+      captcha.reset();
       setBusy(false);
     }
   }
@@ -527,6 +532,13 @@ export function InquiryForm({
             {error}
           </div>
         )}
+        {(!project || step === 5) && (
+          <Turnstile
+            action="inquiry"
+            onToken={captcha.setToken}
+            generation={captcha.generation}
+          />
+        )}
         <div className="form-controls">
           {project && step > 0 ? (
             <button
@@ -551,7 +563,7 @@ export function InquiryForm({
             <button
               className="button"
               type="submit"
-              disabled={!enabled || busy || !token}
+              disabled={!enabled || busy || !token || !captcha.ready}
             >
               {busy ? (
                 "Wird gesendet …"

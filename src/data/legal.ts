@@ -135,7 +135,13 @@ export const legalPages: Record<string, ContentPage> = {
       },
       {
         title: "7. Schutz vor missbräuchlichen Eingaben",
-        text: "Formulare verwenden eine Herkunftsprüfung, serverseitige Eingabeprüfung, einen kurzlebigen signierten Formularnachweis, ein für Menschen nicht auszufüllendes Prüffeld und lokale Anfragebegrenzungen. Dafür können kurzlebige, mit HMAC pseudonymisierte Schlüssel auf Basis von IP-Adresse oder E-Mail-Adresse im Arbeitsspeicher der laufenden Serverinstanz gehalten werden. Ohne Datenbank laufen sie nach spätestens zwei Stunden ab oder gehen beim Ende der Instanz verloren. Bei aktiviertem CRM werden gemeinsame pseudonymisierte Zähler und Wiederverwendungssperren in Supabase gespeichert. Formularnachweise sind höchstens zwei Stunden gültig; abgelaufene Kontrollinformationen werden bei weiteren Anfragen oder durch den regelmäßig konfigurierten Hintergrundjob bereinigt. Pseudonymisierung ist keine Anonymisierung. Es werden keine Anfragen an externe CAPTCHA- oder Anti-Spam-Anbieter gesendet. Rechtsgrundlage ist Art. 6 Abs. 1 Buchst. f DSGVO; unser berechtigtes Interesse ist die Verhinderung von Spam und missbräuchlichem Versand.",
+        text: "Formulare verwenden eine Herkunftsprüfung, serverseitige Eingabeprüfung, einen kurzlebigen signierten Formularnachweis, ein für Menschen nicht auszufüllendes Prüffeld und lokale Anfragebegrenzungen. Dafür können kurzlebige, mit HMAC pseudonymisierte Schlüssel auf Basis von IP-Adresse oder E-Mail-Adresse im Arbeitsspeicher der laufenden Serverinstanz gehalten werden. Ohne Datenbank laufen sie nach spätestens zwei Stunden ab oder gehen beim Ende der Instanz verloren. Bei aktiviertem CRM werden gemeinsame pseudonymisierte Zähler und Wiederverwendungssperren in Supabase gespeichert. Formularnachweise sind höchstens zwei Stunden gültig; abgelaufene Kontrollinformationen werden bei weiteren Anfragen oder durch den regelmäßig konfigurierten Hintergrundjob bereinigt. Pseudonymisierung ist keine Anonymisierung. Bei aktivierter Cloudflare-Konfiguration schützt zusätzlich Turnstile die öffentlichen Anfrage- und Bestellformulare sowie CRM-Anmeldung und Passwort-Zurücksetzung. Anbieter ist Cloudflare, Inc., USA. Die Prüfung wird im jeweiligen Formular geladen, nicht als allgemeine Besuchsanalyse. Cloudflare verarbeitet dabei technische Signale wie IP-Adresse, Browserinformationen, TLS-Merkmale und die aufgerufene Herkunft, um Menschen von Bots zu unterscheiden. Unser Server erhält einen einmalig verwendbaren Prüfnachweis und prüft diesen bei Cloudflare. Formulartexte, Anhänge, Passwörter oder Zahlungsinformationen werden durch unsere Integration nicht an die Prüf-API übermittelt; Prüfnachweise werden nicht in Anfragen oder E-Mails gespeichert. Cloudflare verarbeitet Signale auch zur Verbesserung seiner Bot-Erkennung in eigener Verantwortlichkeit. Eine Verarbeitung in den USA ist möglich; hierzu gelten Cloudflares Datenschutz- und Übermittlungsbedingungen. Turnstile dient dem Schutz der angeforderten Formularfunktion und wird unabhängig von freiwilliger Statistik- oder Marketingzustimmung eingesetzt. Eine Pre-Clearance-Funktion wird von unserer Integration nicht aktiviert. Rechtsgrundlage ist Art. 6 Abs. 1 Buchst. f DSGVO; unser berechtigtes Interesse ist die Verhinderung von Spam und missbräuchlichem Versand. Soweit ein technisch erforderlicher Zugriff auf das Endgerät erfolgt, stützt er sich auf § 25 Abs. 2 Nr. 2 TDDDG.",
+        links: [
+          {
+            title: "Cloudflare Turnstile – Datenschutzinformationen",
+            href: "https://www.cloudflare.com/turnstile-privacy-policy/",
+          },
+        ],
       },
       {
         title: "8. Lokale Darstellung und Cookies",
@@ -200,7 +206,7 @@ export const legalPages: Record<string, ContentPage> = {
       },
       {
         title: "13. Sicherheit und Änderungen",
-        text: "Die öffentliche Website ist für verschlüsselte HTTPS-Verbindungen eingerichtet. Formularinhalte werden nicht als HTML ausgeführt; SMTP-Versand setzt eine verschlüsselte Verbindung voraus. Absolute Sicherheit kann dennoch nicht zugesichert werden. Ändern sich Funktionen, Dienstleister oder Verarbeitungszwecke, wird diese Erklärung entsprechend angepasst. Stand dieser Fassung: 15. Oktober 2026.",
+        text: "Die öffentliche Website ist für verschlüsselte HTTPS-Verbindungen eingerichtet. Formularinhalte werden nicht als HTML ausgeführt; SMTP-Versand setzt eine verschlüsselte Verbindung voraus. Absolute Sicherheit kann dennoch nicht zugesichert werden. Ändern sich Funktionen, Dienstleister oder Verarbeitungszwecke, wird diese Erklärung entsprechend angepasst. Stand dieser Fassung: 16. Oktober 2026.",
       },
     ],
   },

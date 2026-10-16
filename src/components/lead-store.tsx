@@ -1,4 +1,5 @@
 "use client";
+import { Turnstile, useTurnstile } from "@/components/turnstile";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import {
@@ -30,6 +31,7 @@ type Receipt = {
   status: string;
 };
 export function LeadStore({ available }: { available: boolean }) {
+  const captcha = useTurnstile();
   const [quantity, setQuantity] = useState(1000),
     [selection, setSelection] = useState<{
       package: "Standard" | "Enterprise";
@@ -72,7 +74,8 @@ export function LeadStore({ available }: { available: boolean }) {
     );
   }
   async function submit() {
-    if (!selection || !accepted || !businessOnly || busy) return;
+    if (!selection || !accepted || !businessOnly || busy || !captcha.ready)
+      return;
     setBusy(true);
     setAttempted(true);
     setError("");
@@ -125,7 +128,11 @@ export function LeadStore({ available }: { available: boolean }) {
       const response = await fetch("/api/leads/order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...payload, formToken: token }),
+        body: JSON.stringify({
+          ...payload,
+          formToken: token,
+          turnstileToken: captcha.token,
+        }),
       });
       const data = await response.json();
       if (!response.ok) {
@@ -144,6 +151,7 @@ export function LeadStore({ available }: { available: boolean }) {
           : "Bestellstatus unklar. Bitte kontaktieren Sie uns.",
       );
     } finally {
+      captcha.reset();
       setBusy(false);
     }
   }
@@ -371,9 +379,20 @@ export function LeadStore({ available }: { available: boolean }) {
                     </strong>{" "}
                     · Banküberweisung · keine zusätzliche Umsatzsteuer
                   </p>
+                  <Turnstile
+                    action="lead_order"
+                    onToken={captcha.setToken}
+                    generation={captcha.generation}
+                  />
                   <button
                     className="button"
-                    disabled={!accepted || !businessOnly || busy || !token}
+                    disabled={
+                      !accepted ||
+                      !businessOnly ||
+                      busy ||
+                      !token ||
+                      !captcha.ready
+                    }
                     onClick={submit}
                   >
                     {busy

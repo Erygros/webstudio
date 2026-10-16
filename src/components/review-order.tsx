@@ -1,4 +1,5 @@
 "use client";
+import { Turnstile, useTurnstile } from "@/components/turnstile";
 import { useEffect, useState } from "react";
 import { reviewBank, reviewConditions, reviewWithdrawal } from "@/lib/reviews";
 type Offer = {
@@ -10,6 +11,7 @@ type Offer = {
   status: string;
 };
 export function ReviewOrder({ id, token }: { id: string; token: string }) {
+  const captcha = useTurnstile();
   const [offer, setOffer] = useState<Offer | null>(null),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
@@ -33,6 +35,7 @@ export function ReviewOrder({ id, token }: { id: string; token: string }) {
   }, [id, token]);
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (busy || !captcha.ready) return;
     setBusy(true);
     setError("");
     const data = Object.fromEntries(new FormData(event.currentTarget));
@@ -42,6 +45,7 @@ export function ReviewOrder({ id, token }: { id: string; token: string }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...data,
+          turnstileToken: captcha.token,
           id,
           token,
           terms: data.terms === "yes",
@@ -55,6 +59,7 @@ export function ReviewOrder({ id, token }: { id: string; token: string }) {
     } catch (e) {
       setError((e as Error).message);
     } finally {
+      captcha.reset();
       setBusy(false);
     }
   }
@@ -220,7 +225,16 @@ export function ReviewOrder({ id, token }: { id: string; token: string }) {
             {error}
           </p>
         )}
-        <button className="button" type="submit" disabled={busy}>
+        <Turnstile
+          action="review_order"
+          onToken={captcha.setToken}
+          generation={captcha.generation}
+        />
+        <button
+          className="button"
+          type="submit"
+          disabled={busy || !captcha.ready}
+        >
           {busy
             ? "Beauftragung wird gespeichert …"
             : "Zahlungspflichtig beauftragen"}

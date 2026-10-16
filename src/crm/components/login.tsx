@@ -1,4 +1,5 @@
 "use client";
+import { Turnstile, useTurnstile } from "@/components/turnstile";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -9,12 +10,14 @@ export function Login({
   configured: boolean;
   passwordMode?: boolean;
 }) {
+  const captcha = useTurnstile();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   async function act(action: string) {
+    if (busy || (!passwordMode && !captcha.ready)) return;
     setBusy(true);
     setMessage("");
     try {
@@ -23,6 +26,7 @@ export function Login({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           action,
+          turnstileToken: captcha.token,
           ...(email ? { email } : {}),
           ...(password ? { password } : {}),
         }),
@@ -36,6 +40,7 @@ export function Login({
     } catch (e) {
       setMessage(e instanceof Error ? e.message : "Anmeldung fehlgeschlagen.");
     } finally {
+      captcha.reset();
       setBusy(false);
     }
   }
@@ -79,7 +84,17 @@ export function Login({
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
-        <button className="button" disabled={!configured || busy}>
+        {!passwordMode && (
+          <Turnstile
+            action="crm_auth"
+            onToken={captcha.setToken}
+            generation={captcha.generation}
+          />
+        )}
+        <button
+          className="button"
+          disabled={!configured || busy || (!passwordMode && !captcha.ready)}
+        >
           {busy
             ? "Einen Moment …"
             : passwordMode
@@ -90,7 +105,7 @@ export function Login({
           <button
             type="button"
             className="plain-button"
-            disabled={!configured || busy || !email}
+            disabled={!configured || busy || !email || !captcha.ready}
             onClick={() => void act("reset")}
           >
             Passwort vergessen

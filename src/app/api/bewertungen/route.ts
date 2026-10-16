@@ -1,3 +1,4 @@
+import { verifyTurnstile } from "@/server/turnstile";
 import { reviewInquirySchema } from "@/lib/reviews";
 import { serviceDb } from "@/crm/server/db";
 import { reviewAutomationStatus, reviewRequestKey } from "@/crm/server/reviews";
@@ -55,6 +56,11 @@ export async function POST(request: Request) {
         },
         503,
       );
+    const challenge = await verifyTurnstile(
+      form.get("turnstileToken"),
+      "review_inquiry",
+    );
+    if (challenge) return challenge;
     const { token, website, privacy, ...payload } = d;
     void website;
     void privacy;

@@ -27,7 +27,7 @@ const config: NextConfig = {
           {
             key: "Content-Security-Policy",
             value:
-              "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.leadinfo.eu https://cdn.leadinfo.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.supabase.co https://collector.leadinfo.net; font-src 'self'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.twilio.com wss://*.twilio.com https://*.twilio.ie wss://*.twilio.ie https://api.leadinfo.com https://collector.leadinfo.net https://collector4.leadinfo.net; media-src 'self' blob: https://sdk.twiliocdn.com; worker-src 'self' blob:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+              "default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://cdn.leadinfo.eu https://cdn.leadinfo.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.supabase.co https://collector.leadinfo.net; font-src 'self'; connect-src 'self' https://challenges.cloudflare.com https://*.supabase.co wss://*.supabase.co https://*.twilio.com wss://*.twilio.com https://*.twilio.ie wss://*.twilio.ie https://api.leadinfo.com https://collector.leadinfo.net https://collector4.leadinfo.net; media-src 'self' blob: https://sdk.twiliocdn.com; worker-src 'self' blob:; frame-src https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
           },
         ],
       },

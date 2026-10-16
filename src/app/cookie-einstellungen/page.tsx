@@ -31,6 +31,13 @@ export default function Cookies() {
           </p>
           <Preferences />
           <TrackingConsent settings />
+          <h3>Schutz der Formulare</h3>
+          <p>
+            Bei aktivierter Konfiguration verwenden die Formulare Cloudflare
+            Turnstile zur Bot-Abwehr. Diese Sicherheitsprüfung ist unabhängig
+            von optionaler Statistik und Marketing. Einzelheiten stehen in der{" "}
+            <a href="/datenschutz">Datenschutzerklärung</a>.
+          </p>
           <h3>Exit-Hinweis</h3>
           <p>
             Der Hinweis merkt sich seine Anzeige nur im Arbeitsspeicher der

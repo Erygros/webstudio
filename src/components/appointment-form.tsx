@@ -1,4 +1,5 @@
 "use client";
+import { Turnstile, useTurnstile } from "@/components/turnstile";
 import { Icon } from "@/components/icon";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -14,6 +15,7 @@ export function AppointmentForm({
   firstDate: string;
   lastDate: string;
 }) {
+  const captcha = useTurnstile();
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [name, setName] = useState("");
@@ -53,7 +55,7 @@ export function AppointmentForm({
   });
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (busy || !enabled) return;
+    if (busy || !enabled || !captcha.ready) return;
     const data = {
       mode: "appointment",
       appointment: date && time ? `${date}T${time}` : "",
@@ -80,6 +82,7 @@ export function AppointmentForm({
       return;
     }
     const body = new FormData();
+    body.set("turnstileToken", captcha.token);
     Object.entries(data).forEach(([key, value]) => {
       if (typeof value === "string") body.set(key, value);
     });
@@ -104,6 +107,7 @@ export function AppointmentForm({
       );
       await prepare();
     } finally {
+      captcha.reset();
       setBusy(false);
     }
   }
@@ -239,9 +243,20 @@ export function AppointmentForm({
           {error}
         </p>
       )}
+      {enabled && (
+        <Turnstile
+          action="inquiry"
+          onToken={captcha.setToken}
+          generation={captcha.generation}
+        />
+      )}
       <div className="form-controls">
         {enabled ? (
-          <button className="button" disabled={!token || busy} type="submit">
+          <button
+            className="button"
+            disabled={!token || busy || !captcha.ready}
+            type="submit"
+          >
             {busy ? (
               "Wird gesendet …"
             ) : (

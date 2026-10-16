@@ -1,3 +1,4 @@
+import { verifyTurnstile } from "@/server/turnstile";
 import { NextResponse } from "next/server";
 import { site } from "@/config/site";
 import { inquirySchema } from "@/lib/inquiry-schema";
@@ -79,6 +80,11 @@ export async function POST(request: Request) {
       "Die Anfrage konnte nicht bestätigt werden. Bitte lade das Formular neu und versuche es erneut.",
       403,
     );
+  const challenge = await verifyTurnstile(
+    form.get("turnstileToken"),
+    "inquiry",
+  );
+  if (challenge) return challenge;
   let attachments: Awaited<ReturnType<typeof validateAttachments>>;
   try {
     attachments = await validateAttachments(form.getAll("files"));

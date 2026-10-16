@@ -1,10 +1,12 @@
 "use client";
+import { Turnstile, useTurnstile } from "@/components/turnstile";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { reviewPlatforms } from "@/lib/reviews";
 import { site } from "@/config/site";
 
 export function ReviewForm() {
+  const captcha = useTurnstile();
   const [token, setToken] = useState("");
   const [available, setAvailable] = useState<boolean | null>(null);
   const [platform, setPlatform] = useState<string>("Google");
@@ -28,9 +30,11 @@ export function ReviewForm() {
   }, []);
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (busy || !captcha.ready) return;
     setBusy(true);
     setError("");
     const form = new FormData(event.currentTarget);
+    form.set("turnstileToken", captcha.token);
     form.set("token", token);
     try {
       const response = await fetch("/api/bewertungen", {
@@ -52,6 +56,7 @@ export function ReviewForm() {
           : (e as Error).message,
       );
     } finally {
+      captcha.reset();
       setBusy(false);
     }
   }
@@ -188,7 +193,16 @@ export function ReviewForm() {
             {error}
           </p>
         )}
-        <button className="button" type="submit" disabled={busy || !token}>
+        <Turnstile
+          action="review_inquiry"
+          onToken={captcha.setToken}
+          generation={captcha.generation}
+        />
+        <button
+          className="button"
+          type="submit"
+          disabled={busy || !token || !captcha.ready}
+        >
           {busy
             ? "Anfrage wird gespeichert …"
             : available === null

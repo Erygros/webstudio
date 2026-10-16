@@ -1,3 +1,4 @@
+import { verifyTurnstile } from "@/server/turnstile";
 import { z } from "zod";
 import { crmDb, session, apiError } from "@/crm/server/db";
 import { allowed } from "@/server/form-security";
@@ -17,6 +18,7 @@ export async function POST(request: Request) {
     const body = z
       .object({
         action: z.enum(["login", "logout", "reset", "password"]),
+        turnstileToken: z.string().max(2048).optional(),
         email: z.email().optional(),
         password: z.string().min(12).max(200).optional(),
       })
@@ -24,6 +26,10 @@ export async function POST(request: Request) {
     const ip = request.headers.get("x-forwarded-for")?.split(",")[0] || "local";
     if (!(await allowed(`crm-auth:${ip}`, 10, 900)))
       throw new Error("429:Zu viele Versuche. Bitte später erneut versuchen.");
+    if (body.action === "login" || body.action === "reset") {
+      const challenge = await verifyTurnstile(body.turnstileToken, "crm_auth");
+      if (challenge) return challenge;
+    }
     const db = await crmDb();
     if (body.action === "login") {
       if (!body.email || !body.password)

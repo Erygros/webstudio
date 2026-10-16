@@ -1,3 +1,4 @@
+import { verifyTurnstile } from "@/server/turnstile";
 import { z } from "zod";
 import {
   reviewOrderSchema,
@@ -41,7 +42,10 @@ export async function POST(request: Request) {
     await protectReviewRequest(request);
     if (Number(request.headers.get("content-length") || 0) > 12000)
       return reviewResponse({ message: "Anfrage zu groß." }, 413);
-    const parsed = reviewOrderSchema.safeParse(await readReviewJson(request));
+    const raw = (await readReviewJson(request)) as Record<string, unknown>;
+    const turnstileToken = raw.turnstileToken;
+    delete raw.turnstileToken;
+    const parsed = reviewOrderSchema.safeParse(raw);
     if (!parsed.success)
       return reviewResponse(
         { message: parsed.error.issues.map((i) => i.message).join(" ") },
@@ -49,6 +53,8 @@ export async function POST(request: Request) {
       );
     const d = parsed.data;
     await reviewByOffer(d.id, d.token);
+    const challenge = await verifyTurnstile(turnstileToken, "review_order");
+    if (challenge) return challenge;
     const { id, token, ...order } = d;
     void token;
     const early =
