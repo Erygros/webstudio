@@ -7,7 +7,6 @@ import { Calendar } from "@/crm/components/calendar";
 import { MailTools } from "@/crm/components/mail-tools";
 import { Work } from "@/crm/components/work";
 import { session } from "@/crm/server/db";
-import { OsmImporter } from "@/crm/components/osm-importer";
 import { ReviewsInbox } from "@/crm/components/reviews";
 import {
   WebsiteFormStatus,
@@ -71,7 +70,6 @@ export default async function Page({
         </p>
       </header>
       {key === "emails" && <MailTools companyId={q.company} />}
-      {key === "leads" && <OsmImporter />}
       {key === "anfragen" ? (
         <>
           <WebsiteFormStatus />
