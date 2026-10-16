@@ -147,14 +147,15 @@ function ReviewEditor({
     </form>
   );
 }
-export function ReviewsInbox() {
+export function ReviewsInbox({ initialId }: { initialId?: string }) {
   const [rows, setRows] = useState<ReviewRequest[]>([]),
     [jobs, setJobs] = useState<Job[]>([]),
     [count, setCount] = useState(0),
     [offset, setOffset] = useState(0),
     [q, setQ] = useState(""),
     [status, setStatus] = useState("");
-  const [expanded, setExpanded] = useState(""),
+  const [focusedId, setFocusedId] = useState(initialId || "");
+  const [expanded, setExpanded] = useState(initialId || ""),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
     [revision, setRevision] = useState(0);
@@ -179,7 +180,7 @@ export function ReviewsInbox() {
           jobs: Job[];
           count: number;
         }>(
-          `reviews?${new URLSearchParams({ q, status, offset: String(offset) })}`,
+          `reviews?${new URLSearchParams({ q, status, offset: String(offset), ...(focusedId ? { id: focusedId } : {}) })}`,
           { signal: controller.signal },
         );
         if (!controller.signal.aborted) {
@@ -198,7 +199,12 @@ export function ReviewsInbox() {
       clearTimeout(timer);
       controller.abort();
     };
-  }, [q, status, offset, revision]);
+  }, [q, status, offset, revision, focusedId]);
+  useEffect(() => {
+    setFocusedId(initialId || "");
+    setExpanded(initialId || "");
+    setOffset(0);
+  }, [initialId]);
   useEffect(() => {
     window.addEventListener("focus", refresh);
     return () => window.removeEventListener("focus", refresh);
@@ -245,9 +251,10 @@ export function ReviewsInbox() {
           </button>
         </div>
         <p>
-          Erste E-Mail nach etwa sieben Minuten; Vertragsbestätigung nach
-          Beauftragung. Der Zeitgeber läuft in der vorhandenen
-          Supabase-Datenbank, unabhängig von geöffneten Browsern.
+          Kurze Eingangsbestätigung direkt nach der Anfrage, Konditionen nach
+          etwa sieben Minuten; Vertragsbestätigung nach Beauftragung. Der
+          Zeitgeber läuft in der vorhandenen Supabase-Datenbank, unabhängig von
+          geöffneten Browsern.
         </p>
         {automation && (
           <div role="status">
@@ -290,6 +297,14 @@ export function ReviewsInbox() {
             Aktualisieren
           </button>
         </div>
+        {focusedId && (
+          <p>
+            Einzelner Vorgang aus der Benachrichtigungs-E-Mail.{" "}
+            <a className="crm-small-link" href="/crm/bewertungen">
+              Alle Anfragen anzeigen
+            </a>
+          </p>
+        )}
         <div className="crm-filterbar">
           <input
             aria-label="Nach Kontaktname suchen"

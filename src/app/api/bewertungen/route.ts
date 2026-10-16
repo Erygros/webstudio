@@ -4,7 +4,10 @@ import { reviewAutomationStatus, reviewRequestKey } from "@/crm/server/reviews";
 import { verifyToken, allowed } from "@/server/form-security";
 import { readForm } from "@/server/uploads";
 import { protectReviewRequest, reviewResponse } from "@/server/review-request";
+import { notifyReviewInquiry } from "@/crm/server/website-mail";
+import type { ReviewRequest } from "@/lib/reviews";
 export const runtime = "nodejs";
+export const maxDuration = 60;
 export async function GET() {
   try {
     const state = await reviewAutomationStatus();
@@ -75,8 +78,22 @@ export async function POST(request: Request) {
         503,
       );
     }
+    let confirmation = false;
+    try {
+      const { data: row } = await serviceDb()
+        .from("crm_review_requests")
+        .select("*")
+        .eq("id", data.id)
+        .single();
+      if (row)
+        confirmation = (await notifyReviewInquiry(row as ReviewRequest))
+          .confirmation;
+    } catch {
+      console.error("review_intake_notice_failed");
+    }
     return reviewResponse({
       success: true,
+      confirmation,
       reference: data.reference,
       message: `Vielen Dank, ${d.name}. Wir haben deine kostenlose Anfrage unter ${data.reference} gespeichert und werden sie prüfen. Du erhältst voraussichtlich in 5–10 Minuten eine E-Mail mit den nächsten Schritten. Noch besteht kein kostenpflichtiger Auftrag.`,
     });

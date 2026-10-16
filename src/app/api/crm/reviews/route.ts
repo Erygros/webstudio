@@ -20,6 +20,8 @@ export async function GET(request: Request) {
       .select("*", { count: "exact" })
       .order("created_at", { ascending: false })
       .range(offset, offset + 24);
+    if (url.searchParams.get("id"))
+      query = query.eq("id", z.uuid().parse(url.searchParams.get("id")));
     const status = url.searchParams.get("status"),
       q = url.searchParams.get("q")?.trim().slice(0, 100);
     if (
@@ -118,15 +120,13 @@ export async function POST(request: Request) {
       throw new Error(
         "Versandstatus wurde zwischenzeitlich geändert. Bitte neu laden.",
       );
-    await db
-      .from("crm_audit_logs")
-      .insert({
-        actor_id: user.id,
-        entity: "crm_review_mail_jobs",
-        entity_id: id,
-        action: "MANUAL_REQUEUE",
-        after_data: { mailbox_checked: true },
-      });
+    await db.from("crm_audit_logs").insert({
+      actor_id: user.id,
+      entity: "crm_review_mail_jobs",
+      entity_id: id,
+      action: "MANUAL_REQUEUE",
+      after_data: { mailbox_checked: true },
+    });
     return Response.json({ success: true });
   } catch (e) {
     return apiError(e);

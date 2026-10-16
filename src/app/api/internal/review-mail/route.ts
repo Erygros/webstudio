@@ -1,5 +1,6 @@
 import { timingSafeEqual } from "node:crypto";
 import { deliverReviewMail } from "@/crm/server/reviews";
+import { flushWebsiteNotices } from "@/crm/server/website-mail";
 export const runtime = "nodejs";
 export const maxDuration = 60;
 export async function POST(request: Request) {
@@ -14,9 +15,10 @@ export async function POST(request: Request) {
   )
     return Response.json({ error: "Nicht autorisiert." }, { status: 401 });
   try {
-    const results = await Promise.allSettled(
-      Array.from({ length: 5 }, () => deliverReviewMail()),
-    );
+    const results = await Promise.allSettled([
+      ...Array.from({ length: 5 }, () => deliverReviewMail()),
+      flushWebsiteNotices(),
+    ]);
     const failed = results.some((result) => result.status === "rejected");
     if (failed) console.error("review_mail_worker_partial_failure");
     return Response.json(

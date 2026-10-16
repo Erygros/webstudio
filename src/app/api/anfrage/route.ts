@@ -1,17 +1,15 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 import { site } from "@/config/site";
 import { inquirySchema } from "@/lib/inquiry-schema";
 import {
   allowed,
   consumeToken,
   formReady,
-  mailReady,
   verifyToken,
 } from "@/server/form-security";
 import { readForm, validateAttachments } from "@/server/uploads";
-import { categories, services } from "@/data/services";
 import { captureWebsiteInquiry } from "@/crm/server/website";
+import { notifyWebsiteInquiry } from "@/crm/server/website-mail";
 export const runtime = "nodejs";
 export const maxDuration = 60;
 const fail = (message: string, status = 400) =>
@@ -104,10 +102,9 @@ export async function POST(request: Request) {
       503,
     );
   }
-  let attachmentsComplete = true;
+  let captured: Awaited<ReturnType<typeof captureWebsiteInquiry>>;
   try {
-    const result = await captureWebsiteInquiry(d, attachments);
-    attachmentsComplete = result.attachmentsComplete;
+    captured = await captureWebsiteInquiry(d, attachments);
   } catch {
     return fail(
       "Der Eingang deiner Anfrage konnte nicht bestätigt werden. Bitte kontaktiere uns direkt, bevor du die Anfrage erneut sendest.",
@@ -116,107 +113,26 @@ export async function POST(request: Request) {
   }
   const received =
     "Vielen Dank. Deine Anfrage ist eingegangen. Wir melden uns über die angegebenen Kontaktdaten.";
-  const attachmentNotice = attachmentsComplete
+  const attachmentNotice = captured.attachmentsComplete
     ? ""
     : " Nicht alle Dateien konnten übernommen werden. Bitte sende die fehlenden Unterlagen direkt per E-Mail.";
-  if (!mailReady())
-    return NextResponse.json(
-      {
-        success: true,
-        confirmation: false,
-        message: received + attachmentNotice,
-      },
-      { headers: { "Cache-Control": "no-store" } },
-    );
-  const port = Number(process.env.SMTP_PORT || "587");
-  const transport = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port,
-    secure: port === 465,
-    requireTLS: port === 587,
-    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD },
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 15000,
-    disableFileAccess: true,
-    disableUrlAccess: true,
+  const { confirmation } = await notifyWebsiteInquiry({
+    key: captured.key,
+    inquiryId: captured.inquiryId,
+    data: d,
+    attachments: attachments.map((attachment) => attachment.filename),
+    attachmentsComplete: captured.attachmentsComplete,
   });
-  const selected =
-    services.find((s) => s.slug === d.service)?.name ||
-    categories.find((c) => c.slug === d.service)?.name ||
-    "Kontakt";
-  const fields = {
-    Name: d.name,
-    "E-Mail": d.email,
-    Unternehmen: d.company,
-    Telefon: d.phone,
-    Leistung: selected,
-    Projektart: d.projectType,
-    Funktionen: d.features.join(", "),
-    Budget: d.budget,
-    Start: d.start,
-    Zeitrahmen: d.timeline,
-    Paket: d.package,
-    "Demo-Referenz": d.reference,
-    "Wunschtermin (Europe/Berlin, noch unbestätigt)": d.appointment,
-    Beschreibung: d.description,
-  };
-  const text = Object.entries(fields)
-    .filter(([, v]) => v)
-    .map(([key, value]) => `${key}: ${value}`)
-    .join("\n\n");
-  const subject =
-    d.mode === "appointment"
-      ? "Terminanfrage"
-      : d.mode === "callback"
-        ? "Rückrufanfrage"
-        : d.mode === "contact"
-          ? "Kontaktanfrage"
-          : "Projektanfrage";
-  try {
-    const info = await transport.sendMail({
-      from: process.env.SMTP_FROM,
-      to: process.env.INQUIRY_TO,
-      replyTo: d.email,
-      subject: `${subject} · ${selected}`,
-      text,
-      attachments,
-    });
-    if (!info.accepted?.length) throw new Error("NOT_ACCEPTED");
-  } catch {
-    transport.close();
-    return NextResponse.json(
-      {
-        success: true,
-        confirmation: false,
-        message: received + attachmentNotice,
-      },
-      { headers: { "Cache-Control": "no-store" } },
-    );
-  }
-  let confirmation = true;
-  try {
-    const info = await transport.sendMail({
-      from: process.env.SMTP_FROM,
-      to: d.email,
-      subject: `Deine ${subject} bei ${site.name}`,
-      text: `Hallo ${d.name},\n\nwir haben deine ${subject} erhalten. Wir melden uns über die angegebenen Kontaktdaten. Ein Termin oder Auftrag ist damit noch nicht bestätigt.\n\n${d.appointment ? `Wunschtermin: ${d.appointment.replace("T", " ")} (Europe/Berlin)\nDauer: etwa 30 Minuten. Bitte warte auf unsere persönliche Terminbestätigung.\n` : `Leistung: ${selected}\n`}\nBitte antworte auf diese Nachricht, wenn du etwas ergänzen möchtest.\n\n${site.name}`,
-      replyTo: site.email || process.env.SMTP_FROM,
-    });
-    if (!info.accepted?.length) confirmation = false;
-  } catch {
-    confirmation = false;
-  } finally {
-    transport.close();
-  }
   return NextResponse.json(
     {
       success: true,
+      confirmation,
       message:
         received +
         attachmentNotice +
-        (confirmation ? " Eine Bestätigungs-E-Mail wurde versendet." : ""),
-      confirmation,
+        (confirmation
+          ? " Eine Eingangsbestätigung wurde per E-Mail versendet."
+          : ""),
     },
     { headers: { "Cache-Control": "no-store" } },
   );

@@ -26,6 +26,11 @@ export async function captureWebsiteInquiry(
     );
   }
   let attachmentsComplete = true;
+  const { data: inquiry } = await svc
+    .from("crm_website_inquiries")
+    .select("id")
+    .eq("request_key", key)
+    .maybeSingle();
   for (const attachment of attachments) {
     try {
       const hash = createHash("sha256")
@@ -60,5 +65,10 @@ export async function captureWebsiteInquiry(
       attachmentsComplete = false;
     }
   }
-  return { companyId, attachmentsComplete };
+  return {
+    companyId,
+    attachmentsComplete,
+    inquiryId: inquiry?.id as string | undefined,
+    key,
+  };
 }

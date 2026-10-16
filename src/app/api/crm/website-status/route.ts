@@ -4,7 +4,8 @@ import {
   crmServiceConfigured,
   serviceDb,
 } from "@/crm/server/db";
-import { formReady, mailReady } from "@/server/form-security";
+import { formReady } from "@/server/form-security";
+import { websiteMailReady } from "@/crm/server/website-mail";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export async function GET(request: Request) {
@@ -56,7 +57,7 @@ export async function GET(request: Request) {
       {
         ready: checks.every((c) => c.ok),
         checks,
-        emailNotifications: mailReady(),
+        emailNotifications: await websiteMailReady(),
         note: "Nur lesende Verbindungsprüfung. Es wird keine Anfrage angelegt; das Speichern und die Datenbankfunktionen werden damit nicht ausgeführt.",
       },
       { headers: { "Cache-Control": "private, no-store" } },

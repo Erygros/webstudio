@@ -18,7 +18,7 @@ export default async function Page({
   searchParams,
 }: {
   params: Promise<{ module: string }>;
-  searchParams: Promise<{ company?: string }>;
+  searchParams: Promise<{ company?: string; vorgang?: string }>;
 }) {
   const { module: key } = await params;
   const q = await searchParams;
@@ -40,7 +40,7 @@ export default async function Page({
             Bewertungen.
           </p>
         </header>
-        <ReviewsInbox />
+        <ReviewsInbox initialId={q.vorgang} />
       </>
     );
   }
