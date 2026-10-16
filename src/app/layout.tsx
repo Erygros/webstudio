@@ -7,6 +7,7 @@ import { PublicChrome } from "@/components/public-chrome";
 import { JsonLd } from "@/components/ui";
 import { businessSchema } from "@/lib/business-schema";
 import { publicIndexing } from "@/lib/seo";
+import { leadinfoBootstrap } from "@/lib/leadinfo";
 import { categories } from "@/data/services";
 import { packages, priceLabel } from "@/config/pricing";
 import "./globals.css";
@@ -50,6 +51,10 @@ export default function RootLayout({
     <html lang="de" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script
+          id="leadinfo-consent-loader"
+          dangerouslySetInnerHTML={{ __html: leadinfoBootstrap }}
+        />
       </head>
       <body>
         <a className="skip-link" href="#main">

@@ -132,10 +132,24 @@ export const legalPages: Record<string, ContentPage> = {
       },
       {
         title: "8. Lokale Darstellung und Cookies",
-        text: "Diese Website verwendet keine Analyse- oder Werbe-Cookies und lädt keine Trackingdienste, externen Schriftarten oder eingebetteten Drittanbieter-Kalender. Wenn du selbst eine helle oder dunkle Darstellung auswählst, wird diese Wahl unter dem Schlüssel theme im lokalen Speicher deines Browsers abgelegt. Sie bleibt bis zur Änderung oder Löschung der Browserdaten bestehen und wird nicht an uns übertragen. Die Speicherung dient der von dir ausdrücklich gewünschten Darstellung; § 25 Abs. 2 Nr. 2 TDDDG berücksichtigt technisch unbedingt erforderliche Speicherungen für einen ausdrücklich gewünschten Dienst. Personenbezogene technische Verarbeitung erfolgt, soweit einschlägig, auf Grundlage von Art. 6 Abs. 1 Buchst. f DSGVO. Der schließbare Exit-Hinweis merkt sich seine Anzeige nur im Arbeitsspeicher der aktuell geöffneten Website, ohne zusätzlichen Eintrag im Browser-Speicher. Einstellungen kannst du über die entsprechende Seite ändern.",
+        text: "Wenn du selbst eine helle oder dunkle Darstellung auswählst, wird diese Wahl unter dem Schlüssel theme im lokalen Speicher deines Browsers abgelegt. Sie bleibt bis zur Änderung oder Löschung der Browserdaten bestehen und wird nicht an uns übertragen. Die Speicherung dient der von dir ausdrücklich gewünschten Darstellung; § 25 Abs. 2 Nr. 2 TDDDG berücksichtigt technisch unbedingt erforderliche Speicherungen für einen ausdrücklich gewünschten Dienst. Personenbezogene technische Verarbeitung erfolgt, soweit einschlägig, auf Grundlage von Art. 6 Abs. 1 Buchst. f DSGVO. Der schließbare Exit-Hinweis merkt sich seine Anzeige nur im Arbeitsspeicher der aktuell geöffneten Website. Deine Zustimmung oder Ablehnung zu Leadinfo wird getrennt unter webstudio-leadinfo-consent-v1 für 180 Tage lokal gespeichert. Diese Speicherung dient der Beachtung deiner Datenschutzwahl. Ohne gültige Zustimmung wird Leadinfo nicht geladen. Externe Schriftarten und eingebettete Drittanbieter-Kalender werden nicht geladen.",
         links: [
           {
             title: "Darstellung und Cookie-Einstellungen",
+            href: "/cookie-einstellungen",
+          },
+        ],
+      },
+      {
+        title: "8a. Freiwillige Besuchsanalyse mit Leadinfo",
+        text: "Mit deiner vorherigen Zustimmung verwenden wir Leadinfo B.V., Niederlande, zur Erkennung von Unternehmensbesuchen und zur Auswertung unserer öffentlichen Website. Der Dienst verarbeitet insbesondere IP-Adresse, aufgerufene Seiten, Zeitpunkt und technische Browserinformationen und gleicht Besuche mit Unternehmensdaten ab. Wir können dadurch Informationen zu besuchenden Unternehmen und deren Website-Nutzung erhalten. Je nach Konfiguration verwendet Leadinfo Cookies oder lokalen Browser-Speicher zur Wiedererkennung; auch ein Betrieb ohne Cookies ist möglich. Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 Buchst. a DSGVO und, soweit auf deinem Endgerät Informationen gespeichert oder ausgelesen werden, § 25 Abs. 1 TDDDG. Ablehnen hat keinen Einfluss auf die Nutzung der Website oder die Bearbeitung von Anfragen. Du kannst deine Zustimmung über Cookie-Einstellungen jederzeit für die Zukunft widerrufen. Das stoppt das weitere Laden, löscht aber keine bereits an Leadinfo übertragenen Daten; Löschanfragen kannst du an uns richten. Die Analyse dient der Unternehmensbesuchserkennung; eine gesonderte Übermittlung von Formularinhalten oder Bildschirmaufzeichnungen wird durch unsere Integration nicht eingerichtet. CRM, API und private Bewertungs-Bestellseiten sind vom Tracking ausgenommen. Für die Verarbeitung durch den Anbieter gelten zusätzlich dessen Datenschutzinformationen und die vereinbarten Aufbewahrungs- und Löschbedingungen. Es findet durch den Tracker keine automatische Übernahme in unsere CRM-Lead-Tabelle statt.",
+        links: [
+          {
+            title: "Leadinfo-Datenschutzinformationen",
+            href: "https://www.leadinfo.com/de/rechtliches/datenschutz/",
+          },
+          {
+            title: "Einwilligung ändern oder widerrufen",
             href: "/cookie-einstellungen",
           },
         ],

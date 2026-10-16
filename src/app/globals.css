@@ -1287,6 +1287,50 @@ img {
 .success-panel p {
   margin-bottom: 25px;
 }
+.tracking-consent {
+  position: fixed;
+  inset: auto 20px 20px;
+  z-index: 150;
+  max-width: 780px;
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
+  margin-inline: auto;
+  padding: clamp(20px, 4vw, 32px);
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  box-shadow: 0 12px 48px #0003;
+}
+.tracking-consent h2,
+.tracking-settings h2 {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+.tracking-consent p {
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+.tracking-consent a {
+  text-decoration: underline;
+}
+.tracking-settings {
+  margin-block: 32px;
+}
+.tracking-consent .cookie-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+@media (max-width: 600px) {
+  .tracking-consent {
+    inset: auto 12px 12px;
+    max-height: calc(100dvh - 24px);
+  }
+  .tracking-consent .button {
+    flex: 1 1 180px;
+  }
+}
 .cookie-controls {
   display: flex;
   gap: 15px;

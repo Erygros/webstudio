@@ -1,9 +1,10 @@
 import { Preferences } from "@/components/preferences";
+import { TrackingConsent } from "@/components/tracking-consent";
 import { Breadcrumbs, PageIntro } from "@/components/ui";
 import { seo } from "@/lib/seo";
 export const metadata = seo(
   "Cookie-Einstellungen und Darstellung",
-  "Diese Website verwendet derzeit keine Analyse- oder Werbe-Cookies. Verwalte die lokal gespeicherte Darstellung.",
+  "Verwalte deine freiwillige Zustimmung zur Besuchsanalyse mit Leadinfo und die lokal gespeicherte Darstellung.",
   "/cookie-einstellungen",
   { noIndex: true },
 );
@@ -17,8 +18,8 @@ export default function Cookies() {
       />
       <PageIntro
         label="Privatsphäre"
-        title="Nur das, was gebraucht wird."
-        description="In dieser Version sind keine Analyse- oder Werbedienste aktiv. Ein Einwilligungsbanner ist für diese Dienste daher aktuell nicht eingebunden."
+        title="Deine Privatsphäre. Deine Auswahl."
+        description="Leadinfo wird erst nach deiner Zustimmung geladen. Hier kannst du deine Auswahl ändern oder für die Zukunft widerrufen."
       />
       <section className="section content-split">
         <h2>Deine Darstellung.</h2>
@@ -29,17 +30,12 @@ export default function Cookies() {
             wieder dem hellen oder dunklen Modus deines Geräts.
           </p>
           <Preferences />
+          <TrackingConsent settings />
           <h3>Exit-Hinweis</h3>
           <p>
             Der Hinweis merkt sich seine Anzeige nur im Arbeitsspeicher der
             geöffneten Website. Dafür werden keine Cookies oder zusätzlichen
             Einträge im Browser-Speicher gesetzt.
-          </p>
-          <h3>Spätere Analysefunktionen</h3>
-          <p>
-            Vor einer Aktivierung einwilligungspflichtiger Dienste muss eine
-            passende Einwilligungsverwaltung eingerichtet werden. Es werden
-            keine versteckten Tracking-Skripte geladen.
           </p>
         </div>
       </section>
