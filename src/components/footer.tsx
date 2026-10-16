@@ -24,6 +24,7 @@ export function Footer() {
         </address>
         <div>
           <Link href="/wissen">Wissen</Link>
+          <Link href="/leads">Firmenkontakte kaufen</Link>
           <Link href="/faq">Fragen & Antworten</Link>
           <Link href="/betreuung">Betreuung</Link>
           <Link href="/bewertungen">Bewertungsschutz</Link>

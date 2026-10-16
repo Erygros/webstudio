@@ -4,14 +4,15 @@ export const leadinfoConsentDays = 180;
 export function allowsLeadinfo(pathname: string) {
   return (
     !/^\/(crm|api)(\/|$)/.test(pathname) &&
-    !/^\/bewertungen\/auftrag(\/|$)/.test(pathname)
+    !/^\/bewertungen\/auftrag(\/|$)/.test(pathname) &&
+    !/^\/leads\/download(\/|$)/.test(pathname)
   );
 }
 
 // Runs in <head>, before any provider request. No preload/preconnect without consent.
 export const leadinfoBootstrap = `
 (function(){
-  if(/^\\/(crm|api)(\\/|$)/.test(location.pathname)||/^\\/bewertungen\\/auftrag(\\/|$)/.test(location.pathname))return;
+  if(/^\\/(crm|api)(\\/|$)/.test(location.pathname)||/^\\/bewertungen\\/auftrag(\\/|$)/.test(location.pathname)||/^\\/leads\\/download(\\/|$)/.test(location.pathname))return;
   try{
     var consent=JSON.parse(localStorage.getItem('${leadinfoConsentKey}')||'null');
     if(!consent||consent.allowed!==true||typeof consent.expires!=='number'||consent.expires<=Date.now())return;

@@ -8,6 +8,7 @@ import { MailTools } from "@/crm/components/mail-tools";
 import { Work } from "@/crm/components/work";
 import { session } from "@/crm/server/db";
 import { ReviewsInbox } from "@/crm/components/reviews";
+import { LeadShopAdmin } from "@/crm/components/lead-shop";
 import {
   WebsiteFormStatus,
   WebsiteInquiryInbox,
@@ -21,6 +22,16 @@ export default async function Page({
 }) {
   const { module: key } = await params;
   const q = await searchParams;
+  if (key === "lead-verkauf") {
+    const current = await session();
+    if (!["administrator", "buchhaltung"].includes(current!.profile.role))
+      return (
+        <p>
+          Der Lead-Verkauf ist für Administration und Buchhaltung verfügbar.
+        </p>
+      );
+    return <LeadShopAdmin />;
+  }
   if (key === "bewertungen") {
     const current = await session();
     if (!["administrator", "vertrieb"].includes(current!.profile.role))

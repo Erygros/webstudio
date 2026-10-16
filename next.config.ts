@@ -3,6 +3,7 @@ const config: NextConfig = {
   poweredByHeader: false,
   outputFileTracingIncludes: {
     "/api/internal/review-mail": ["./public/brand/wordmark-black.png"],
+    "/api/internal/lead-shop": ["./public/brand/wordmark-black.png"],
   },
   async headers() {
     return [
@@ -43,6 +44,14 @@ const config: NextConfig = {
             },
           ]
         : []),
+      {
+        source: "/leads/download",
+        headers: [
+          { key: "Cache-Control", value: "private, no-store" },
+          { key: "Referrer-Policy", value: "no-referrer" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
+        ],
+      },
       {
         source: "/bewertungen/auftrag/:path*",
         headers: [

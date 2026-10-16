@@ -41,6 +41,10 @@ Der OSM-/Overpass-Importer wurde entfernt. Leads können weiterhin manuell sowie
 
 Die historische Migration 015 bleibt Bestandteil der Datenbankhistorie, da sie auch die gemeinsame Duplikatprüfung für Unternehmen und Kontakte enthält. Lizenzhinweise in Exporten bleiben für eventuell früher importierte OSM-Daten erhalten. Die Anwendung ruft keine OSM-Suchdienste mehr auf. Die optionalen Variablen `OVERPASS_API_URL` und `OSM_GEOCODER_URL` werden nicht mehr verwendet.
 
+## Exklusiver Lead-Verkauf
+
+Öffentliche Verkaufsseite `/leads`, geschützte Verwaltung `/crm/lead-verkauf`. Eigener Verkaufsbestand mit CSV-Import, exklusive Reservierungen, manuelle Bankzuordnung durch die Buchhaltung, serverseitige CSV-Auslieferung und SMTP-Bestell-/Downloadbestätigungen. Bankkonfiguration und Import sind auf Administration beschränkt. Einrichtung: [LEAD-SHOP-SETUP.md](LEAD-SHOP-SETUP.md). Einmalig nur Migration `202610160001_lead_shop.sql` im bestehenden Projekt ausführen; keine erneute CRM-Gesamtinstallation. Der bestehende Vault-Zeitgeber und `CRON_SECRET` werden wiederverwendet.
+
 ## Module
 
 Dashboard aus Datenbankwerten; Leads/Kunden mit gemeinsamen Unternehmensdaten, mehreren Ansprechpartnern, Statusverlauf, Notizen, Suche, Sortierung, Filtern, Archivierung und Duplikatprüfung. Follow-ups besitzen einen eigenen Status. Aufgaben, Projekte, Checklisten, Meilensteine, manuelle Zeiterfassung, Budget-/Zeitkostenvergleich, Tag-/Woche-/Monatskalender mit Wiederholungen, private Dokumente, globale Suche, Notifications, Statistiken, CSV/XLSX-Import mit Spaltenmapping/Vorschau, CSV/JSON-Export, PDF-Berichte, Einstellungen und optionaler Leseassistent.

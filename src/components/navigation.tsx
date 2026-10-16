@@ -7,6 +7,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { site } from "@/config/site";
 import { Brand } from "@/components/brand";
 const links = [
+  ["Firmenkontakte", "/leads"],
   ["Projekte", "/projekte"],
   ["Preise", "/preise"],
   ["Unternehmen", "/unternehmen"],

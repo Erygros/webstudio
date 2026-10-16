@@ -123,6 +123,13 @@ export const legalPages: Record<string, ContentPage> = {
         ],
       },
       {
+        title: "5b. Bestellungen von Firmenkontakten",
+        text: "Bei einer Bestellung unter /leads verarbeiten wir Firmenname, Ansprechpartner, Rechnungsanschrift, E-Mail-Adresse, Telefonnummer, gegebenenfalls USt-IdNr., Paket, Menge und Preis. Bestellung, Zahlungszuordnung, Vertragsbedingungen, Bestellnummer und Freigabeereignisse werden im geschützten Supabase-System gespeichert. Die Daten dienen der Vertragserfüllung und vorvertraglichen Bearbeitung (Art. 6 Abs. 1 Buchst. b DSGVO), der Erfüllung gesetzlicher Buchführungs- und Aufbewahrungspflichten (Art. 6 Abs. 1 Buchst. c DSGVO) und der Absicherung gegen Missbrauch (Art. 6 Abs. 1 Buchst. f DSGVO). Bestellbestätigung und Downloadlink werden über den eingerichteten SMTP-Anbieter an die angegebene E-Mail-Adresse versendet. Dateien liegen im privaten Speicher; individuelle Links sind Zugangsschlüssel und dürfen nicht weitergegeben werden. Downloadbereitstellung und Abrufe werden mit Bestellbezug protokolliert. Eine Bankzahlung wird durch die Buchhaltung bestätigt; es erfolgt kein Zugriff auf Onlinebanking-Zugangsdaten des Käufers. Ausgelieferte Firmenkontakte stammen aus gesondert freigegebenen Datenquellen. Der Erwerb enthält keine Einwilligung der aufgeführten Kontakte für Werbung. Personenbezogene Informationen in den Verkaufsdaten unterliegen eigenen Informations-, Widerspruchs- und Löschpflichten; entsprechende Anliegen können an kontakt@webstudio-expert.de gerichtet werden.",
+        links: [
+          { title: "Firmenkontakte und Bestellbedingungen", href: "/leads" },
+        ],
+      },
+      {
         title: "6. Freiwillige Dateianhänge",
         text: "Bei aktivierter Projektanfrage können bis zu drei Dateien angehängt werden: je maximal 2 MB und insgesamt maximal 3 MB. Zulässig sind PDF, PNG, JPEG und UTF-8-Text. Dateityp, Größe und bekannte problematische Inhalte werden technisch geprüft. Anhänge werden im Arbeitsspeicher geprüft. Bei aktiviertem CRM werden sie zusätzlich in einem privaten Supabase-Speicher zugeordnet; bei aktiviertem SMTP können sie als Anlagen an die interne E-Mail versendet werden. Es gibt keine öffentliche Uploadablage. Die Dateien dienen ausschließlich der Bearbeitung deiner Anfrage. Nach Versand können sie im geschäftlichen E-Mail-Postfach gespeichert sein. Bitte beschränke die Unterlagen auf die erforderlichen Informationen.",
       },

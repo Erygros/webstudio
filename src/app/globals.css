@@ -1287,6 +1287,109 @@ img {
 .success-panel p {
   margin-bottom: 25px;
 }
+.lead-packages {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 1px solid var(--line);
+}
+.lead-package {
+  padding: clamp(24px, 4vw, 48px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  min-width: 0;
+}
+.lead-package + .lead-package {
+  border-left: 1px solid var(--line);
+}
+.lead-package h2 {
+  font-size: clamp(25px, 3vw, 40px);
+}
+.lead-package .lead-price {
+  font-size: clamp(38px, 5vw, 64px);
+  letter-spacing: -0.055em;
+  line-height: 1.1;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.lead-package ul {
+  padding-left: 20px;
+  line-height: 2;
+  margin-bottom: 12px;
+}
+.lead-package .button {
+  margin-top: auto;
+}
+.lead-package input[type="range"] {
+  width: 100%;
+  accent-color: var(--fg);
+}
+.lead-package .form-field {
+  width: 100%;
+  margin: 0;
+}
+.lead-unit,
+.lead-tax,
+.lead-saving {
+  color: var(--muted);
+  font-size: 13px;
+}
+.lead-tax {
+  margin-top: 20px;
+}
+.lead-checkout {
+  scroll-margin-top: 100px;
+}
+.lead-checkout > section {
+  margin-top: 60px;
+  padding-top: 36px;
+  border-top: 1px solid var(--line);
+  max-width: 900px;
+}
+.lead-checkout h2,
+.lead-checkout h3 {
+  margin-bottom: 24px;
+}
+.lead-checkout h3 {
+  margin-top: 32px;
+}
+.lead-summary {
+  display: grid;
+  gap: 12px;
+  margin-block: 24px;
+  overflow-wrap: anywhere;
+}
+.lead-summary > div {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) minmax(0, 2fr);
+  gap: 16px;
+  border-bottom: 1px solid var(--line);
+  padding-block: 8px;
+}
+.lead-summary dt {
+  color: var(--muted);
+}
+.lead-summary dd {
+  margin: 0;
+}
+.lead-condition {
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+@media (max-width: 700px) {
+  .lead-packages {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lead-package + .lead-package {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+  .lead-summary > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+}
 .tracking-consent {
   position: fixed;
   inset: auto 20px 20px;
@@ -1485,7 +1588,10 @@ img {
 }
 @media (max-width: 1100px) {
   .desktop-nav {
-    gap: 20px;
+    display: none;
+  }
+  .menu-button {
+    display: flex;
   }
   .hero-top {
     gap: 35px;
