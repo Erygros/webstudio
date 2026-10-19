@@ -1,10 +1,10 @@
 import { PageIntro, Breadcrumbs, Cta, JsonLd } from "@/components/ui";
-import { projects } from "@/data/projects";
+import { portfolioItems } from "@/data/projects";
 import { Portfolio } from "@/components/portfolio";
 import { collectionSchema, seo } from "@/lib/seo";
 export const metadata = seo(
-  "Projekte und Gestaltungskonzepte",
-  "Klar gekennzeichnete Demonstrationsprojekte für Websites, Shops, SaaS, Webanwendungen und Automatisierungen.",
+  "Referenzen, Projekte und Gestaltungskonzepte",
+  "Website-Referenzen und eigene Gestaltungskonzepte von Webstudio Expert. Entdecke Vereinswebsites, Unternehmensauftritte und klar gekennzeichnete Demonstrationsprojekte.",
   "/projekte",
 );
 export default function Projects() {
@@ -13,8 +13,8 @@ export default function Projects() {
       <Breadcrumbs items={[{ name: "Projekte", href: "/projekte" }]} />
       <PageIntro
         label="Portfolio"
-        title="Ideen in einer konkreten Form."
-        description="Diese Demonstrationsprojekte zeigen gestalterische und technische Ansätze. Sie sind keine beauftragten Kundenarbeiten und keine öffentlich nutzbaren Anwendungen."
+        title="Referenzen und eigene Konzepte."
+        description="Ausgewählte Websites und gestalterische Ansätze. Referenzen öffnen die jeweilige Website in einem neuen Tab. Eigene Entwürfe sind als Demonstrationsprojekte gekennzeichnet."
       />
       <section className="section">
         <Portfolio />
@@ -22,10 +22,10 @@ export default function Projects() {
       <JsonLd
         value={collectionSchema(
           "/projekte",
-          "Demonstrationskonzepte von Webstudio Expert",
-          projects.map((p) => ({
-            name: `${p.name} – Demonstrationskonzept`,
-            path: `/projekte/${p.slug}`,
+          "Referenzen und Gestaltungskonzepte von Webstudio Expert",
+          portfolioItems.map((p) => ({
+            name: `${p.name} – ${"externalUrl" in p ? "Referenz" : "Demonstrationskonzept"}`,
+            path: "externalUrl" in p ? p.externalUrl : `/projekte/${p.slug}`,
           })),
         )}
       />

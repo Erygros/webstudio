@@ -28,7 +28,9 @@ export function publicSeoPages(): { path: string; modified?: string }[] {
     })),
     ...["/leistungen", "/projekte", "/betreuung", "/faq"].map((path) => ({
       path,
-      ...(path === "/leistungen" ? { modified: expansionDate } : {}),
+      ...(["/leistungen", "/projekte"].includes(path)
+        ? { modified: expansionDate }
+        : {}),
     })),
     ...Object.keys(contentPages).map((p) => ({ path: `/${p}` })),
     ...serviceAreas.map((c) => ({

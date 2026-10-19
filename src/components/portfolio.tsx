@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
-import { projects, projectCategories } from "@/data/projects";
+import { portfolioItems, projectCategories } from "@/data/projects";
 import { ProjectCard } from "./project-card";
 export function Portfolio() {
   const [filter, setFilter] = useState("Alle");
-  const selected = projects.filter(
+  const selected = portfolioItems.filter(
     (p) => filter === "Alle" || p.category === filter,
   );
   return (

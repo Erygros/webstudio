@@ -6,6 +6,30 @@ export const projectCategories = [
   "SaaS",
   "Automatisierungen",
 ];
+export const portfolioReferences = [
+  {
+    slug: "tus-boevinghausen",
+    name: "TuS Bövinghausen 25 e.V.",
+    category: "Websites",
+    image: "/projects/tus-bovinghausen.png",
+    imageWidth: 1440,
+    imageHeight: 900,
+    description:
+      "Vereinswebsite für den Ballspielverein TuS Bövinghausen 25 e.V. – mit Mannschaften, Vereinsnachrichten und Terminen.",
+    externalUrl: "https://tus-bovinghausen-25.onrender.com/",
+  },
+  {
+    slug: "sibylle-bergold",
+    name: "Sibylle Bergold",
+    category: "Websites",
+    image: "/projects/sibylle-bergold.png",
+    imageWidth: 1440,
+    imageHeight: 900,
+    description:
+      "Website für systemische Aufstellung und Coaching mit Informationen zu Angebot, Arbeitsweise und Kontakt.",
+    externalUrl: "https://sibylle-bergold.de/",
+  },
+] as const;
 export const projects = [
   {
     slug: "raum-architektur",
@@ -108,3 +132,5 @@ export const projects = [
     type: "software",
   },
 ] as const;
+export const portfolioItems = [...portfolioReferences, ...projects];
+export type PortfolioProject = (typeof portfolioItems)[number];
