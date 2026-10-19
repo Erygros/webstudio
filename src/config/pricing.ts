@@ -84,7 +84,7 @@ export const carePackages = [
 ];
 export const additionalPrices = [
   ["Onlineshops", 999],
-  ["Shopify / WooCommerce", 999],
+  ["Shopify / WooCommerce", null],
   ["Individuelle Shopsysteme", null],
   ["Webanwendungen & SaaS", null],
   ["Schnittstellen & Automatisierung", null],

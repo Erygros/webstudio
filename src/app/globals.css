@@ -338,6 +338,9 @@ img {
   border: 1px solid var(--line);
   padding: 18px;
   width: 370px;
+  max-height: min(720px, calc(100dvh - 110px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
   box-shadow: 0 18px 40px #00000012;
   border-radius: 8px;
   animation: appear 0.15s ease;

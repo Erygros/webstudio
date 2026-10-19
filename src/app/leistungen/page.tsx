@@ -1,6 +1,6 @@
 import { Icon } from "@/components/icon";
 import Link from "next/link";
-import { categories, services, serviceHref } from "@/data/services";
+import { serviceAreas, serviceHref } from "@/data/services";
 import {
   PageIntro,
   SectionHead,
@@ -10,8 +10,8 @@ import {
 } from "@/components/ui";
 import { collectionSchema, seo } from "@/lib/seo";
 export const metadata = seo(
-  "Webdesign, Onlineshops & Software: Leistungen",
-  `${services.length} Leistungen in ${categories.length} Bereichen: Websites, E-Commerce, individuelle Software, KI, Optimierung und technische Betreuung.`,
+  "Webdesign, Marketing, Branding & digitale Beratung",
+  "Websites, CMS und Shops, Software, KI, Marketing, Branding und digitale Unternehmensberatung. Entdecke die Leistungen von Webstudio Expert.",
   "/leistungen",
 );
 export default function Services() {
@@ -20,17 +20,17 @@ export default function Services() {
       <Breadcrumbs items={[{ name: "Leistungen", href: "/leistungen" }]} />
       <PageIntro
         label="Leistungen"
-        title="Alles, was dein Webprojekt braucht."
-        description="Sechs Bereiche. Vom einzelnen Auftritt bis zur verbundenen Plattform. Wähle einen Bereich oder direkt die passende Leistung."
+        title="Dein Vorhaben. Unsere Leistungen."
+        description="Von Website und Shop über Marke und Werbung bis zur digitalen Unternehmensberatung. Wähle einen Bereich oder direkt die passende Leistung."
       />
       <nav className="section filters" aria-label="Leistungsbereiche">
-        {categories.map((c) => (
+        {serviceAreas.map((c) => (
           <Link className="button secondary" href={`#${c.slug}`} key={c.slug}>
             {c.short}
           </Link>
         ))}
       </nav>
-      {categories.map((c) => (
+      {serviceAreas.map((c) => (
         <section className="section" id={c.slug} key={c.slug}>
           <SectionHead
             label={`${c.services.length} Leistungen`}
@@ -66,7 +66,7 @@ export default function Services() {
         value={collectionSchema(
           "/leistungen",
           "Leistungen von Webstudio Expert",
-          categories.map((c) => ({
+          serviceAreas.map((c) => ({
             name: c.name,
             path: `/leistungen/${c.slug}`,
           })),

@@ -3,7 +3,8 @@ import { contentPages } from "@/data/pages";
 import { projects } from "@/data/projects";
 import { regionalPages } from "@/data/regions";
 import { serviceGuides } from "@/data/service-guides";
-import { categories, services, serviceHref } from "@/data/services";
+import { serviceAreas, services, serviceHref } from "@/data/services";
+import { expansionDate, serviceAreaContent } from "@/data/service-expansion";
 
 // Datum nur bei tatsächlicher Inhaltsänderung pflegen, nicht pro Build erneuern.
 const contentRevision = "2026-10-14";
@@ -21,16 +22,29 @@ export function publicSeoPages(): { path: string; modified?: string }[] {
     },
     ...["/", "/preise", "/kontakt"].map((path) => ({
       path,
-      modified: contentRevision,
+      modified: ["/", "/preise"].includes(path)
+        ? expansionDate
+        : contentRevision,
     })),
     ...["/leistungen", "/projekte", "/betreuung", "/faq"].map((path) => ({
       path,
+      ...(path === "/leistungen" ? { modified: expansionDate } : {}),
     })),
     ...Object.keys(contentPages).map((p) => ({ path: `/${p}` })),
-    ...categories.map((c) => ({ path: `/leistungen/${c.slug}` })),
+    ...serviceAreas.map((c) => ({
+      path: `/leistungen/${c.slug}`,
+      ...(serviceAreaContent[c.slug] ||
+      ["websites", "e-commerce"].includes(c.slug)
+        ? { modified: expansionDate }
+        : {}),
+    })),
     ...services.map((s) => ({
       path: serviceHref(s),
-      ...(serviceGuides[s.slug] ? { modified: contentRevision } : {}),
+      ...(s.modified
+        ? { modified: s.modified }
+        : serviceGuides[s.slug]
+          ? { modified: contentRevision }
+          : {}),
     })),
     ...projects.map((p) => ({ path: `/projekte/${p.slug}` })),
     ...articles.map((a) => ({

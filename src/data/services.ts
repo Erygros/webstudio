@@ -1,4 +1,11 @@
 import { packages, additionalPrices, carePackages } from "@/config/pricing";
+import {
+  additionalServiceDefinitions,
+  ecommercePlatformRows,
+  expansionDate,
+  serviceAreaContent,
+  websitePlatformRows,
+} from "@/data/service-expansion";
 export type Service = {
   slug: string;
   name: string;
@@ -8,6 +15,7 @@ export type Service = {
   benefit: string;
   category: string;
   price: number | null;
+  modified?: string;
 };
 export type Category = {
   slug: string;
@@ -16,6 +24,7 @@ export type Category = {
   description: string;
   approach: string[];
   services: Service[];
+  inquiryService?: string;
 };
 export const slugify = (text: string) =>
   text
@@ -812,6 +821,28 @@ const definitions: {
     ],
   },
 ];
+// Extend the owning categories rather than creating duplicate platform pages.
+definitions
+  .find((category) => category.slug === "websites")!
+  .rows.push(...websitePlatformRows);
+definitions
+  .find((category) => category.slug === "e-commerce")!
+  .rows.push(...ecommercePlatformRows);
+definitions.push(...additionalServiceDefinitions);
+const expandedSlugs = new Set(
+  [
+    ...websitePlatformRows,
+    ...ecommercePlatformRows,
+    ...additionalServiceDefinitions.flatMap((category) => category.rows),
+  ].map(([name]) => slugify(name)),
+);
+const platformSlugs = new Set([
+  ...websitePlatformRows.map(([name]) => slugify(name)),
+  ...ecommercePlatformRows.map(([name]) => slugify(name)),
+  "cms-websites",
+  "shopify-shops",
+  "woocommerce-shops",
+]);
 export const categories: Category[] = definitions.map(
   ({ rows, ...category }) => ({
     ...category,
@@ -828,31 +859,87 @@ export const categories: Category[] = definitions.map(
           ? packages[0].price
           : name === "Unternehmenswebsites"
             ? packages[1].price
-            : ["Onlineshops", "Shopify-Shops", "WooCommerce-Shops"].includes(
-                  name,
-                )
+            : name === "Onlineshops"
               ? additionalPrices[0][1]
               : name === "Monatliche Betreuungspakete"
                 ? carePackages[0].price
                 : null,
+      ...(expandedSlugs.has(slugify(name)) || platformSlugs.has(slugify(name))
+        ? { modified: expansionDate }
+        : {}),
     })),
   }),
 );
 export const services = categories.flatMap((category) => category.services);
+export const platformOverview: Category = {
+  slug: "cms-baukaesten",
+  name: "CMS, Baukastensysteme und E-Commerce",
+  short: "CMS & Plattformen",
+  description:
+    "WordPress, Webflow, Wix, Squarespace und Jimdo sowie WooCommerce, Shopify und Shopware. Einrichtung, Gestaltung, Migration, Pflege und Schulung aus einem abgestimmten Projektumfang.",
+  inquiryService: "cms-websites",
+  approach: [
+    "Anforderungen und vorhandenes System aufnehmen",
+    "Plattform, Umfang und Anbietergebühren abstimmen",
+    "Einrichtung, Gestaltung und Datenübernahme umsetzen",
+    "Verwaltung schulen und Betreuung abstimmen",
+  ],
+  // Reference canonical services in their original categories; never copy them.
+  services: services.filter((service) => platformSlugs.has(service.slug)),
+};
+export const serviceAreas = [
+  ...categories.slice(0, 2),
+  platformOverview,
+  ...categories.slice(2),
+];
+export const serviceAreaFor = (service: Service) =>
+  serviceAreaContent[
+    platformSlugs.has(service.slug) ? "cms-baukaesten" : service.category
+  ];
+export function serviceTitle(service: Service) {
+  if (service.category === "marketing")
+    return `${service.name}: Planung und Betreuung`;
+  if (service.category === "branding") return `${service.name} für deine Marke`;
+  if (service.category === "digitale-beratung")
+    return `${service.name}: Beratung und Planung`;
+  return undefined;
+}
 export const serviceHref = (service: Service) =>
   `/leistungen/${service.category}/${service.slug}`;
-export const serviceFaqs = (s: Service) => [
-  { question: `Für welche Projekte eignet sich ${s.name}?`, answer: s.useCase },
-  {
-    question: `Was gehört bei ${s.name} zum Leistungsumfang?`,
-    answer: `Wir planen insbesondere ${s.features.join(", ")}. Welche Funktionen enthalten sind, halten wir im Angebot fest.`,
-  },
-  {
-    question: `Was wird für die Planung von ${s.name} benötigt?`,
-    answer: `Beschreibe deinen Anwendungsfall und vorhandene Systeme. Besonders hilfreich sind Angaben zu ${s.features[0].toLowerCase()} und ${s.features[1].toLowerCase()}.`,
-  },
-  {
-    question: `Kann ${s.name} später erweitert werden?`,
-    answer: `Erweiterungen planen wir anhand der bestehenden Architektur. Ein möglicher nächster Schritt ist ${s.features[s.features.length - 1].toLowerCase()}; Aufwand und Betriebskosten stimmen wir vorher ab.`,
-  },
-];
+export const serviceFaqs = (s: Service) => {
+  const area = serviceAreaFor(s);
+  if (area)
+    return [
+      {
+        question: `Wann empfehlen sich Leistungen rund um ${s.name}?`,
+        answer: s.useCase,
+      },
+      {
+        question: `Welche Leistungen umfasst ${s.name}?`,
+        answer: `Zum möglichen Umfang gehören ${s.features.join(", ")}. Die ausgewählten Leistungen, Freigaben und Übergabe halten wir vor Beginn im Angebot fest.`,
+      },
+      {
+        question: `Wie wird das Honorar für ${s.name} kalkuliert?`,
+        answer: area.scope,
+      },
+      ...area.faq.slice(0, 2),
+    ];
+  return [
+    {
+      question: `Für welche Projekte eignet sich ${s.name}?`,
+      answer: s.useCase,
+    },
+    {
+      question: `Was gehört bei ${s.name} zum Leistungsumfang?`,
+      answer: `Wir planen insbesondere ${s.features.join(", ")}. Welche Funktionen enthalten sind, halten wir im Angebot fest.`,
+    },
+    {
+      question: `Was wird für die Planung von ${s.name} benötigt?`,
+      answer: `Beschreibe deinen Anwendungsfall und vorhandene Systeme. Besonders hilfreich sind Angaben zu ${s.features[0].toLowerCase()} und ${s.features[1].toLowerCase()}.`,
+    },
+    {
+      question: `Kann ${s.name} später erweitert werden?`,
+      answer: `Erweiterungen planen wir anhand der bestehenden Architektur. Ein möglicher nächster Schritt ist ${s.features[s.features.length - 1].toLowerCase()}; Aufwand und Betriebskosten stimmen wir vorher ab.`,
+    },
+  ];
+};

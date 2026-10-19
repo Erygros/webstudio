@@ -1,7 +1,8 @@
 import { Icon } from "@/components/icon";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { categories, serviceHref } from "@/data/services";
+import { serviceAreas, serviceHref } from "@/data/services";
+import { serviceAreaContent } from "@/data/service-expansion";
 import { categorySeo } from "@/data/service-guides";
 import {
   PageIntro,
@@ -10,10 +11,11 @@ import {
   Button,
   SectionHead,
   JsonLd,
+  Faq,
 } from "@/components/ui";
 import { collectionSchema, seo } from "@/lib/seo";
 export function generateStaticParams() {
-  return categories.map((c) => ({ category: c.slug }));
+  return serviceAreas.map((c) => ({ category: c.slug }));
 }
 export const dynamicParams = false;
 export async function generateMetadata({
@@ -22,7 +24,7 @@ export async function generateMetadata({
   params: Promise<{ category: string }>;
 }) {
   const { category } = await params;
-  const c = categories.find((c) => c.slug === category);
+  const c = serviceAreas.find((c) => c.slug === category);
   if (!c) notFound();
   return seo(
     categorySeo[c.slug] || c.name,
@@ -36,8 +38,23 @@ export default async function Category({
   params: Promise<{ category: string }>;
 }) {
   const { category } = await params;
-  const c = categories.find((c) => c.slug === category);
+  const c = serviceAreas.find((c) => c.slug === category);
   if (!c) notFound();
+  const content = serviceAreaContent[c.slug];
+  const links =
+    content?.links ||
+    (["websites", "e-commerce"].includes(c.slug)
+      ? [
+          {
+            title: "CMS, Baukastensysteme und Shop-Plattformen",
+            href: "/leistungen/cms-baukaesten",
+          },
+          {
+            title: "Digitale Strategie und Systemberatung",
+            href: "/leistungen/digitale-beratung",
+          },
+        ]
+      : []);
   return (
     <>
       <Breadcrumbs
@@ -51,12 +68,25 @@ export default async function Category({
         title={c.name}
         description={c.description}
       >
-        <Button href={`/projektanfrage?leistung=${c.slug}`}>
+        <Button href={`/projektanfrage?leistung=${c.inquiryService || c.slug}`}>
           Vorhaben besprechen
         </Button>
       </PageIntro>
+      {content && (
+        <section className="section content-split solutions">
+          <div>
+            <span className="eyebrow">Überblick</span>
+            <h2>Auf dein Vorhaben abgestimmt.</h2>
+          </div>
+          <div className="prose">
+            <p>{content.answer}</p>
+            <h3>Umfang und Kosten</h3>
+            <p>{content.scope}</p>
+          </div>
+        </section>
+      )}
       <section className="section">
-        <SectionHead title="Was können wir für dich entwickeln?" />
+        <SectionHead title="Die passende Leistung für dein Vorhaben." />
         <div className="service-directory">
           {c.services.map((s) => (
             <Link href={serviceHref(s)} key={s.slug}>
@@ -82,6 +112,44 @@ export default async function Category({
           ))}
         </div>
       </section>
+      {content && (
+        <>
+          <section className="section content-split">
+            <h2>Das hilft bei der Vorbereitung.</h2>
+            <div className="prose">
+              <ul>
+                {content.preparation.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <Button
+                href={`/projektanfrage?leistung=${c.inquiryService || c.slug}`}
+              >
+                Individuelles Angebot anfragen
+              </Button>
+            </div>
+          </section>
+          <section className="section content-split solutions">
+            <h2>Häufige Fragen.</h2>
+            <Faq items={content.faq} />
+          </section>
+        </>
+      )}
+      {links.length > 0 && (
+        <section className="section">
+          <SectionHead title="Sinnvoll verbunden." />
+          <div className="service-directory">
+            {links.map((link) => (
+              <Link key={link.href} href={link.href}>
+                <h3>{link.title}</h3>
+                <span aria-hidden="true">
+                  <Icon name="arrow-up-right" />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
       <JsonLd
         value={collectionSchema(
           `/leistungen/${c.slug}`,

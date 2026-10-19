@@ -1,7 +1,7 @@
 import { Icon } from "@/components/icon";
 import Image from "next/image";
 import Link from "next/link";
-import { categories } from "@/data/services";
+import { serviceAreas } from "@/data/services";
 import { projects } from "@/data/projects";
 import { business, site } from "@/config/site";
 import { priceLabel, packages } from "@/config/pricing";
@@ -94,6 +94,13 @@ export default function Home() {
             Start im Angebot beschrieben.
           </p>
           <p>
+            Ergänzend begleiten wir deinen Markenauftritt, digitale und lokale
+            Werbekampagnen sowie die Planung digitaler Geschäftsmodelle und
+            Prozesse. Auch Websites und Shops auf bestehenden CMS- und
+            Baukastenplattformen gehören zum Angebot. Diese Leistungen werden
+            individuell kalkuliert; Werbebudgets und externe Kosten separat.
+          </p>
+          <p>
             Der Starter-Einstieg für eine einfache Landingpage beginnt bei{" "}
             {priceLabel(packages[0].price).replace("ab ", "")}, die
             Unternehmenswebsite im Business-Paket bei{" "}
@@ -115,10 +122,10 @@ export default function Home() {
         <SectionHead
           label="Leistungen"
           title="Dein Vorhaben. Die passende Lösung."
-          description="Ein einzelner Auftritt oder ein verbundenes System. Wir entwickeln entlang deiner Anforderungen."
+          description="Websites, Shops und Software. Dazu Branding, Werbekampagnen, CMS-Plattformen und digitale Unternehmensberatung – abgestimmt auf dein Vorhaben."
         />
         <div className="service-rows">
-          {categories.map((c) => (
+          {serviceAreas.map((c) => (
             <Link
               className="service-row"
               key={c.slug}

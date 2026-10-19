@@ -350,6 +350,16 @@ export function InquiryForm({
               Ein Orientierungsrahmen. Das konkrete Angebot richtet sich nach
               dem Umfang.
             </p>
+            {(data.service === "marketing" ||
+              services.some(
+                (s) => s.slug === data.service && s.category === "marketing",
+              )) && (
+              <p className="price-note">
+                Dieser Rahmen bezieht sich auf das Dienstleistungshonorar.
+                Werbebudget, Produktion durch externe Anbieter und
+                Schaltungskosten stimmen wir separat ab.
+              </p>
+            )}
             {choices(budgetOptions, "budget")}
           </>
         )}

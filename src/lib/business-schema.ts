@@ -11,7 +11,7 @@ export const businessSchema = {
       legalName: business.owner,
       url: site.url,
       description:
-        "Webdesign, Onlineshops und individuelle Webentwicklung von Enrico Gross in Dortmund. Zusammenarbeit im deutschsprachigen Raum.",
+        "Webdesign, CMS und Onlineshops, individuelle Software, Werbekampagnen, Branding und digitale Unternehmensberatung von Enrico Gross in Dortmund. Zusammenarbeit im deutschsprachigen Raum.",
       email: site.email,
       telephone: site.phone.replace(/[^+\d]/g, ""),
       address: {

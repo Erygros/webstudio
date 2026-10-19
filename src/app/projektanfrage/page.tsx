@@ -8,7 +8,7 @@ import { seo } from "@/lib/seo";
 export const dynamic = "force-dynamic";
 export const metadata = seo(
   "Projekt unverbindlich anfragen",
-  "Beschreibe dein Webprojekt in sechs Schritten: Leistung, Funktionen, Budget, Zeitrahmen, Beschreibung und Kontaktdaten.",
+  "Beschreibe dein Vorhaben in sechs Schritten: Leistung, Umfang, Budget, Zeitrahmen, Beschreibung und Kontaktdaten – für Webprojekte, Branding, Marketing und Beratung.",
   "/projektanfrage",
   { noIndex: true },
 );

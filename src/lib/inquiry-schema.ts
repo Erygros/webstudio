@@ -16,6 +16,10 @@ export const featureOptions = [
   "Schnittstellen",
   "Mehrsprachigkeit",
   "Noch zu klären",
+  "Logo / Markenauftritt",
+  "Werbemittel / Kampagnen",
+  "Migration / Datenübernahme",
+  "Beratung / Strategie",
 ];
 export const timelineOptions = [
   "Innerhalb von 4 Wochen",
@@ -28,6 +32,8 @@ export const projectTypes = [
   "Bestehendes Projekt erweitern",
   "Relaunch / Migration",
   "Beratung / Analyse",
+  "Marke / Gestaltung",
+  "Werbekampagne planen / betreuen",
 ];
 const clean = (min: number, max: number) =>
   z
@@ -59,7 +65,7 @@ export const inquirySchema = z
           .string()
           .refine((v) => featureOptions.includes(v), "Unbekannte Funktion."),
       )
-      .max(7),
+      .max(featureOptions.length),
     budget: z.string().max(100),
     start: z.string().max(10),
     timeline: z.string().max(100),

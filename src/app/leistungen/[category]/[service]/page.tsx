@@ -6,6 +6,8 @@ import {
   services,
   serviceHref,
   serviceFaqs,
+  serviceAreaFor,
+  serviceTitle,
 } from "@/data/services";
 import { priceLabel, priceNote } from "@/config/pricing";
 import { serviceGuides } from "@/data/service-guides";
@@ -36,7 +38,9 @@ export async function generateMetadata({
 }) {
   const { s } = await resolve(params);
   return seo(
-    serviceGuides[s.slug]?.title || `${s.name} individuell umsetzen`,
+    serviceGuides[s.slug]?.title ||
+      serviceTitle(s) ||
+      `${s.name} individuell umsetzen`,
     s.intro,
     serviceHref(s),
   );
@@ -49,6 +53,20 @@ export default async function Service({
   const { c, s } = await resolve(params);
   const faq = serviceFaqs(s);
   const guide = serviceGuides[s.slug];
+  const area = serviceAreaFor(s);
+  const related: { title: string; href: string; description?: string }[] = area
+    ? area.links.filter((link) => link.href !== serviceHref(s)).slice(0, 4)
+    : c.services
+        .filter((item) => item.slug !== s.slug)
+        .slice(
+          Math.max(0, c.services.indexOf(s) - 1),
+          Math.max(0, c.services.indexOf(s) - 1) + 4,
+        )
+        .map((item) => ({
+          title: item.name,
+          href: serviceHref(item),
+          description: item.intro,
+        }));
   return (
     <>
       <Breadcrumbs
@@ -60,7 +78,11 @@ export default async function Service({
       />
       <PageIntro
         label={c.name}
-        title={guide?.title || `${s.name}. Passend zu deinem Vorhaben.`}
+        title={
+          guide?.title ||
+          serviceTitle(s) ||
+          `${s.name}. Passend zu deinem Vorhaben.`
+        }
         description={s.intro}
       >
         <Button href={`/projektanfrage?leistung=${s.slug}`}>
@@ -102,7 +124,7 @@ export default async function Service({
       <section className="section content-split">
         <div>
           <span className="eyebrow">Leistungsumfang</span>
-          <h2>Die wesentlichen Funktionen.</h2>
+          <h2>Das gehört zum Leistungsumfang.</h2>
         </div>
         <div>
           <ul className="feature-list">
@@ -132,12 +154,28 @@ export default async function Service({
           <h3>Geeignete Anwendungsfälle</h3>
           <p>{s.useCase}</p>
           <h3>Was wir gemeinsam klären</h3>
-          <p>
-            Welche Anforderungen an {s.features[0].toLowerCase()} bestehen? Wie
-            soll {s.features[1].toLowerCase()} in deine vorhandenen Abläufe
-            eingebunden werden? Diese Entscheidungen bilden die Grundlage für
-            den Umfang.
-          </p>
+          {area ? (
+            <>
+              <p>
+                Im Mittelpunkt stehen {s.features[0]} und {s.features[1]}. Wir
+                klären vorhandenes Material, Zuständigkeiten, Freigaben und das
+                gewünschte Ergebnis, bevor wir den Umfang anbieten.
+              </p>
+              <h3>Das hilft bei der Vorbereitung</h3>
+              <ul>
+                {area.preparation.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <p>
+              Welche Anforderungen an {s.features[0].toLowerCase()} bestehen?
+              Wie soll {s.features[1].toLowerCase()} in deine vorhandenen
+              Abläufe eingebunden werden? Diese Entscheidungen bilden die
+              Grundlage für den Umfang.
+            </p>
+          )}
         </div>
       </section>
       <section className="section">
@@ -161,9 +199,15 @@ export default async function Service({
         </div>
         <div>
           <p>
-            Ein konkretes Angebot berücksichtigt Funktionsumfang, vorhandene
-            Inhalte und die erforderlichen Anbindungen. Laufende Anbieter- und
-            Betriebskosten weisen wir separat aus.
+            {area ? (
+              area.scope
+            ) : (
+              <>
+                Ein konkretes Angebot berücksichtigt Funktionsumfang, vorhandene
+                Inhalte und die erforderlichen Anbindungen. Laufende Anbieter-
+                und Betriebskosten weisen wir separat aus.
+              </>
+            )}
           </p>
           <p className="price-note">{priceNote}</p>
           <div className="buttons" style={{ marginTop: 24 }}>
@@ -180,23 +224,17 @@ export default async function Service({
       <section className="section">
         <SectionHead title="Passende Ergänzungen." />
         <div className="service-directory">
-          {c.services
-            .filter((item) => item.slug !== s.slug)
-            .slice(
-              Math.max(0, c.services.indexOf(s) - 1),
-              Math.max(0, c.services.indexOf(s) - 1) + 4,
-            )
-            .map((item) => (
-              <Link href={serviceHref(item)} key={item.slug}>
-                <div>
-                  <h3>{item.name}</h3>
-                  <p>{item.intro}</p>
-                </div>
-                <span aria-hidden="true">
-                  <Icon name="arrow-up-right" />
-                </span>
-              </Link>
-            ))}
+          {related.map((item) => (
+            <Link href={item.href} key={item.href}>
+              <div>
+                <h3>{item.title}</h3>
+                {item.description && <p>{item.description}</p>}
+              </div>
+              <span aria-hidden="true">
+                <Icon name="arrow-up-right" />
+              </span>
+            </Link>
+          ))}
         </div>
       </section>
       <JsonLd

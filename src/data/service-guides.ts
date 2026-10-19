@@ -7,6 +7,41 @@ export type ServiceGuide = {
 };
 
 export const serviceGuides: Record<string, ServiceGuide> = {
+  "online-marketing": {
+    title: "Bestehendes Online-Marketing gezielt verbessern",
+    answer:
+      "Wir betrachten vorhandene digitale Maßnahmen zusammen mit deinem Angebot und den dazugehörigen Zielseiten. Im Mittelpunkt stehen nachvollziehbare Ziele, bestehende Kontaktwege und ein priorisierter Verbesserungsplan. Für neue Kampagnen, Werbemittel und laufende Anzeigenverwaltung gibt es den ergänzenden Leistungsbereich Werbekampagnen und Marketing.",
+    decisions: [
+      {
+        title: "Vorhandene Maßnahmen einordnen",
+        text: "Zuerst erfassen wir eingesetzte Kanäle, Zielgruppen und vorhandene Auswertungen. Danach klären wir, ob das Problem beim Angebot, der Ansprache, der Zielseite oder dem Kontaktweg liegt. Nicht jede Beobachtung erfordert einen neuen Kanal.",
+      },
+      {
+        title: "Planung und Durchführung abgrenzen",
+        text: "Ein Optimierungsvorhaben kann eine Analyse und konkrete Änderungen an vorhandenen Maßnahmen umfassen. Eine neue Werbestrategie, Werbemittelproduktion oder fortlaufende Kampagnenbetreuung wird als eigener Umfang angeboten. Honorar und Werbebudget bleiben getrennt.",
+      },
+    ],
+    preparation: [
+      "Vorhandene Kanäle, Anzeigen und Zielseiten",
+      "Vereinbarte Ziele und verfügbare Auswertungen",
+      "Zuständigkeiten für Inhalte und Konten",
+      "Bekannte Hürden auf dem Weg zur Anfrage oder zum Kauf",
+    ],
+    links: [
+      {
+        title: "Werbekampagnen planen und betreuen",
+        href: "/leistungen/marketing",
+      },
+      {
+        title: "Online-Marketing-Strategie erarbeiten",
+        href: "/leistungen/digitale-beratung/online-marketing-strategie",
+      },
+      {
+        title: "Anfragen auf der Website verbessern",
+        href: "/wissen/website-bekommt-keine-anfragen",
+      },
+    ],
+  },
   landingpages: {
     title: "Landingpage erstellen lassen",
     answer:
@@ -238,6 +273,10 @@ export const serviceGuides: Record<string, ServiceGuide> = {
 };
 
 export const categorySeo: Record<string, string> = {
+  marketing: "Werbekampagnen & Marketing planen und betreuen",
+  branding: "Logo, Corporate Design & Brand Assets gestalten",
+  "cms-baukaesten": "CMS, Website-Baukästen & Shop-Plattformen",
+  "digitale-beratung": "Digitale Unternehmensberatung & Projektplanung",
   websites: "Websites & Webdesign erstellen lassen",
   "e-commerce": "Onlineshops & E-Commerce entwickeln lassen",
   software: "Individuelle Software & Webanwendungen",
