@@ -1,0 +1,29 @@
+[
+  {
+    "name": "Facebook",
+    "file": "facebook.png",
+    "page": "https://www.meta.com/brand/resources/facebook/logo/",
+    "archive": "Facebook-Brand-Asset-Pack.zip",
+    "entry": "Facebook Brand Asset Pack/Logo/Primary Logo/Facebook_Logo_Primary.png",
+    "sha256": "2adfd474d91fd20c51084309ed000c1ae6cc7f5f70af14d375930f5a71301308",
+    "archiveSha256": "5c51e2c9c2377b1656a3294b391ed4a42f88dd8c46fc05b98d3bc27affc97f3a"
+  },
+  {
+    "name": "Instagram",
+    "file": "instagram.png",
+    "page": "https://www.meta.com/brand/resources/instagram/instagram-brand/",
+    "archive": "IG_brand_asset_pack_2023.zip",
+    "entry": "01 Static Glyph/01 Gradient Glyph/Instagram_Glyph_Gradient.png",
+    "sha256": "21f86b55f986848665ce54ab354ff6b43b7705e6c421d90c04369882b5956766",
+    "archiveSha256": "a9e5cbe63dc01279b3d12d536ea9d94ab5236521601bd5cc4b4caf7ba7060e82"
+  },
+  {
+    "name": "LinkedIn",
+    "file": "linkedin.png",
+    "page": "https://brand.linkedin.com/downloads",
+    "archive": "in-logo.zip",
+    "entry": "in-logo/LI-In-Bug.png",
+    "sha256": "3c0149f26168b5fe0f43e68664abe40341a6443b3cd435d18a73e12f64f8b600",
+    "archiveSha256": "32c4b7bbf902c1d957881e2eca16bc765891dc86da8ce4d416a849f161222a87"
+  }
+]

@@ -967,6 +967,36 @@ img {
   font-size: 10px;
   color: var(--muted);
 }
+.footer-socials {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-bottom: 28px;
+}
+.footer-socials > span {
+  font-size: 12px;
+  color: var(--muted);
+  margin-right: 4px;
+}
+.footer-socials > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.footer-socials > a:hover {
+  background: var(--surface);
+}
+.footer-socials img {
+  display: block;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
 .footer-bottom > div {
   display: flex;
   flex-wrap: wrap;
