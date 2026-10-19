@@ -15,6 +15,171 @@ export type Article = {
 
 export const articles: Article[] = [
   {
+    slug: "website-relaunch-seo-checkliste",
+    title: "Website-Relaunch: SEO erhalten und Weiterleitungen planen",
+    intro:
+      "Website erneuern, bestehende Sichtbarkeit berücksichtigen: Checkliste zu alten URLs, Weiterleitungen, Inhalten und Veröffentlichung für kleine Unternehmen.",
+    answer:
+      "Plane beim Website-Relaunch nicht nur das neue Design. Erfasse zuerst die bestehenden Seiten und ihre Aufgaben. Behalte passende URLs bei, ordne geänderte Adressen einem fachlich passenden Ziel zu und prüfe vor der Veröffentlichung Inhalte, Erreichbarkeit und Kontaktwege. Suchmaschinen müssen wesentliche Änderungen neu verarbeiten; unveränderte Rankings lassen sich deshalb nicht garantieren.",
+    updated: "2026-10-19",
+    sections: [
+      {
+        title: "Was soll der Relaunch für dein Unternehmen verbessern?",
+        text: "Ein Relaunch ist eine grundlegende Überarbeitung einer bestehenden Website. Bevor Gestaltung oder Technik feststehen, notiere das konkrete Problem: Verstehen Interessenten eine Leistung nicht? Ist die Pflege zu aufwendig? Fehlt eine wichtige Funktion? Lege dafür ein überprüfbares Abnahmekriterium fest. Beispielsweise soll ein Kunde die passende Leistung finden, eine verständliche Anfrage senden und eine eindeutige Eingangsbestätigung erhalten. Das ist eine Projektanforderung, keine Prognose zusätzlicher Anfragen.",
+        items: [
+          "Benenne die wichtigsten Zielgruppen und die Aufgaben, die sie auf der Website erledigen sollen.",
+          "Halte fest, welche Inhalte, Funktionen und Kontaktwege erhalten bleiben müssen.",
+          "Trenne notwendige Änderungen von Wünschen, die später umgesetzt werden können.",
+          "Kläre, wer Inhalte freigibt und wer die Veröffentlichung verantwortet.",
+        ],
+      },
+      {
+        title: "Bestehende URLs und Inhalte vorab erfassen",
+        text: "Erstelle vor der Umsetzung eine Übersicht der bisherigen Seiten, Downloads und wichtigen extern verlinkten Adressen. Ergänze, welchem Kundenanliegen jede Seite dient und ob das Angebot weiterhin besteht. Vorhandene Suchdaten und tatsächlich eingegangene Anfragen helfen bei der Priorisierung. Auch eine Seite mit wenig Suchtraffic kann für Bestandskunden oder als Ziel eines gedruckten Links wichtig sein. Bewahre die alte Übersicht auf, damit du Änderungen später nachvollziehen kannst.",
+        items: [
+          "Welche Seiten beschreiben aktuell angebotene Leistungen?",
+          "Welche URLs stehen auf Visitenkarten, in Profilen oder in E-Mail-Signaturen?",
+          "Welche Bilder, PDF-Dateien und Formulare werden weiterhin benötigt?",
+          "Welche Texte sind veraltet und brauchen eine fachliche Freigabe?",
+        ],
+      },
+      {
+        title:
+          "Weiterleitungen nach Inhalt statt pauschal zur Startseite planen",
+        text: "Ändert sich eine Adresse dauerhaft, verwende eine serverseitige permanente Weiterleitung, üblicherweise mit HTTP 301 oder 308. Ihr Ziel sollte den bisherigen Inhalt passend ersetzen. Eine pauschale Weiterleitung aller alten Leistungsseiten zur Startseite ist dafür meist ungeeignet. Vermeide unnötige Weiterleitungsketten: Die alte Adresse soll möglichst direkt zum endgültigen Ziel führen. Gibt es keinen sinnvollen Ersatz für einen entfernten Inhalt, ist eine echte Fehlerantwort mit HTTP 404 oder 410 angemessen.",
+        items: [
+          "Beispielhafte Zuordnung: /gartenpflege-alt → /leistungen/gartenpflege, wenn dort dieselbe Leistung beschrieben wird.",
+          "Bestehende Adressen können beibehalten werden, wenn Inhalt und Seitenaufgabe weiterhin passen.",
+          "Prüfe auch alte PDF- und Bildadressen, die außerhalb der Website verlinkt sind.",
+        ],
+      },
+      {
+        title: "Interne Links und kanonische Adressen abstimmen",
+        text: "Verlinke Navigation, Leistungstexte und Ratgeber direkt auf die endgültigen Adressen. Ein Canonical-Hinweis bezeichnet die bevorzugte Version gleicher oder sehr ähnlicher Inhalte; er ersetzt keine Weiterleitung für Besucher. Canonicals und interne Links sollten dieselbe bevorzugte URL verwenden. Eine versehentliche Referenz auf die Vorschau-Domain oder auf eine alte Adresse erzeugt widersprüchliche Hinweise. Kontrolliere deshalb nicht nur die Startseite, sondern auch einzelne Leistungen und Artikel.",
+      },
+      {
+        title: "Die Sitemap aktualisieren und den Zugriff prüfen",
+        text: "Eine Sitemap nennt Suchmaschinen die URLs, die du zur Indexierung vorschlägst. Sie sollte die aktuellen kanonischen Adressen enthalten. Bleibt ihre Adresse beim Relaunch gleich, wird die vorhandene Datei aktualisiert; eine neue Sitemap-Adresse ist dafür nicht erforderlich. Ein lastmod-Datum sollte eine tatsächliche wesentliche Änderung abbilden, statt bei jedem Aufruf neu gesetzt zu werden. Die Sitemap unterstützt das Auffinden von Seiten, garantiert aber keine Indexierung.",
+        items: [
+          "Die Sitemap unter ihrer öffentlichen Adresse öffnen und die wichtigsten Ziel-URLs kontrollieren.",
+          "Sicherstellen, dass veröffentlichte Seiten keine versehentliche noindex-Anweisung aus der Vorschau tragen.",
+          "Private Kundenbereiche und interne Verwaltungsseiten weiterhin von der öffentlichen Sitemap trennen.",
+        ],
+      },
+      {
+        title: "Was beim Relaunch für GEO und AEO zählt",
+        text: "GEO bezeichnet hier die Auffindbarkeit in generativen Suchantworten; AEO die Aufbereitung für direkte Antworten auf Nutzerfragen. Für Googles KI-Übersichten und KI-Modus gelten laut Google die üblichen SEO-Grundlagen. Eine Seite muss für eine Aufnahme indexiert und für die Anzeige eines Snippets geeignet sein. Ein besonderes KI-Schema oder eine zusätzliche KI-Textdatei ist dafür nicht erforderlich. Halte wichtige Informationen als lesbaren Text zugänglich und stimme strukturierte Daten mit dem sichtbaren Inhalt ab. Eine Nennung durch ein KI-System ist damit nicht zugesichert.",
+        items: [
+          "Erkläre jede Leistung mit konkretem Umfang, Voraussetzungen und nächsten Schritten.",
+          "Beantworte häufige Kundenfragen direkt und verwende eindeutige Überschriften.",
+          "Erhalte hilfreiche Erklärungen beim Redesign, statt sie durch reine Werbeslogans zu ersetzen.",
+        ],
+      },
+      {
+        title: "Eine fachliche und technische Abnahme vereinbaren",
+        text: "Halte die Abnahme im Projektangebot fest. Dazu gehört eine Liste mit Verantwortlichen, offenen Punkten und einer Entscheidung über die Veröffentlichung. Prüfe auf einem Smartphone auch den Weg von einer Leistungsseite bis zur Rückmeldung nach dem Kontakt. Kläre außerdem, wer bei Problemen erreichbar ist und wie die vorherige Version wiederhergestellt werden kann. Ein dokumentierter Rückweg ist besonders hilfreich, wenn Formulare oder Schnittstellen Teil der Erneuerung sind.",
+        items: [
+          "Fachlich: Leistungen, Kontaktdaten, vereinbarte Preise und Materialien sind freigegeben.",
+          "Technisch: Wichtige alte Links führen zum vorgesehenen Inhalt; neue Seiten sind erreichbar.",
+          "Organisatorisch: Zuständigkeiten, Zugänge, Sicherung und Wiederherstellung sind dokumentiert.",
+          "Kontaktweg: Eine abgesprochene Kontrollanfrage wird einschließlich tatsächlichem Eingang geprüft.",
+        ],
+      },
+      {
+        title: "Nach der Veröffentlichung Veränderungen beobachten",
+        text: "Google weist bei wesentlichen Websiteänderungen auf mögliche vorübergehende Rankingschwankungen hin. Dokumentiere den Veröffentlichungstermin und beobachte anschließend alte und neue URLs sowie Suchleistung und Kontaktanfragen. Bei einer Migration müssen alte und neue Adressen erneut verarbeitet werden; dafür gibt es keinen verlässlichen Abschlusstermin für jedes Projekt. Leite bei einem Rückgang zuerst die betroffenen Seiten und Suchanfragen ab, bevor du die ganze Website erneut änderst. Bewahre die URL-Zuordnung und eingerichteten Weiterleitungen als Teil der Betriebsdokumentation auf.",
+      },
+    ],
+    comparison: {
+      caption: "URL-Zuordnung für den Website-Relaunch",
+      columns: ["Ausgangslage", "Vorgehen", "Abnahmefrage"],
+      rows: [
+        [
+          "Seite bleibt fachlich erhalten",
+          "Passende URL beibehalten",
+          "Ist der bisherige Inhalt weiterhin erreichbar?",
+        ],
+        [
+          "Dauerhaft neue Adresse",
+          "Direkt auf das passende Ziel weiterleiten",
+          "Endet der alte Link beim richtigen Inhalt?",
+        ],
+        [
+          "Mehrere Seiten werden zusammengefasst",
+          "Nur fachlich passende alte Seiten zuordnen",
+          "Beantwortet die neue Seite die bisherigen Anliegen?",
+        ],
+        [
+          "Inhalt entfällt ohne Ersatz",
+          "Echte 404- oder 410-Antwort",
+          "Wird eine fehlende Seite korrekt als solche gemeldet?",
+        ],
+      ],
+    },
+    faq: [
+      {
+        question:
+          "Kann ein Website-Relaunch ohne Rankingverlust garantiert werden?",
+        answer:
+          "Nein. Suchmaschinen bewerten die geänderte Website erneut. Eine sorgfältige Inhalts- und URL-Planung reduziert vermeidbare Fehler, garantiert aber keine unveränderten Positionen oder Besucherzahlen.",
+      },
+      {
+        question: "Braucht ein neues Design immer neue URLs?",
+        answer:
+          "Nein. Gestaltung und Adressen sind getrennte Entscheidungen. Wenn die Seitenaufgabe bestehen bleibt und die Adresse sinnvoll ist, kann sie auch im neuen Design erhalten bleiben.",
+      },
+      {
+        question:
+          "Muss ich nach dem Relaunch eine neue Sitemap bei Google einreichen?",
+        answer:
+          "Bei unveränderter Sitemap-Adresse wird die bestehende Datei mit den aktuellen URLs aktualisiert. Entsteht eine zusätzliche Sitemap oder ändert sich ihre Adresse, sollte diese Adresse in der Search Console berücksichtigt werden. Ein neuer Beitrag allein braucht keine eigene Sitemap-Datei.",
+      },
+      {
+        question:
+          "Reichen strukturierte Daten für die Aufnahme in KI-Antworten?",
+        answer:
+          "Nein. Strukturierte Daten sollen den sichtbaren Inhalt korrekt beschreiben. Sie ersetzen weder hilfreiche Antworten noch die technischen Voraussetzungen der jeweiligen Suche. Für Googles KI-Funktionen gibt es keine besondere zusätzliche Schema-Anforderung.",
+      },
+    ],
+    related: [
+      {
+        title: "Website-Relaunch und Webdesign anfragen",
+        href: "/leistungen/websites",
+      },
+      {
+        title: "Das Briefing für den Relaunch vorbereiten",
+        href: "/wissen/website-briefing",
+      },
+      {
+        title: "Zugänge und Übergabe planen",
+        href: "/wissen/website-uebergabe",
+      },
+      { title: "Bestehende Website besprechen", href: "/kontakt" },
+    ],
+    sources: [
+      {
+        title: "Google: Website-Migration und Beobachtung nach der Umstellung",
+        href: "https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes?hl=de",
+      },
+      {
+        title: "Google: Weiterleitungen und Statuscodes",
+        href: "https://developers.google.com/search/docs/crawling-indexing/301-redirects?hl=de",
+      },
+      {
+        title: "Google: kanonische URLs festlegen",
+        href: "https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls?hl=de",
+      },
+      {
+        title: "Google: Sitemaps erstellen und aktualisieren",
+        href: "https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap?hl=de",
+      },
+      {
+        title: "Google: Anforderungen für KI-Funktionen in der Suche",
+        href: "https://developers.google.com/search/docs/appearance/ai-features?hl=de",
+      },
+    ],
+  },
+  {
     slug: "website-bekommt-keine-anfragen",
     title: "Warum bekommt meine Website keine Anfragen?",
     intro:
@@ -302,7 +467,7 @@ export const articles: Article[] = [
     title: "Was gehört zu einer guten Übergabe?",
     answer:
       "Eine Website-Übergabe klärt Zugänge, vereinbarte Dateien und Nutzungsrechte sowie die Verantwortung für den laufenden Betrieb. Dazu gehören eine verständliche Dokumentation, die nötige Einweisung und ein Überblick über Domain, Hosting, Lizenzen und Pflege. Der konkrete Umfang steht im Projektangebot.",
-    updated: "2026-10-14",
+    updated: "2026-10-19",
     intro:
       "Nach Veröffentlichung sollte klar sein, wer Zugriff hat, wer pflegt und welche Rechte vereinbart wurden.",
     sections: [
@@ -350,6 +515,10 @@ export const articles: Article[] = [
     ],
     related: [
       { title: "Technische Betreuung", href: "/betreuung" },
+      {
+        title: "SEO beim Website-Relaunch berücksichtigen",
+        href: "/wissen/website-relaunch-seo-checkliste",
+      },
       {
         title: "Entwicklungsprozess und Abnahme",
         href: "/entwicklungsprozess",
