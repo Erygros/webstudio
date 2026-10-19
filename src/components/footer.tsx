@@ -46,6 +46,9 @@ export function Footer() {
           <Link href="/datenschutz">Datenschutz</Link>
           <Link href="/cookie-einstellungen">Cookie-Einstellungen</Link>
           <Link href="/barrierefreiheit">Barrierefreiheit</Link>
+          <Link href="/buchungsbedingungen">Buchungsbedingungen</Link>
+          <Link href="/vertrag-kuendigen">Verträge hier kündigen</Link>
+          <Link href="/vertrag-widerrufen">Vertrag widerrufen</Link>
         </div>
         <span>Entwickelt mit Klarheit.</span>
       </div>

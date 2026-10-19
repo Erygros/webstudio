@@ -4,6 +4,11 @@ import { metrics } from "@/crm/server/metrics";
 export default async function Dashboard() {
   const current = await session();
   const m = await metrics(current!.db);
+  const bookings = await current!.db
+    .from("crm_service_bookings")
+    .select("id,reference,status,package")
+    .order("created_at", { ascending: false })
+    .limit(5);
   return (
     <>
       <header className="crm-page-head">
@@ -31,6 +36,29 @@ export default async function Dashboard() {
         ))}
       </div>
       <div className="crm-dashboard-grid">
+        <section className="crm-panel">
+          <h2>
+            <Link href="/crm/buchungen">Buchungen & Beratung</Link>
+          </h2>
+          {bookings.error ? (
+            <p>Buchungsbereich noch einrichten: SQL-Migration erforderlich.</p>
+          ) : bookings.data?.length ? (
+            bookings.data.map((b) => (
+              <Link
+                className="crm-list-row"
+                href={`/crm/buchungen?vorgang=${b.id}`}
+                key={b.id}
+              >
+                <span>
+                  {b.reference} · {b.package.name}
+                </span>
+                <small>{b.status}</small>
+              </Link>
+            ))
+          ) : (
+            <p>Noch keine Buchungen.</p>
+          )}
+        </section>
         <section className="crm-panel">
           <h2>Heutige Aufgaben</h2>
           {m.tasks.length ? (

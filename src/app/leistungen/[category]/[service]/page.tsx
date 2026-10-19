@@ -1,4 +1,6 @@
 import { Icon } from "@/components/icon";
+import { bookingPackage } from "@/data/bookable-services";
+import { ServicePackagePage } from "@/components/service-package-page";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -38,7 +40,7 @@ export async function generateMetadata({
 }) {
   const { s } = await resolve(params);
   return seo(
-    serviceGuides[s.slug]?.title ||
+    bookingPackage(s.slug)?.seoTitle || serviceGuides[s.slug]?.title ||
       serviceTitle(s) ||
       `${s.name} individuell umsetzen`,
     s.intro,
@@ -51,6 +53,8 @@ export default async function Service({
   params: Promise<{ category: string; service: string }>;
 }) {
   const { c, s } = await resolve(params);
+  const bookable = bookingPackage(s.slug);
+  if (bookable) return <ServicePackagePage p={bookable} />;
   const faq = serviceFaqs(s);
   const guide = serviceGuides[s.slug];
   const area = serviceAreaFor(s);

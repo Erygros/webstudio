@@ -310,7 +310,7 @@ img {
   color: var(--fg);
 }
 .service-menu {
-  position: relative;
+  position: static;
 }
 .service-menu > button {
   background: none;
@@ -2383,5 +2383,176 @@ h3 {
   .project-visual:hover img,
   .button:hover {
     transform: none;
+  }
+}
+
+/* Service navigation: six compact columns using the existing monochrome tokens. */
+.service-mega {
+  position: absolute;
+  top: 100%;
+  left: var(--pad);
+  right: var(--pad);
+  padding: 22px 26px 28px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 20px 40px #00000012;
+  animation: appear 0.15s ease;
+}
+.mega-heading {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+}
+.mega-columns {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 22px;
+}
+.mega-columns h2 {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
+  margin: 0 0 10px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.mega-columns a {
+  display: block;
+  font-size: 12px;
+  line-height: 1.4;
+  padding: 7px 5px;
+  margin-left: -5px;
+  border-radius: 4px;
+  overflow-wrap: anywhere;
+}
+.mega-columns a:hover,
+.mega-columns a:focus-visible {
+  background: var(--surface);
+}
+.mobile-service-group {
+  border-bottom: 1px solid var(--line);
+}
+.mobile-service-group summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 17px 0;
+  font-size: 15px;
+  cursor: pointer;
+  list-style: none;
+}
+.mobile-service-group summary::-webkit-details-marker {
+  display: none;
+}
+.mobile-service-group[open] summary svg {
+  transform: rotate(180deg);
+}
+.mobile-service-group > div {
+  padding: 0 0 12px 12px;
+}
+.mobile-service-group > div > a {
+  display: block;
+  padding: 10px 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+.booking-section {
+  max-width: 1100px;
+  margin-inline: auto;
+}
+.service-booking > *,
+.booking-receipt > * {
+  margin-bottom: 24px;
+}
+.service-booking h2,
+.booking-receipt h2 {
+  font-size: clamp(24px, 3vw, 36px);
+}
+.service-booking li {
+  margin-bottom: 8px;
+}
+.service-booking ul {
+  padding-left: 20px;
+}
+.booking-price {
+  font-size: 25px;
+  margin: 16px 0 8px;
+}
+.booking-steps {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 18px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.booking-steps [aria-current] {
+  color: var(--fg);
+  font-weight: 600;
+}
+.booking-summary {
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) 2fr;
+  gap: 12px 20px;
+  margin-block: 24px;
+}
+.booking-summary > div {
+  display: contents;
+}
+.booking-summary dt {
+  color: var(--muted);
+}
+.booking-summary dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.booking-receipt {
+  overflow-wrap: anywhere;
+}
+.service-booking details {
+  padding: 18px 0;
+  border-block: 1px solid var(--line);
+}
+.service-booking details summary {
+  cursor: pointer;
+}
+.service-booking details p {
+  margin-top: 18px;
+}
+.booking-table-scroll {
+  overflow-x: auto;
+}
+@media (max-width: 600px) {
+  .booking-summary {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+  .booking-summary dd {
+    margin-bottom: 12px;
+  }
+  .booking-steps {
+    gap: 8px 16px;
+  }
+  .service-booking .buttons,
+  .booking-receipt .buttons {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .service-booking .button {
+    width: 100%;
+    justify-content: center;
+    white-space: normal;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .service-mega {
+    animation: none;
   }
 }

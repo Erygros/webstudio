@@ -45,7 +45,7 @@ export const legalPages: Record<string, ContentPage> = {
         : []),
       {
         title: "Inhalte und Rechte",
-        text: "Die Inhalte dieser Website informieren über unsere Leistungen. Projektanfragen und Terminwünsche sind unverbindlich; Verträge kommen erst durch eine gesonderte Vereinbarung zustande. Die Portfolioeinträge sind als Demonstrationsprojekte gekennzeichnet. Texte, Gestaltung und Bilder dürfen nur mit entsprechender Berechtigung verwendet werden. Gesetzliche Nutzungsrechte bleiben unberührt.",
+        text: "Die Inhalte dieser Website informieren über unsere Leistungen. Projektanfragen und Terminwünsche sind unverbindlich; Verträge kommen bei gesonderten Angeboten durch Vereinbarung und bei direkt buchbaren Einstiegspaketen durch die zahlungspflichtige Bestellung mit Buchungsbestätigung zustande. Die Portfolioeinträge sind als Demonstrationsprojekte gekennzeichnet. Texte, Gestaltung und Bilder dürfen nur mit entsprechender Berechtigung verwendet werden. Gesetzliche Nutzungsrechte bleiben unberührt.",
       },
     ],
   },
@@ -54,7 +54,7 @@ export const legalPages: Record<string, ContentPage> = {
     label: "Datenschutz",
     legal: true,
     description:
-      "Informationen über personenbezogene Daten beim Besuch dieser Website, bei Kontaktaufnahme und bei Termin- oder Projektanfragen. Stand: 15. Oktober 2026.",
+      "Informationen über personenbezogene Daten beim Besuch dieser Website, bei Kontaktaufnahme und bei Termin- oder Projektanfragen. Stand: 19. Oktober 2026.",
     sections: [
       {
         title: "1. Verantwortlicher",
@@ -107,6 +107,18 @@ export const legalPages: Record<string, ContentPage> = {
           (mailReady()
             ? ` Zusätzlich können Benachrichtigungen und Empfangsbestätigungen über ${mailProvider} (${process.env.MAIL_PROVIDER_ADDRESS}) versendet werden.`
             : ""),
+      },
+      {
+        title: "Online-Buchungen, Beratung und Vertragserklärungen",
+        text: "Für direkt buchbare Dienstleistungen verarbeiten wir Name, Unternehmen, E-Mail, Telefon, Rechnungsanschrift, gewähltes Paket, Projektbeschreibung, Buchungsnummer, Vertragsbedingungen, gegebenenfalls Erklärungen zum vorzeitigen Beginn, Rechnungs- und Zahlungsstatus sowie Kündigungs- und Widerrufserklärungen. Rechtsgrundlagen sind Art. 6 Abs. 1 Buchst. b DSGVO für vorvertragliche Maßnahmen und Vertragsdurchführung sowie Buchst. c für gesetzliche Nachweis- und Aufbewahrungspflichten. Die Daten werden im zugriffsgeschützten bestehenden Supabase-CRM gespeichert. Bei übereinstimmender E-Mail-Adresse wird die Buchung einer vorhandenen Kundenakte zugeordnet; bestehende Stammdaten werden dabei nicht überschrieben. Rechnungsangaben werden für jeden Vertrag gesondert festgehalten. Vertragsbestätigungen, Rechnungen, Zahlungsmitteilungen und Eingangsbestätigungen werden über unseren eingerichteten SMTP-Anbieter versandt. Interne Benachrichtigungen gehen zusätzlich an das von uns genutzte Gmail-Postfach; hierbei verarbeitet Google die notwendigen Kontakt- und Vorgangsdaten als E-Mail-Anbieter. Es besteht keine Bank-API-Verbindung, keine automatische Abbuchung und keine Marketingeinwilligung durch die Buchung. Zahlungseingänge bestätigen wir nach tatsächlicher Prüfung. Versandprotokolle dienen dem nachvollziehbaren Versand und der Vermeidung doppelter Nachrichten. Reine erfolglose Beratungsanfragen werden grundsätzlich sechs Monate nach Abschluss auf Löschung geprüft, sofern keine weitere rechtliche Grundlage besteht. Buchungs-, Rechnungs- und Zahlungsunterlagen werden nach den jeweils einschlägigen gesetzlichen Fristen aufbewahrt; Rechnungsbelege grundsätzlich acht Jahre. Vertragserklärungen bleiben für Nachweis und Rechtsansprüche entsprechend der einschlägigen Fristen gespeichert. Der Online-Widerruf und die Online-Kündigung erfordern kein Kundenkonto.",
+        links: [
+          {
+            title: "Buchungsbedingungen und Widerruf",
+            href: "/buchungsbedingungen",
+          },
+          { title: "Verträge hier kündigen", href: "/vertrag-kuendigen" },
+          { title: "Vertrag widerrufen", href: "/vertrag-widerrufen" },
+        ],
       },
       {
         title: "Bewertungsschutz und Beauftragung",

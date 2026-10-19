@@ -8,7 +8,7 @@ import { JsonLd } from "@/components/ui";
 import { businessSchema } from "@/lib/business-schema";
 import { publicIndexing } from "@/lib/seo";
 import { leadinfoBootstrap } from "@/lib/leadinfo";
-import { serviceAreas } from "@/data/services";
+import { serviceMenuGroups } from "@/data/service-menu";
 import { packages, priceLabel } from "@/config/pricing";
 import "./globals.css";
 export const metadata: Metadata = {
@@ -62,15 +62,7 @@ export default function RootLayout({
         </a>
         <PublicChrome
           structuredData={<JsonLd value={businessSchema} />}
-          header={
-            <Navigation
-              categories={serviceAreas.map((c) => ({
-                slug: c.slug,
-                name: c.short,
-                count: c.services.length,
-              }))}
-            />
-          }
+          header={<Navigation groups={serviceMenuGroups} />}
           footer={
             <>
               <Footer />

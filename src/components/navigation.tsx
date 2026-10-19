@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { site } from "@/config/site";
 import { Brand } from "@/components/brand";
+import type { ServiceMenuGroup } from "@/data/service-menu";
 const links = [
   ["Firmenkontakte", "/leads"],
   ["Projekte", "/projekte"],
@@ -13,11 +14,7 @@ const links = [
   ["Unternehmen", "/unternehmen"],
   ["Kontakt", "/kontakt"],
 ] as const;
-export function Navigation({
-  categories,
-}: {
-  categories: { slug: string; name: string; count: number }[];
-}) {
+export function Navigation({ groups }: { groups: ServiceMenuGroup[] }) {
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState("system");
   const [dropdown, setDropdown] = useState(false);
@@ -41,8 +38,9 @@ export function Navigation({
     document.body.style.overflow = "hidden";
     const focusables = () =>
       Array.from(
-        panel.current?.querySelectorAll<HTMLElement>("a, button") || [],
-      );
+        panel.current?.querySelectorAll<HTMLElement>("a, button, summary") ||
+          [],
+      ).filter((element) => element.getClientRects().length > 0);
     focusables()[0]?.focus();
     function keydown(e: KeyboardEvent) {
       if (e.key === "Escape") {
@@ -135,23 +133,31 @@ export function Navigation({
               </svg>
             </button>
             {dropdown && (
-              <div id="service-dropdown" className="dropdown">
-                <Link href="/leistungen" className="dropdown-overview">
-                  Alle Leistungen{" "}
-                  <span>
-                    <Icon name="arrow-up-right" />
-                  </span>
-                </Link>
-                {categories.map((c) => (
-                  <Link key={c.slug} href={`/leistungen/${c.slug}`}>
-                    <strong>{c.name}</strong>
-                    <span>{c.count} Leistungen</span>
+              <div id="service-dropdown" className="service-mega">
+                <div className="mega-heading">
+                  <Link href="/leistungen" onClick={() => setDropdown(false)}>
+                    Alle Leistungen
                   </Link>
-                ))}
-                <Link href="/bewertungen">
-                  <strong>Bewertungsschutz</strong>
-                  <span>Google, kununu, Trustpilot & weitere</span>
-                </Link>
+                  <Link href="/buchen" onClick={() => setDropdown(false)}>
+                    Einstiegspaket buchen
+                  </Link>
+                </div>
+                <div className="mega-columns">
+                  {groups.map((g) => (
+                    <div key={g.name}>
+                      <h2>{g.name}</h2>
+                      {g.links.map((l) => (
+                        <Link
+                          href={l.href}
+                          key={l.name}
+                          onClick={() => setDropdown(false)}
+                        >
+                          {l.name}
+                        </Link>
+                      ))}
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>
@@ -225,23 +231,35 @@ export function Navigation({
                   <Icon name="arrow-up-right" />
                 </span>
               </Link>
-              {categories.map((c) => (
-                <Link
-                  className="mobile-category"
-                  key={c.slug}
-                  href={`/leistungen/${c.slug}`}
-                  onClick={() => setOpen(false)}
-                >
-                  {c.name}
-                </Link>
+              {groups.map((g) => (
+                <details className="mobile-service-group" key={g.name}>
+                  <summary>
+                    {g.name}
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.7"
+                      aria-hidden="true"
+                    >
+                      <path d="m6 9 6 6 6-6" />
+                    </svg>
+                  </summary>
+                  <div>
+                    {g.links.map((l) => (
+                      <Link
+                        key={l.name}
+                        href={l.href}
+                        onClick={() => setOpen(false)}
+                      >
+                        {l.name}
+                      </Link>
+                    ))}
+                  </div>
+                </details>
               ))}
-              <Link
-                className="mobile-category"
-                href="/bewertungen"
-                onClick={() => setOpen(false)}
-              >
-                Bewertungen prüfen lassen
-              </Link>
               {links.map(([name, href]) => (
                 <Link key={href} href={href} onClick={() => setOpen(false)}>
                   {name}{" "}

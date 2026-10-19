@@ -2,6 +2,7 @@ import { Icon } from "@/components/icon";
 import Image from "next/image";
 import Link from "next/link";
 import { serviceAreas } from "@/data/services";
+import { PackageDirectory } from "@/components/package-directory";
 import { projects } from "@/data/projects";
 import { business, site } from "@/config/site";
 import { priceLabel, packages } from "@/config/pricing";
@@ -142,6 +143,7 @@ export default function Home() {
           ))}
         </div>
       </section>
+      <PackageDirectory compact />
       <section className="section solutions">
         <SectionHead
           label="Projektgrößen"

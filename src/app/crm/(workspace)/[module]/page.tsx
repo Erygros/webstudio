@@ -9,6 +9,7 @@ import { Work } from "@/crm/components/work";
 import { session } from "@/crm/server/db";
 import { ReviewsInbox } from "@/crm/components/reviews";
 import { LeadShopAdmin } from "@/crm/components/lead-shop";
+import { Bookings } from "@/crm/components/bookings";
 import {
   WebsiteFormStatus,
   WebsiteInquiryInbox,
@@ -22,6 +23,7 @@ export default async function Page({
 }) {
   const { module: key } = await params;
   const q = await searchParams;
+  if (key === "buchungen") return <Bookings initialId={q.vorgang} />;
   if (key === "lead-verkauf") {
     const current = await session();
     if (!["administrator", "buchhaltung"].includes(current!.profile.role))

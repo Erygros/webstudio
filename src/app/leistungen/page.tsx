@@ -1,4 +1,5 @@
 import { Icon } from "@/components/icon";
+import { PackageDirectory } from "@/components/package-directory";
 import Link from "next/link";
 import { serviceAreas, serviceHref } from "@/data/services";
 import {
@@ -30,6 +31,7 @@ export default function Services() {
           </Link>
         ))}
       </nav>
+      <PackageDirectory />
       {serviceAreas.map((c) => (
         <section className="section" id={c.slug} key={c.slug}>
           <SectionHead

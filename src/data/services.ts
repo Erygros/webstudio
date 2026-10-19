@@ -1,4 +1,5 @@
 import { packages, additionalPrices, carePackages } from "@/config/pricing";
+import { bookingPackages } from "@/data/bookable-services";
 import {
   additionalServiceDefinitions,
   ecommercePlatformRows,
@@ -870,6 +871,21 @@ export const categories: Category[] = definitions.map(
     })),
   }),
 );
+for (const p of bookingPackages) {
+  const category = categories.find((c) => c.slug === p.category)!;
+  category.services.push({
+    slug: p.slug,
+    name: p.name,
+    intro: p.description,
+    features: p.scope,
+    category: p.category,
+    price: p.cents / 100,
+    modified: "2026-10-19",
+    useCase: `Für Unternehmen und Selbstständige, die ${p.name} mit einem klar abgegrenzten Einstiegspaket umsetzen möchten.`,
+    benefit:
+      "Ein verbindlicher Umfang, transparente Kosten und direkte Abstimmung vor der Umsetzung.",
+  });
+}
 export const services = categories.flatMap((category) => category.services);
 export const platformOverview: Category = {
   slug: "cms-baukaesten",

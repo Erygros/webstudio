@@ -10,6 +10,7 @@ import { expansionDate, serviceAreaContent } from "@/data/service-expansion";
 const contentRevision = "2026-10-14";
 export function publicSeoPages(): { path: string; modified?: string }[] {
   return [
+    { path: "/buchungsbedingungen", modified: "2026-10-19" },
     { path: "/leads", modified: "2026-10-16" },
     { path: "/bewertungen", modified: "2026-10-15" },
     {
@@ -23,22 +24,24 @@ export function publicSeoPages(): { path: string; modified?: string }[] {
     ...["/", "/preise", "/kontakt"].map((path) => ({
       path,
       modified: ["/", "/preise"].includes(path)
-        ? expansionDate
+        ? "2026-10-19"
         : contentRevision,
     })),
     ...["/leistungen", "/projekte", "/betreuung", "/faq"].map((path) => ({
       path,
       ...(["/leistungen", "/projekte"].includes(path)
-        ? { modified: expansionDate }
+        ? { modified: "2026-10-19" }
         : {}),
     })),
     ...Object.keys(contentPages).map((p) => ({ path: `/${p}` })),
     ...serviceAreas.map((c) => ({
       path: `/leistungen/${c.slug}`,
-      ...(serviceAreaContent[c.slug] ||
-      ["websites", "e-commerce"].includes(c.slug)
-        ? { modified: expansionDate }
-        : {}),
+      ...(c.services.some((s) => s.modified === "2026-10-19")
+        ? { modified: "2026-10-19" }
+        : serviceAreaContent[c.slug] ||
+            ["websites", "e-commerce"].includes(c.slug)
+          ? { modified: expansionDate }
+          : {}),
     })),
     ...services.map((s) => ({
       path: serviceHref(s),

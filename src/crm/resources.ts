@@ -608,6 +608,7 @@ export const navModules = [
   ["arbeit", "Arbeit"],
   ["leads", "Leads"],
   ["anfragen", "Website-Anfragen"],
+  ["buchungen", "Buchungen & Beratung"],
   ["bewertungen", "Bewertungen"],
   ["lead-verkauf", "Lead-Verkauf"],
   ["telefonie", "Telefonie"],
