@@ -12,6 +12,7 @@ import { Process } from "@/components/process";
 import { ProjectCard } from "@/components/project-card";
 import { Reveal } from "@/components/reveal";
 import { seo } from "@/lib/seo";
+import { PlatformMarquee } from "@/components/platform-marquee";
 export const metadata = seo(
   "Webdesign & Webentwicklung Dortmund",
   `Webdesign aus Dortmund von Enrico Gross: Landingpages ${priceLabel(packages[0].price)}, Unternehmenswebsites, Onlineshops und individuelle Software. Persönlich anfragen.`,
@@ -80,6 +81,7 @@ export default function Home() {
           <span>Für Deutschland, Österreich und die Schweiz.</span>
         </div>
       </section>
+      <PlatformMarquee />
       <section className="section content-split solutions">
         <div>
           <span className="eyebrow">Dein Ansprechpartner</span>

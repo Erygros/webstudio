@@ -447,6 +447,191 @@ img {
 .hero {
   padding: 72px var(--pad) 30px;
 }
+.platform-strip {
+  padding: 38px 0 44px;
+  border-top: 1px solid var(--line);
+}
+.platform-strip-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 0 var(--pad) 22px;
+}
+.platform-strip-heading h2 {
+  margin: 0;
+  font-weight: 400;
+}
+.platform-pause {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--muted);
+  min-height: 32px;
+}
+.platform-viewport {
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 5%,
+    #000 95%,
+    transparent
+  );
+}
+.platform-track {
+  display: flex;
+  width: max-content;
+  animation: platform-drift 180s linear infinite;
+}
+.platform-group {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 32px;
+  padding: 4px 32px 4px 0;
+}
+.platform-logo {
+  --logo-muted-filter: grayscale(1);
+  --logo-original-filter: none;
+  position: relative;
+  display: block;
+  width: 160px;
+  height: 64px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  transition: background-color 180ms ease;
+}
+.platform-logo-image {
+  position: absolute;
+  inset: 14px 12px;
+  width: calc(100% - 24px);
+  height: 36px;
+  object-fit: contain;
+  filter: var(--logo-muted-filter);
+  opacity: 0.46;
+  transition:
+    filter 180ms ease,
+    opacity 180ms ease;
+}
+.platform-logo[data-compact="true"] .platform-logo-image {
+  inset-inline: 60px;
+  width: 40px;
+  height: 40px;
+  top: 12px;
+}
+.platform-logo-dark {
+  display: none;
+}
+.platform-logo[data-monochrome="white"] {
+  --logo-muted-filter: grayscale(1) invert(1);
+  --logo-original-filter: invert(1);
+}
+.platform-logo:hover .platform-logo-image,
+.platform-logo:focus-visible .platform-logo-image {
+  filter: var(--logo-original-filter);
+  opacity: 1;
+}
+.platform-logo:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: -2px;
+}
+.platform-strip:hover .platform-track,
+.platform-strip:focus-within .platform-track,
+.platform-strip[data-paused="true"] .platform-track {
+  animation-play-state: paused;
+}
+.platform-viewport:has(:focus-visible) {
+  overflow-x: auto;
+  mask-image: none;
+}
+.platform-viewport:has(:focus-visible) .platform-track {
+  animation: none;
+}
+.platform-viewport:has(:focus-visible) .platform-group[aria-hidden="true"] {
+  display: none;
+}
+@keyframes platform-drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+/* Use the owners' dark-background assets; never recolor multicolor marks. */
+:root[data-theme="dark"] .platform-logo-light {
+  display: none;
+}
+:root[data-theme="dark"] .platform-logo-dark {
+  display: block;
+}
+:root[data-theme="dark"] .platform-logo[data-monochrome="white"] {
+  --logo-muted-filter: grayscale(1);
+  --logo-original-filter: none;
+}
+:root[data-theme="dark"] .platform-logo[data-monochrome="black"] {
+  --logo-muted-filter: grayscale(1) brightness(0) invert(1);
+  --logo-original-filter: brightness(0) invert(1);
+}
+:root[data-theme="dark"] .platform-logo[data-backdrop="true"] {
+  --logo-muted-filter: grayscale(1) invert(1);
+}
+:root[data-theme="dark"]
+  .platform-logo[data-backdrop="true"]:is(:hover, :focus-visible) {
+  background: #fff;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .platform-logo-light {
+    display: none;
+  }
+  :root:not([data-theme="light"]) .platform-logo-dark {
+    display: block;
+  }
+  :root:not([data-theme="light"]) .platform-logo[data-monochrome="white"] {
+    --logo-muted-filter: grayscale(1);
+    --logo-original-filter: none;
+  }
+  :root:not([data-theme="light"]) .platform-logo[data-monochrome="black"] {
+    --logo-muted-filter: grayscale(1) brightness(0) invert(1);
+    --logo-original-filter: brightness(0) invert(1);
+  }
+  :root:not([data-theme="light"]) .platform-logo[data-backdrop="true"] {
+    --logo-muted-filter: grayscale(1) invert(1);
+  }
+  :root:not([data-theme="light"])
+    .platform-logo[data-backdrop="true"]:is(:hover, :focus-visible) {
+    background: #fff;
+  }
+}
+@media (max-width: 600px) {
+  .platform-strip-heading {
+    align-items: flex-start;
+  }
+  .platform-strip-heading h2 {
+    max-width: 180px;
+  }
+  .platform-group {
+    gap: 16px;
+    padding-right: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .platform-track {
+    animation: none;
+  }
+  .platform-viewport {
+    overflow-x: auto;
+    mask-image: none;
+  }
+  .platform-group[aria-hidden="true"],
+  .platform-pause {
+    display: none;
+  }
+  .platform-logo,
+  .platform-logo-image {
+    transition: none;
+  }
+}
 .hero-top {
   display: grid;
   grid-template-columns: 1.5fr 1fr;

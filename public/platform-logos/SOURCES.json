@@ -1,0 +1,166 @@
+[
+  {
+    "file": "nextjs-light.svg",
+    "url": "https://nextjs.org/_next/static/immutable/media/nextjs-logotype-light.00-_80jv8_dct.svg",
+    "page": "https://vercel.com/geist/brands",
+    "sha256": "e3b1507c8524d45c3e02faf086d37b8421e420d875eb9ff179e0a379204c6d6a"
+  },
+  {
+    "file": "nextjs-dark.svg",
+    "url": "https://nextjs.org/_next/static/immutable/media/nextjs-logotype-dark.3h4a2z2v_dkod.svg",
+    "page": "https://vercel.com/geist/brands",
+    "sha256": "fe6e739a33312c8b79020928ba8ec416f40403171491add52b38ee7ad99b35ab"
+  },
+  {
+    "file": "typescript.svg",
+    "url": "https://www.typescriptlang.org/branding/ts-logo-512.svg",
+    "page": "https://www.typescriptlang.org/branding/",
+    "sha256": "139ae451b37a00251fe24358191699efa665f63f1c8369cb9dad833159e159e2"
+  },
+  {
+    "file": "woocommerce.svg",
+    "url": "https://woocommerce.com/wp-content/uploads/2025/01/woo-logos.zip",
+    "entry": "Woo Logos/Woo_logo_color.svg",
+    "page": "https://woocommerce.com/brand-and-logo-guidelines/",
+    "sha256": "3ec4eb7f7ba69184d499f83a93b5935be46c4ae23c41a38f62c8ae51b5de1dc0"
+  },
+  {
+    "file": "shopify.svg",
+    "url": "https://cdn.shopify.com/shopifycloud/brochure/assets/brand-assets/shopify-logo-primary-logo-456baa801ee66a0a435671082365958316831c9960c480451dd0330bcdae304f.svg",
+    "page": "https://www.shopify.com/brand-assets",
+    "sha256": "456baa801ee66a0a435671082365958316831c9960c480451dd0330bcdae304f"
+  },
+  {
+    "file": "shopify-dark.svg",
+    "url": "https://cdn.shopify.com/shopifycloud/brochure/assets/brand-assets/shopify-logo-inverted-primary-logo-bdc6ddd67862d9bb1f8c559e1bb50dd233112ac57b29cac2edcf17ed2e1fe6fa.svg",
+    "page": "https://www.shopify.com/brand-assets",
+    "sha256": "bdc6ddd67862d9bb1f8c559e1bb50dd233112ac57b29cac2edcf17ed2e1fe6fa"
+  },
+  {
+    "file": "google.png",
+    "url": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
+    "page": "https://www.google.com/",
+    "sha256": "262084257c2103702ef8a25705e3f8dbc1fa3823103ad7b954d54bdb77e6d89d"
+  },
+  {
+    "file": "trustpilot.svg",
+    "url": "https://cdn.trustpilot.net/brand-assets/4.1.0/logo-black.svg",
+    "page": "https://developers.trustpilot.com/resources-api/",
+    "sha256": "aafac9fff5fe9f857f6f165496e13b0cc8e689793c6ebac56d18c94d2c5a62b0"
+  },
+  {
+    "file": "trustpilot-dark.svg",
+    "url": "https://cdn.trustpilot.net/brand-assets/4.1.0/logo-white.svg",
+    "page": "https://developers.trustpilot.com/resources-api/",
+    "sha256": "860f3d82e7c3fa3faf23f9b8ac369a5afad68f2d8de1c18fc78de511c6ab6126"
+  },
+  {
+    "file": "kununu.png",
+    "url": "https://news.kununu.com/wp-content/uploads/2026/03/kununu_Logo_height_60px.png",
+    "page": "https://news.kununu.com/presseinformationen/",
+    "sha256": "1151c28877fa6f81a5150b1efb02511bd324227c420d1d99a2c82dc0abd2fed2"
+  },
+  {
+    "file": "react-light.svg",
+    "url": "https://raw.githubusercontent.com/reactjs/react.dev/main/public/images/brand/wordmark_light.svg",
+    "page": "https://github.com/reactjs/react.dev/tree/main/public/images/brand",
+    "sha256": "138dfd57d0cb47847e7416c77efbb1259f16af65cf9d587575cb7c8a19babc7c"
+  },
+  {
+    "file": "react-dark.svg",
+    "url": "https://raw.githubusercontent.com/reactjs/react.dev/main/public/images/brand/wordmark_dark.svg",
+    "page": "https://github.com/reactjs/react.dev/tree/main/public/images/brand",
+    "sha256": "dc8100e855736bcdd4d0744ced2df5a38dd730795695b653647bc59a984b6e7f"
+  },
+  {
+    "file": "wordpress.png",
+    "url": "https://s.w.org/style/images/about/WordPress-logotype-standard.png",
+    "page": "https://wordpress.org/about/logos/",
+    "sha256": "427ce1deb80c6643c78c04fa1b12f3c5a79f12b085fe85cb47df035c6c5940a6"
+  },
+  {
+    "file": "wordpress-dark.png",
+    "url": "https://s.w.org/style/images/about/WordPress-logotype-standard-white.png",
+    "page": "https://wordpress.org/about/logos/",
+    "sha256": "7eb2ca4882ca7c5585ce27e495a68013985fb2a6910366dff6cdbc01183104e3"
+  },
+  {
+    "file": "shopware.svg",
+    "url": "https://images.ctfassets.net/nqzs8zsepqpi/1QpalaqpkTYUuSoIv7TfBl/2daad9bca9420191574a548d0b91b3fd/shopware-logo-brand-blue.svg",
+    "page": "https://www.shopware.com/en/press/",
+    "sha256": "5966841ef6f2e39af8ddf899c4923e585eb7a2ad3d72b19bf4415df37dd02270"
+  },
+  {
+    "file": "webflow.svg",
+    "url": "https://dhygzobemt712.cloudfront.net/Mark/Mark_Logo_Blue.svg",
+    "page": "https://webflow.com/",
+    "sha256": "6535b9c9a2b083f3b9603324b01c745b1af096d25cc36f8288233a415456f9aa"
+  },
+  {
+    "file": "microsoft.png",
+    "url": "https://uhf.microsoft.com/images/microsoft/RE1Mu3b.png",
+    "page": "https://www.microsoft.com/",
+    "sha256": "112fec798b78aa02e102a724b5cb1990c0f909bc1d8b7b1fa256eab41bbc0960"
+  },
+  {
+    "file": "linkedin.png",
+    "url": "https://content.linkedin.com/content/dam/me/business/en-us/amp/xbu/linkedin-revised-brand-guidelines/logos/linkedin-logo.zip",
+    "entry": "linkedin-logo/LI-Logo.png",
+    "page": "https://brand.linkedin.com/downloads",
+    "sha256": "ef097f7b86c0003ace785d0e77f8a7e035ff728dc31de95ecd25527a421a1618"
+  },
+  {
+    "file": "pinterest.png",
+    "url": "https://s.pinimg.com/webapp/logo_transparent_144x144-3da7a67b.png",
+    "page": "https://business.pinterest.com/brand-guidelines/",
+    "sha256": "5410764149903d1db37bbd92d37aa6e08ff4c129bd13d7d9e65762312d4da774"
+  },
+  {
+    "file": "wix.svg",
+    "url": "https://9ab0d111-ec70-4f4c-900e-a9399b76d84c.usrfiles.com/archives/9ab0d1_a1c94e33202642618be2265c769c77b9.zip",
+    "entry": "WixLogoNew/SVG/Wix logoB.svg",
+    "page": "https://www.wix.com/about/design-assets",
+    "sha256": "aaba8010180c83b94798a8fee848b01651bb62ce7827bb8df1bb951f3ca0423d"
+  },
+  {
+    "file": "wix-dark.svg",
+    "url": "https://9ab0d111-ec70-4f4c-900e-a9399b76d84c.usrfiles.com/archives/9ab0d1_a1c94e33202642618be2265c769c77b9.zip",
+    "entry": "WixLogoNew/SVG/Wix logoW.svg",
+    "page": "https://www.wix.com/about/design-assets",
+    "sha256": "e9a4e09c0a4a4383c098957cc9d9262aa2b875ce93ea6dc6ac3af213815eb58b"
+  },
+  {
+    "file": "squarespace.svg",
+    "url": "https://www.squarespace.com/",
+    "inline": "global-navigation__logo--desktop",
+    "page": "https://www.squarespace.com/",
+    "sha256": "11316d81ab54318e2c1cccd926245842aa34c1e7f3506ff14503c08756637397"
+  },
+  {
+    "file": "jimdo.svg",
+    "url": "https://www.jimdo.com/",
+    "inline": "data-logo=\"default\"",
+    "page": "https://www.jimdo.com/",
+    "sha256": "fff8b079524ea6ac9a8ec197829eeb64d25c8a5e5352b1370a67efec2cfbd06e"
+  },
+  {
+    "file": "meta.svg",
+    "url": "https://www.meta.com/brand/resources/meta/company-brand/",
+    "inline": "meta-company-logo",
+    "page": "https://www.meta.com/brand/resources/meta/company-brand/",
+    "sha256": "42c759e0573e4437f03195563393d434bc896120b8c43d902d365ff42de77e39"
+  },
+  {
+    "file": "youtube.svg",
+    "url": "https://www.gstatic.com/youtube/img/branding/youtubelogo/svg/youtubelogo.svg",
+    "page": "https://brand.youtube/",
+    "sha256": "2c25aac667bd9798ef6c46792b8688efb423656944646d1be8a961ba3f6d2e2a"
+  },
+  {
+    "file": "tiktok.svg",
+    "url": "https://newsroom.tiktok.com/",
+    "inline": "M25 3h7a10 10",
+    "page": "https://newsroom.tiktok.com/",
+    "sha256": "5712c06316c1e204baefc9e6bcf21b75c2f26f59baa93f8a73f1ea7d6d6ecc15"
+  }
+]
