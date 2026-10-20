@@ -40,7 +40,8 @@ export async function generateMetadata({
 }) {
   const { s } = await resolve(params);
   return seo(
-    bookingPackage(s.slug)?.seoTitle || serviceGuides[s.slug]?.title ||
+    bookingPackage(s.slug)?.seoTitle ||
+      serviceGuides[s.slug]?.title ||
       serviceTitle(s) ||
       `${s.name} individuell umsetzen`,
     s.intro,
@@ -246,7 +247,7 @@ export default async function Service({
           "@context": "https://schema.org",
           "@type": "Service",
           "@id": `${canonicalUrl(serviceHref(s))}#service`,
-          name: s.name,
+          name: guide?.title || s.name,
           description: s.intro,
           url: canonicalUrl(serviceHref(s)),
           provider: { "@id": organizationId },

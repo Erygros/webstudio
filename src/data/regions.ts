@@ -5,10 +5,26 @@ import { business, site } from "@/config/site";
 export const regionalPages = [
   {
     slug: "dortmund",
+    modified: "2026-10-20",
+    seoTitle: "Website erstellen lassen in der Nähe – Dortmund",
+    description:
+      "Website erstellen lassen in der Nähe: Webstudio Expert in Dortmund. Individuelle Firmenwebsites, persönliche Abstimmung und kostenlose Erstberatung.",
     title: "Website erstellen lassen in Dortmund",
     content:
       "Webstudio Expert ist das Einzelunternehmen von Enrico Gross in Dortmund. Für Selbstständige, Handwerksbetriebe, Vereine und Unternehmen entstehen Websites mit klaren Leistungen, gut bedienbarer Navigation und einem direkten Weg zur Anfrage.",
     sections: [
+      {
+        title:
+          "Website erstellen lassen in der Nähe: ein Ansprechpartner in Dortmund",
+        text: `Du suchst jemanden in deiner Nähe, der deine Website plant und umsetzt? ${business.owner} führt ${site.name} mit Sitz in ${business.street}, ${business.postcode} ${business.city}. Du erhältst einen direkten Ansprechpartner für Leistungen, Inhalte und technische Fragen. Die Abstimmung erfolgt nach Terminabsprache per Telefon und E-Mail. Für Interessenten aus Dortmund und Umgebung ist damit klar, wer hinter dem Angebot steht; ein unangekündigter Besuch oder ein öffentliches Ladenlokal wird nicht vorausgesetzt.`,
+        links: [
+          { title: "Kostenlose Erstberatung anfragen", href: "/terminbuchung" },
+          {
+            title: "Unternehmen und Ansprechpartner kennenlernen",
+            href: "/ueber-uns",
+          },
+        ],
+      },
       {
         title: "Welche Website braucht dein Betrieb?",
         text: "Für ein klar umrissenes Angebot kann eine Landingpage ausreichen. Wenn du verschiedene Leistungen, Zielgruppen oder Projekte erklären möchtest, bekommt jedes wichtige Thema eine eigene Seite. Für einen Handwerksbetrieb sind beispielsweise Leistungsumfang, tatsächliches Einsatzgebiet und Anfrageweg oft entscheidender als aufwendige Animationen. Welche Inhalte benötigt werden, klären wir vor der Gestaltung.",
@@ -57,6 +73,15 @@ export const regionalPages = [
       },
     ],
     faq: [
+      {
+        question: "Wo kann ich eine Website in meiner Nähe erstellen lassen?",
+        answer: `${site.name} ist das Webstudio von ${business.owner} in ${business.postcode} ${business.city}. Wir planen und entwickeln Websites für Selbstständige, Vereine und Unternehmen. Über Telefon und E-Mail klären wir nach Terminabsprache Anforderungen und Umfang; die Umsetzung ist auch für Unternehmen außerhalb Dortmunds möglich.`,
+      },
+      {
+        question: "Muss der Webdesigner direkt in meiner Nachbarschaft sitzen?",
+        answer:
+          "Entscheidend sind ein erreichbarer Ansprechpartner, ein verständliches Angebot und eine abgestimmte Zusammenarbeit. Ein regionaler Sitz kann die Zuordnung erleichtern; für die Website-Entwicklung sind persönliche Vor-Ort-Termine nicht zwingend nötig. Kontaktwege und Freigaben werden vorher vereinbart.",
+      },
       {
         question: "Wer ist mein Ansprechpartner für Webdesign in Dortmund?",
         answer: `${business.owner} führt ${site.name} als Einzelunternehmen. Der Unternehmenssitz ist ${business.street}, ${business.postcode} ${business.city}. Du erreichst ihn direkt per Telefon, SMS oder E-Mail; Gesprächstermine werden vorher abgestimmt.`,

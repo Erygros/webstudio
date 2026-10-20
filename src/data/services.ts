@@ -1,5 +1,6 @@
 import { packages, additionalPrices, carePackages } from "@/config/pricing";
 import { bookingPackages } from "@/data/bookable-services";
+import { serviceGuides } from "@/data/service-guides";
 import {
   additionalServiceDefinitions,
   ecommercePlatformRows,
@@ -335,10 +336,10 @@ const definitions: {
       ],
       [
         "Verwaltungssoftware",
-        "Wiederkehrende Verwaltungsaufgaben digital abbilden und Zuständigkeiten klar machen.",
-        "Vorgangsverwaltung|Freigaben|Formulare|Statusübersichten",
-        "Organisationen mit manuellen administrativen Prozessen.",
-        "Vorgänge und Verantwortliche sind an einer Stelle sichtbar.",
+        "Individuelle Verwaltungssoftware für Stammdaten, Vorgänge, Aufgaben und Freigaben entwickeln lassen. Browserbasiert und auf deine Abläufe abgestimmt.",
+        "Stammdaten und Vorgangsverwaltung|Benutzerrollen und Freigaben|Eingabemasken und Prüfregeln|Statusübersichten und Auswertungen|Datenübernahme nach Prüfung|Anbindungen nach Vereinbarung",
+        "Unternehmen und Organisationen, die Verwaltungsprozesse bislang über getrennte Listen, E-Mails und manuelle Übergaben organisieren.",
+        "Zusammengehörige Daten, Aufgaben und Bearbeitungsstände werden in einer gemeinsamen Anwendung zugänglich; Zuständigkeiten und Rechte sind ausdrücklich geregelt.",
       ],
       [
         "Kundenportale",
@@ -419,10 +420,10 @@ const definitions: {
       ],
       [
         "Individuelle Datenbankanwendungen",
-        "Strukturierte Daten erfassen, prüfen und auswerten – mit einer passenden Bedienoberfläche.",
-        "Datenmodell|Eingabeprüfung|Abfragen|Auswertungen",
-        "Fachprozesse, die bisher über komplexe Tabellen organisiert werden.",
-        "Zusammengehörige Daten bleiben konsistent und gezielt abrufbar.",
+        "Individuelle Datenbank-Software entwickeln lassen: Unternehmensdaten über passende Eingabemasken, Suchfunktionen, Rollen und Auswertungen verwalten.",
+        "Fachliches Datenmodell|Eingabemasken und Validierung|Suche und Filter|Benutzerrollen und Zugriffsrechte|Auswertungen und Export|Datenübernahme und Einweisung nach Vereinbarung",
+        "Fachprozesse mit strukturierten Daten, mehreren Bearbeitern und Anforderungen, die bestehende Tabellen oder Standardprogramme nicht ausreichend abbilden.",
+        "Datenmodell, Bedienoberfläche und Geschäftsregeln werden gemeinsam geplant, damit die Anwendung die tatsächlichen Aufgaben der Nutzer abbildet.",
       ],
     ],
   },
@@ -490,10 +491,10 @@ const definitions: {
       ],
       [
         "Datenbankentwicklung",
-        "Eine passende Datenstruktur mit Beziehungen, Zugriffsregeln und belastbaren Abfragen aufbauen.",
-        "Datenmodellierung|Indizes|Zugriffsrichtlinien|Migrationen",
-        "Neue Anwendungen oder gewachsene Datenbestände.",
-        "Ein klares Datenmodell schafft eine verlässliche Grundlage für weitere Funktionen.",
+        "Individuelle Datenbankentwicklung für Unternehmen: Datenmodelle, Zugriffsregeln, Migrationen und Schnittstellen für neue oder bestehende Anwendungen.",
+        "Datenmodellierung und Beziehungen|Gültigkeitsregeln|Abfragen und Indizes|Rollen und Zugriffsrichtlinien|Migrationen und Datenzuordnung|Schnittstellen und Strukturdokumentation",
+        "Neue Anwendungen oder bestehende Datenbestände, für die eine belastbare Struktur, kontrollierte Zugriffe oder passende Anbindungen benötigt werden.",
+        "Ein nachvollziehbares Datenmodell verbindet fachliche Anforderungen mit der technischen Grundlage der Anwendung; Übernahme, Abfragen und Betrieb werden ausdrücklich geplant.",
       ],
       [
         "Backend-Entwicklung",
@@ -865,9 +866,11 @@ export const categories: Category[] = definitions.map(
               : name === "Monatliche Betreuungspakete"
                 ? carePackages[0].price
                 : null,
-      ...(expandedSlugs.has(slugify(name)) || platformSlugs.has(slugify(name))
-        ? { modified: expansionDate }
-        : {}),
+      ...(serviceGuides[slugify(name)]?.modified
+        ? { modified: serviceGuides[slugify(name)].modified }
+        : expandedSlugs.has(slugify(name)) || platformSlugs.has(slugify(name))
+          ? { modified: expansionDate }
+          : {}),
     })),
   }),
 );
@@ -923,6 +926,8 @@ export function serviceTitle(service: Service) {
 export const serviceHref = (service: Service) =>
   `/leistungen/${service.category}/${service.slug}`;
 export const serviceFaqs = (s: Service) => {
+  const specific = serviceGuides[s.slug]?.faq;
+  if (specific) return specific;
   const area = serviceAreaFor(s);
   if (area)
     return [

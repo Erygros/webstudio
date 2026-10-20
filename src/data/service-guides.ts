@@ -1,5 +1,7 @@
 export type ServiceGuide = {
   title: string;
+  modified?: string;
+  faq?: { question: string; answer: string }[];
   answer: string;
   decisions: { title: string; text: string }[];
   preparation: string[];
@@ -7,6 +9,247 @@ export type ServiceGuide = {
 };
 
 export const serviceGuides: Record<string, ServiceGuide> = {
+  verwaltungssoftware: {
+    title: "Individuelle Verwaltungssoftware entwickeln lassen",
+    modified: "2026-10-20",
+    answer:
+      "Verwaltungssoftware bündelt Stammdaten, Vorgänge, Aufgaben und Freigaben in einer gemeinsamen Anwendung. Webstudio Expert entwickelt dafür browserbasierte Lösungen, wenn vorhandene Standardsoftware deine Abläufe nicht ausreichend abbildet. Wir beginnen mit einem konkreten Verwaltungsprozess und planen Daten, Benutzerrollen, Funktionen und Übergabe anhand deiner tatsächlichen Anforderungen.",
+    decisions: [
+      {
+        title: "Welche Verwaltungsaufgaben sollen zusammenlaufen?",
+        text: "Wir betrachten den Weg eines Vorgangs vom Eingang bis zum Abschluss: Welche Angaben werden erfasst, wer bearbeitet sie und welche Freigaben sind nötig? Daraus können beispielsweise Kontakt- und Auftragsverwaltung, Dokumentenzuordnung, Wiedervorlagen oder eine Statusübersicht entstehen. Statt jede bisherige Tabelle unverändert nachzubauen, legen wir fest, welche Informationen gemeinsam gepflegt werden sollen.",
+      },
+      {
+        title: "Standardsoftware oder individuelle Entwicklung?",
+        text: "Eine vorhandene Branchenlösung kann ausreichen, wenn ihre Funktionen und Berechtigungen zu deinem Alltag passen. Individuelle Verwaltungssoftware bietet sich an, wenn mehrere Systeme verbunden werden müssen, besondere Freigaben bestehen oder wichtige Regeln bislang nur manuell kontrolliert werden. Wir grenzen den ersten sinnvollen Funktionsumfang ab und berücksichtigen auch Betrieb, Wartung und Schulung.",
+      },
+      {
+        title: "Ein nachvollziehbarer Vorgang statt verstreuter Listen",
+        text: "Ein möglicher Anwendungsfall ist die Bearbeitung von Kundenanfragen: Kontaktdaten werden einmal erfasst, Aufgaben einem Vorgang zugeordnet und Bearbeitungsstände dokumentiert. Ob daraus später ein Kundenportal, eine Rechnungsanbindung oder weitere Verwaltungsbereiche entstehen, wird separat entschieden. Dieses Beispiel beschreibt einen möglichen Projektumfang und kein versprochenes Ergebnis für jedes Unternehmen.",
+      },
+      {
+        title: "Berechtigungen, Datenübernahme und Betrieb mitplanen",
+        text: "Wir klären, welche Personen welche Daten sehen oder ändern dürfen und welche Änderungen nachvollziehbar bleiben müssen. Bei einer Datenübernahme werden Feldzuordnungen, Pflichtangaben und mögliche Dubletten vorab betrachtet. Sicherung, Wiederherstellung, Aktualisierung und Zuständigkeiten gehören zur Betriebsplanung; eine Browseroberfläche allein ersetzt diese Aufgaben nicht.",
+      },
+      {
+        title: "Was kostet eine Verwaltungssoftware?",
+        text: "Der Aufwand richtet sich nach Prozessen, Benutzerrollen, Datenbeständen und Schnittstellen. Du erhältst ein individuelles Angebot mit abgegrenztem Entwicklungsumfang; Hosting, externe Lizenzen und laufende Betreuung werden gesondert benannt. Ein erster Projektabschnitt kann einen einzelnen Verwaltungsprozess umfassen, bevor weitere Bereiche ergänzt werden.",
+      },
+    ],
+    preparation: [
+      "Ein konkreter Verwaltungsprozess mit typischen Schritten und Ausnahmefällen",
+      "Benötigte Benutzerrollen und Zuständigkeiten",
+      "Beschreibung vorhandener Tabellen und Systeme, zunächst ohne vertrauliche Echtdaten",
+      "Gewünschte Auswertungen, Schnittstellen und Exportformate",
+      "Verantwortliche für Inhalte, Freigaben und späteren Betrieb",
+    ],
+    links: [
+      {
+        title: "Individuelle Datenbank-Software",
+        href: "/leistungen/software/individuelle-datenbankanwendungen",
+      },
+      {
+        title: "CRM-System entwickeln lassen",
+        href: "/leistungen/software/crm-systeme",
+      },
+      {
+        title: "Datenbank und Schnittstellen planen",
+        href: "/leistungen/ki-automatisierung/datenbankentwicklung",
+      },
+      {
+        title: "Verwaltungssoftware anfragen",
+        href: "/projektanfrage?leistung=verwaltungssoftware",
+      },
+    ],
+    faq: [
+      {
+        question: "Was ist individuelle Verwaltungssoftware?",
+        answer:
+          "Eine individuell entwickelte Anwendung bildet die Verwaltungsabläufe eines Unternehmens ab, etwa Stammdaten, Vorgänge, Aufgaben und Freigaben. Welche Bereiche enthalten sind, wird anhand des konkreten Prozesses vereinbart.",
+      },
+      {
+        question: "Kann Verwaltungssoftware bisherige Excel-Listen ersetzen?",
+        answer:
+          "Das ist möglich, wenn die benötigten Daten und Regeln vorher geklärt werden. Wir prüfen die Struktur der Listen, planen eine kontrollierte Übernahme und stimmen ab, welche Eingaben, Prüfungen und Auswertungen die neue Anwendung benötigt.",
+      },
+      {
+        question: "Ist die Verwaltungssoftware im Browser nutzbar?",
+        answer:
+          "Wir entwickeln browserbasierte Anwendungen. Benötigte Endgeräte, Internetzugang, Benutzerrollen und gegebenenfalls besondere Anforderungen an den internen Zugriff werden vor der Umsetzung festgelegt. Offline-Nutzung ist ein gesonderter Funktionsumfang.",
+      },
+      {
+        question: "Können bestehende Programme angebunden werden?",
+        answer:
+          "Anbindungen hängen von den verfügbaren Schnittstellen, Zugriffsrechten und Nutzungsbedingungen der vorhandenen Programme ab. Wir prüfen diese Voraussetzungen, bevor wir eine Integration anbieten.",
+      },
+      {
+        question: "Gibt es einen Festpreis für Verwaltungssoftware?",
+        answer:
+          "Für individuelle Verwaltungssoftware erstellen wir ein Angebot nach Anforderungsaufnahme. Entwicklungsumfang, laufende Kosten, Einweisung und optionale Betreuung werden getrennt beschrieben; ein allgemeiner Festpreis wird nicht behauptet.",
+      },
+    ],
+  },
+  datenbankentwicklung: {
+    title: "Individuelle Datenbankentwicklung für Unternehmen",
+    modified: "2026-10-20",
+    answer:
+      "Individuelle Datenbankentwicklung schafft die technische Grundlage, um Unternehmensdaten strukturiert zu speichern, zu verknüpfen und gezielt abzufragen. Webstudio Expert plant Datenmodelle, Zugriffsregeln, Migrationen und Anbindungen für neue Anwendungen oder vorhandene Systeme. Eine Bedienoberfläche kann zusätzlich als individuelle Datenbank-Software entwickelt werden; sie ist ein eigener Teil des vereinbarten Umfangs.",
+    decisions: [
+      {
+        title: "Datenmodell statt unverbundener Einzelbestände",
+        text: "Zuerst klären wir, welche Datenobjekte bestehen und wie sie zusammenhängen. Ein Kontakt kann beispielsweise mehrere Vorgänge und Dokumente haben. Eindeutige Kennungen, Beziehungen, Pflichtfelder und Gültigkeitsregeln werden so geplant, dass die Anwendung fachlich zusammengehörige Informationen verlässlich zuordnen kann.",
+      },
+      {
+        title: "Neue Datenbank oder vorhandenes System erweitern?",
+        text: "Für eine Neuentwicklung werden Struktur und benötigte Abfragen aus dem Anwendungsfall abgeleitet. Bei einem bestehenden System betrachten wir zuerst Schema, Datenqualität, vorhandene Schnittstellen und technische Grenzen. Eine vollständige Neuentwicklung ist nicht automatisch die passende Lösung; manchmal reichen klar abgegrenzte Änderungen oder eine neue Anbindung.",
+      },
+      {
+        title: "Datenübernahme kontrolliert vorbereiten",
+        text: "Bei einer Migration werden Quellfelder und Zielfelder zugeordnet, Datentypen abgestimmt und Regeln für ungültige oder doppelte Einträge festgehalten. Eine Übernahme wird anhand eines vereinbarten Prüfbestands kontrolliert. Zugänge und echte personenbezogene Daten werden erst über einen geeigneten, abgestimmten Übertragungsweg bereitgestellt.",
+      },
+      {
+        title: "Zugriff und Abfragen nach tatsächlichem Bedarf",
+        text: "Lese- und Schreibrechte richten sich nach den Benutzerrollen und Geschäftsregeln. Abfragen, Indizes und Auswertungen werden anhand der erwarteten Datenmenge und Nutzung geplant. PostgreSQL und gegebenenfalls Supabase sind mögliche technische Grundlagen; die Auswahl erfolgt passend zu Betrieb, bestehenden Systemen und Anforderungen, nicht allein nach einem Produktnamen.",
+      },
+      {
+        title: "Übergabe und laufende Verantwortung festhalten",
+        text: "Zum vereinbarten Umfang können versionierte Strukturänderungen, eine Beschreibung des Datenmodells und eine Einweisung gehören. Wir stimmen ab, wer Sicherungen, Wiederherstellung und Betrieb verantwortet. Umfang und Kosten der individuellen Datenbankentwicklung hängen insbesondere von Datenmodell, Migrationen und Schnittstellen ab und werden vor Projektbeginn angeboten.",
+      },
+    ],
+    preparation: [
+      "Datenobjekte und ihre Beziehungen, etwa Kontakte, Aufträge und Dokumente",
+      "Beschreibung von Datenquellen, Dateiformaten und ungefährer Datenmenge",
+      "Typische Abfragen und benötigte Auswertungen",
+      "Benutzerrollen und fachliche Zugriffsregeln",
+      "Bestehende Systeme, Betriebsanforderungen und Zuständigkeiten",
+    ],
+    links: [
+      {
+        title: "Datenbank-Software mit Bedienoberfläche",
+        href: "/leistungen/software/individuelle-datenbankanwendungen",
+      },
+      {
+        title: "Verwaltungssoftware für deine Prozesse",
+        href: "/leistungen/software/verwaltungssoftware",
+      },
+      {
+        title: "API-Integrationen",
+        href: "/leistungen/ki-automatisierung/api-integrationen",
+      },
+      {
+        title: "Datenbankentwicklung anfragen",
+        href: "/projektanfrage?leistung=datenbankentwicklung",
+      },
+    ],
+    faq: [
+      {
+        question: "Was umfasst individuelle Datenbankentwicklung?",
+        answer:
+          "Mögliche Bestandteile sind Datenmodellierung, Beziehungen, Gültigkeitsregeln, Rollenrechte, Abfragen, Migrationen und Schnittstellen. Welche davon benötigt werden, wird vor der Entwicklung im Angebot festgehalten.",
+      },
+      {
+        question: "Was unterscheidet eine Datenbank von Datenbank-Software?",
+        answer:
+          "Die Datenbank speichert und organisiert Informationen. Datenbank-Software ergänzt die Bedienung und Fachlogik, beispielsweise Eingabemasken, Suche, Freigaben und Berichte. Beides kann zusammen entwickelt oder als getrennter Projektumfang bearbeitet werden.",
+      },
+      {
+        question: "Können bestehende Datenbanken weiterentwickelt werden?",
+        answer:
+          "Wir prüfen vorhandene Technik, Zugänge, Struktur und Datenqualität. Danach lässt sich einschätzen, ob Erweiterungen, eine Migration oder eine ergänzende Schnittstelle sinnvoll sind. Eine pauschale Übernahmezusage ohne Prüfung wäre nicht belastbar.",
+      },
+      {
+        question: "Kann ich Daten aus Excel oder CSV übernehmen?",
+        answer:
+          "Eine Übernahme ist nach Prüfung der Dateistruktur möglich. Feldzuordnung, Datenbereinigung, Pflichtangaben und Regeln für Dubletten werden vorab abgestimmt. Fehlende Informationen lassen sich nicht automatisch zuverlässig ergänzen.",
+      },
+      {
+        question: "Was benötigst du für ein Angebot zur Datenbankentwicklung?",
+        answer:
+          "Hilfreich sind der Anwendungsfall, vorhandene Datenquellen, typische Abfragen, benötigte Zugriffsrollen und geplante Schnittstellen. Eine anonymisierte Strukturübersicht reicht häufig für das erste Gespräch; vertrauliche Echtdaten sollen nicht ungefragt über das öffentliche Formular gesendet werden.",
+      },
+    ],
+  },
+  "individuelle-datenbankanwendungen": {
+    title: "Individuelle Datenbank-Software entwickeln lassen",
+    modified: "2026-10-20",
+    answer:
+      "Individuelle Datenbank-Software verbindet strukturierte Unternehmensdaten mit einer passenden Benutzeroberfläche und deinen Geschäftsregeln. Webstudio Expert entwickelt dafür browserbasierte Eingabemasken, Suchfunktionen, Auswertungen und Rollenrechte. Im Unterschied zur reinen Datenbankentwicklung steht hier die tägliche Arbeit mit den Daten im Mittelpunkt: erfassen, finden, bearbeiten und nachvollziehbar auswerten.",
+    decisions: [
+      {
+        title: "Welche Aufgaben soll die Datenbank-Software erleichtern?",
+        text: "Ein möglicher Einsatz ist die Verwaltung von Kontakten, Objekten, Aufträgen oder internen Vorgängen. Wir nehmen auf, welche Angaben zusammengehören, welche Arbeitsschritte wiederkehren und welche Informationen für eine Entscheidung gebraucht werden. Daraus entsteht ein definierter Funktionsumfang anstelle einer Sammlung beliebiger Zusatzfunktionen.",
+      },
+      {
+        title: "Eingabemasken und Suche an die Arbeit anpassen",
+        text: "Benötigte Felder, Pflichtangaben, Filter und Statuswerte richten sich nach dem Prozess. Listen und Detailansichten können verschiedene Aufgaben unterstützen: einen Datensatz schnell finden, fehlende Angaben erkennen oder den Bearbeitungsstand prüfen. Mobile Nutzung wird für die vereinbarten Geräte und Tätigkeiten berücksichtigt.",
+      },
+      {
+        title: "Gemeinsam arbeiten mit klaren Rechten",
+        text: "Wenn mehrere Personen dieselben Daten bearbeiten, werden Zuständigkeiten und Zugriffsrechte benötigt. Wir planen, wer Einträge lesen, ändern, freigeben oder exportieren darf. Welche Änderungen dokumentiert werden müssen und wie konkurrierende Bearbeitungen behandelt werden sollen, gehört zur fachlichen Abstimmung.",
+      },
+      {
+        title: "Vorhandene Daten und Anwendungen einbeziehen",
+        text: "Bestehende Tabellen oder Datenbanken werden vor einer Übernahme auf Struktur und Eignung geprüft. Import, Export und Anbindungen werden für konkrete Formate oder Schnittstellen vereinbart. Ein geplanter Wechsel soll auch berücksichtigen, wie Mitarbeitende geschult werden und welche bisherigen Abläufe während der Einführung weiterlaufen müssen.",
+      },
+      {
+        title: "Was wird nach der Entwicklung übergeben?",
+        text: "Übergabe, Dokumentation, Zugangsmöglichkeiten und Einweisung richten sich nach dem Angebot. Wartung, Hosting und weitere Entwicklung werden separat abgestimmt. Eine individuelle Datenbank-Software muss nicht sofort alle Unternehmensbereiche abdecken: Ein begrenzter erster Anwendungsfall kann die Grundlage für spätere Erweiterungen schaffen.",
+      },
+    ],
+    preparation: [
+      "Ein bis zwei typische Arbeitsabläufe mit den benötigten Daten",
+      "Gewünschte Listen, Suchfilter, Eingabemasken und Berichte",
+      "Benutzergruppen und erlaubte Aktionen",
+      "Beschreibung vorhandener Tabellen oder Anwendungen",
+      "Anforderungen an Export, Betrieb, Einweisung und spätere Erweiterung",
+    ],
+    links: [
+      {
+        title: "Individuelle Datenbankentwicklung",
+        href: "/leistungen/ki-automatisierung/datenbankentwicklung",
+      },
+      {
+        title: "Verwaltungssoftware entwickeln lassen",
+        href: "/leistungen/software/verwaltungssoftware",
+      },
+      {
+        title: "Kundenportal als geschützter Zugang",
+        href: "/leistungen/software/kundenportale",
+      },
+      {
+        title: "Datenbank-Software anfragen",
+        href: "/projektanfrage?leistung=individuelle-datenbankanwendungen",
+      },
+    ],
+    faq: [
+      {
+        question: "Was ist individuelle Datenbank-Software?",
+        answer:
+          "Eine Anwendung, mit der Unternehmensdaten über passende Oberflächen erfasst, gesucht, bearbeitet und ausgewertet werden. Neben der Datenbank gehören dazu die vereinbarten Geschäftsregeln, Benutzerrechte und Bedienfunktionen.",
+      },
+      {
+        question: "Für wen eignet sich eine individuelle Datenbankanwendung?",
+        answer:
+          "Für Unternehmen und Organisationen, deren strukturierte Daten und Fachprozesse durch vorhandene Tabellen oder Standardprogramme nur unzureichend abgebildet werden. Ob eine eigene Entwicklung sinnvoll ist, wird im Vergleich zu bestehenden Lösungen geprüft.",
+      },
+      {
+        question:
+          "Ist individuelle Datenbank-Software auch ohne Installation nutzbar?",
+        answer:
+          "Browserbasierte Anwendungen werden über einen geeigneten Browser aufgerufen. Voraussetzungen wie Internetverbindung, Zugriffsschutz und unterstützte Geräte werden vereinbart. Ein eigener Server oder ein Hostingangebot kann trotzdem für den Betrieb erforderlich sein.",
+      },
+      {
+        question: "Wie werden Kosten und Funktionsumfang festgelegt?",
+        answer:
+          "Nach einer Anforderungsaufnahme erstellen wir ein individuelles Angebot. Es benennt Oberflächen, Datenmodell, Rollen, Auswertungen, Datenübernahme und vereinbarte Anbindungen. Betrieb und laufende Betreuung werden gesondert aufgeführt.",
+      },
+      {
+        question: "Kann die Anwendung später erweitert werden?",
+        answer:
+          "Erweiterungen sind nach technischer und fachlicher Prüfung möglich. Eine dokumentierte Datenstruktur und klar abgegrenzte Funktionen erleichtern die Planung; Aufwand, Risiken und mögliche Änderungen am Betrieb werden vor der Umsetzung abgestimmt.",
+      },
+    ],
+  },
   "online-marketing": {
     title: "Bestehendes Online-Marketing gezielt verbessern",
     answer:

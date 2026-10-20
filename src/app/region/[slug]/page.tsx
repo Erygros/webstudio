@@ -24,11 +24,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const p = regionalPages.find((p) => p.slug === slug);
   if (!p) notFound();
-  return seo(
-    p.title,
-    "Website für deinen Betrieb in Dortmund: Enrico Gross entwickelt Landingpages und Firmenwebsites. Persönliche Abstimmung, klare Angebote und optionale Betreuung.",
-    `/region/${slug}`,
-  );
+  return seo(p.seoTitle, p.description, `/region/${slug}`);
 }
 export default async function Region({
   params,
@@ -119,6 +115,16 @@ export default async function Region({
           inLanguage: "de-DE",
           isPartOf: { "@id": websiteId },
           about: { "@id": organizationId },
+          dateModified: p.modified,
+          mainEntity: {
+            "@type": "Service",
+            "@id": `${canonicalUrl(`/region/${slug}`)}#service`,
+            name: "Website erstellen lassen in Dortmund und Umgebung",
+            serviceType: "Webdesign und Website-Entwicklung",
+            provider: { "@id": organizationId },
+            areaServed: { "@type": "City", name: "Dortmund" },
+            url: canonicalUrl(`/region/${slug}`),
+          },
           spatialCoverage: { "@type": "City", name: "Dortmund" },
         }}
       />

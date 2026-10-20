@@ -36,12 +36,14 @@ export function publicSeoPages(): { path: string; modified?: string }[] {
     ...Object.keys(contentPages).map((p) => ({ path: `/${p}` })),
     ...serviceAreas.map((c) => ({
       path: `/leistungen/${c.slug}`,
-      ...(c.services.some((s) => s.modified === "2026-10-19")
-        ? { modified: "2026-10-19" }
-        : serviceAreaContent[c.slug] ||
-            ["websites", "e-commerce"].includes(c.slug)
-          ? { modified: expansionDate }
-          : {}),
+      modified: c.services.reduce(
+        (latest, s) =>
+          s.modified && s.modified > latest ? s.modified : latest,
+        serviceAreaContent[c.slug] ||
+          ["websites", "e-commerce"].includes(c.slug)
+          ? expansionDate
+          : contentRevision,
+      ),
     })),
     ...services.map((s) => ({
       path: serviceHref(s),
@@ -58,7 +60,7 @@ export function publicSeoPages(): { path: string; modified?: string }[] {
     })),
     ...regionalPages.map((p) => ({
       path: `/region/${p.slug}`,
-      modified: contentRevision,
+      modified: p.modified || contentRevision,
     })),
   ];
 }
